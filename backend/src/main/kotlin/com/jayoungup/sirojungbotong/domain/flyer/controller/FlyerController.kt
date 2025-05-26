@@ -1,6 +1,8 @@
 package com.jayoungup.sirojungbotong.domain.flyer.controller
 
-import com.jayoungup.sirojungbotong.domain.flyer.entity.Flyer
+import com.jayoungup.sirojungbotong.domain.flyer.dto.FlyerCreateRequestDto
+import com.jayoungup.sirojungbotong.domain.flyer.dto.FlyerUpdateRequestDto
+import com.jayoungup.sirojungbotong.domain.flyer.dto.FlyerResponseDto
 import com.jayoungup.sirojungbotong.domain.flyer.service.FlyerService
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -21,7 +23,7 @@ class FlyerController(
         @RequestParam expireAt: String,
         @RequestParam usesSiro: Boolean,
         @RequestParam(required = false) image: MultipartFile?
-    ): Flyer {
+    ): FlyerResponseDto {
         val uploadDir = File("${System.getProperty("user.dir")}/backend/uploads")
         if (!uploadDir.exists()) {
             uploadDir.mkdirs()
@@ -36,9 +38,57 @@ class FlyerController(
             "backend/uploads/$filename"
         }
 
-        return flyerService.createFlyer(
-            storeName, category, description,
-            LocalDateTime.parse(expireAt), usesSiro, uploadedImagePath
+        val dto = FlyerCreateRequestDto(
+            storeName = storeName,
+            category = category,
+            description = description,
+            expireAt = expireAt,
+            usesSiro = usesSiro
+        )
+        return FlyerResponseDto.from(
+            flyerService.createFlyer(dto, uploadedImagePath)
+        )
+    }
+
+    @GetMapping("/{id}")
+    fun getOne(@PathVariable id: Long): FlyerResponseDto =
+        FlyerResponseDto.from(flyerService.getFlyer(id))
+
+    @GetMapping
+    fun getAll(): List<FlyerResponseDto> =
+        flyerService.getAllFlyers().map { FlyerResponseDto.from(it) }
+
+    @PutMapping("/{id}")
+    fun updateText(
+        @PathVariable id: Long,
+        @RequestBody updated: FlyerUpdateRequestDto
+    ): FlyerResponseDto =
+        FlyerResponseDto.from(flyerService.updateFlyerText(id, updated))
+
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Long): Map<String, String> {
+        flyerService.deleteFlyer(id)
+        return mapOf("message" to "전단지가 삭제되었습니다.")
+    }
+
+    @PatchMapping("/{id}/image")
+    fun updateImage(
+        @PathVariable id: Long,
+        @RequestParam image: MultipartFile
+    ): FlyerResponseDto {
+        val uploadDir = File("${System.getProperty("user.dir")}/backend/uploads")
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs()
+        }
+
+        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")
+        val timestamp = LocalDateTime.now().format(formatter)
+        val filename = "${timestamp}_${image.originalFilename}"
+        val file = File(uploadDir, filename)
+        image.transferTo(file)
+
+        return FlyerResponseDto.from(
+            flyerService.updateFlyerImage(id, "backend/uploads/$filename")
         )
     }
 }
