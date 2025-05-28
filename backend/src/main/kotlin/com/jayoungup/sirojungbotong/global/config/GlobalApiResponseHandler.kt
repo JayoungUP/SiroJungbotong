@@ -27,6 +27,26 @@ class GlobalApiResponseHandler : ResponseBodyAdvice<Any> {
         request: ServerHttpRequest,
         response: ServerHttpResponse
     ): Any {
+
+        val path = request.uri.path
+
+        // Swagger 요청은 래핑하지 않음
+        if (path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui") || path.startsWith("/swagger-config")) {
+            return body ?: mapOf("message" to "No content")
+        }
+
+        // 바이너리 또는 파일 응답 타입은 그대로 반환
+        if (
+            selectedContentType.includes(MediaType.IMAGE_JPEG) ||
+            selectedContentType.includes(MediaType.IMAGE_PNG) ||
+            selectedContentType.includes(MediaType.APPLICATION_OCTET_STREAM) ||
+            selectedContentType.includes(MediaType.APPLICATION_PDF) ||
+            selectedConverterType == org.springframework.http.converter.ByteArrayHttpMessageConverter::class.java
+        ) {
+            return body ?: ByteArray(0)
+        }
+
+        // JSON 응답만 래핑
         return BaseResponse(
             status = 200,
             data = body ?: mapOf("message" to "응답 본문 없음")

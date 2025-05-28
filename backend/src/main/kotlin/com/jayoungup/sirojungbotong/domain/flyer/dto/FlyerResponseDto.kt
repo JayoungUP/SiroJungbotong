@@ -1,8 +1,10 @@
 package com.jayoungup.sirojungbotong.domain.flyer.dto
 
 import com.jayoungup.sirojungbotong.domain.flyer.entity.Flyer
+import lombok.Data
 import java.time.LocalDateTime
 
+@Data
 data class FlyerResponseDto(
     val id: Long,
     val storeName: String,
