@@ -1,11 +1,11 @@
 package com.jayoungup.sirojungbotong.Member.service
 
+import com.jayoungup.sirojungbotong.JwtTokenProvider
 import com.jayoungup.sirojungbotong.Member.dto.response.*
 import com.jayoungup.sirojungbotong.Member.dto.request.*
 import com.jayoungup.sirojungbotong.Member.entity.Member
 import com.jayoungup.sirojungbotong.Member.mapper.MemberMapper
 import com.jayoungup.sirojungbotong.Member.repository.*
-import com.jayoungup.sirojungbotong.Member.security.JwtTokenProvider
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

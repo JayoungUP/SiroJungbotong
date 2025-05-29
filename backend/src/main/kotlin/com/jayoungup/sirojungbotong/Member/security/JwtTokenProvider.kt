@@ -1,4 +1,4 @@
-package com.siro.siroinfo.Member.security
+package com.jayoungup.sirojungbotong
 
 import com.jayoungup.sirojungbotong.Member.entity.Role
 import io.jsonwebtoken.Claims

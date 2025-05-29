@@ -1,4 +1,4 @@
-package com.jayoungup.sirojungbotong.Member.controller
+package com.jayoungup.sirojungbotong.member.controller
 
 import com.jayoungup.sirojungbotong.Member.dto.request.*
 import com.jayoungup.sirojungbotong.Member.dto.response.*
