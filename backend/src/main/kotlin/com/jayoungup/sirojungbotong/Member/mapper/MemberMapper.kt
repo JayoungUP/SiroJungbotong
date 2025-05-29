@@ -29,7 +29,7 @@ class MemberMapper {
             name = request.name,
             password = request.password,
             nickname = request.nickname,
-            b_no = request.b_no
+            bNo = request.b_no
         )
     }
 
@@ -40,7 +40,7 @@ class MemberMapper {
             nickname = member.nickname,
             name = member.name,
             role = member.role,
-            b_no = if (member is Owner) member.b_no else null
+            b_no = if (member is Owner) member.bNo else null
         )
     }
 

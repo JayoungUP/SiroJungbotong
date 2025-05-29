@@ -46,8 +46,8 @@ class Owner(
     nickname: String,
     role: Role =  Role.OWNER,
 
-    @Column(nullable = false)
-    val b_no : String, // 사업자 등록 번호
+    @Column(name ="b_no",nullable = false)
+    val bNo : String, // 사업자 등록 번호
 ) : Member(id, loginId, email, name, password, nickname, role)
 
 @Entity
