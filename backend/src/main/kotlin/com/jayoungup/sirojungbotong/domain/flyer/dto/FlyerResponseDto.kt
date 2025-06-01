@@ -7,19 +7,19 @@ import java.time.LocalDateTime
 
 @Data
 data class FlyerResponseDto(
-    @Schema(description = "전단지 ID", example = "1")
+    @field:Schema(description = "전단지 ID", example = "1")
     val id: Long,
 
-    @Schema(description = "가게 이름", example = "김밥천국 신림점")
+    @field:Schema(description = "가게 이름", example = "김밥천국 신림점")
     val storeName: String,
 
-    @Schema(description = "카테고리", example = "음식점")
+    @field:Schema(description = "카테고리", example = "음식점")
     val category: String,
 
-    @Schema(description = "전단지 설명", example = "할인 이벤트 안내")
+    @field:Schema(description = "전단지 설명", example = "할인 이벤트 안내")
     val description: String,
 
-    @Schema(description = "전단지 만료일", example = "2025-06-30T23:59:59")
+    @field:Schema(description = "전단지 만료일", example = "2025-06-30T23:59:59")
     val expireAt: LocalDateTime,
 
     @Schema(description = "시로 이용 여부", example = "true")

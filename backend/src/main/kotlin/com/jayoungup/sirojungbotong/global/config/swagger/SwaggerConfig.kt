@@ -1,4 +1,4 @@
-package com.jayoungup.sirojungbotong.global.config
+package com.jayoungup.sirojungbotong.global.config.swagger
 
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.Components

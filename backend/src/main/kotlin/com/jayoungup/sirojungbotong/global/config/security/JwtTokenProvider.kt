@@ -1,4 +1,4 @@
-package com.jayoungup.sirojungbotong.domain.member.security
+package com.jayoungup.sirojungbotong.global.config.security
 
 import com.jayoungup.sirojungbotong.domain.member.entity.Role
 import io.jsonwebtoken.Claims

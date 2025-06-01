@@ -10,7 +10,7 @@ import com.jayoungup.sirojungbotong.domain.member.mapper.MemberMapper
 import com.jayoungup.sirojungbotong.domain.member.repository.MemberRepository
 import com.jayoungup.sirojungbotong.domain.member.repository.OwnerRepository
 import com.jayoungup.sirojungbotong.domain.member.repository.UserRepository
-import com.jayoungup.sirojungbotong.domain.member.security.JwtTokenProvider
+import com.jayoungup.sirojungbotong.global.config.security.JwtTokenProvider
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

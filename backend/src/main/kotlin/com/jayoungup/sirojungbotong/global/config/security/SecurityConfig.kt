@@ -1,4 +1,4 @@
-package com.jayoungup.sirojungbotong.domain.member.security
+package com.jayoungup.sirojungbotong.global.config.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

@@ -1,6 +1,5 @@
 package com.jayoungup.sirojungbotong.domain.member.controller
 
-
 import com.jayoungup.sirojungbotong.domain.member.dto.request.LoginRequest
 import com.jayoungup.sirojungbotong.domain.member.dto.request.OwnerSignupRequest
 import com.jayoungup.sirojungbotong.domain.member.dto.request.UserSignupRequest
@@ -11,7 +10,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-
 
 @RestController
 @RequestMapping("/api/member")
@@ -34,18 +32,17 @@ class MemberController(
         return ResponseEntity.status(201).build()
     }
 
-    @PostMapping("/login")
     @Operation(summary = "로그인", description = "아이디/비밀번호로 로그인")
+    @PostMapping("/login")
     fun login(@RequestBody request: LoginRequest): ResponseEntity<LoginResponse> {
         val response = memberService.login(request)
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("/info")
     @Operation(summary = "회원 정보 조회", description = "현재 로그인된 회원의 정보를 조회합니다.")
+    @GetMapping("/info")
     fun getMemberInfo(@RequestAttribute memberId: Long): ResponseEntity<MemberInfoResponse> {
         val response = memberService.getMemberInfo(memberId)
         return ResponseEntity.ok(response)
     }
 }
-

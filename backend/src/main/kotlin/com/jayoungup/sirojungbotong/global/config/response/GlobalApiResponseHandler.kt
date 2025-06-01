@@ -1,4 +1,4 @@
-package com.jayoungup.sirojungbotong.global.config
+package com.jayoungup.sirojungbotong.global.config.response
 
 import org.springframework.core.MethodParameter
 import org.springframework.http.MediaType
