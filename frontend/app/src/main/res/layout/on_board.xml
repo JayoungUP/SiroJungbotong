@@ -83,28 +83,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Upload" />
 
-    <ImageView
-        android:id="@+id/Onboard_HAERO"
-        android:layout_width="154dp"
-        android:layout_height="169dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/haero"
-        android:layout_marginStart="4dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/Onboard_Search"/>
-
-    <!-- 7) 오른쪽 캐릭터 이미지 -->
-    <ImageView
-        android:id="@+id/Onboard_TORO"
-        android:layout_width="130dp"
-        android:layout_height="167dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/toro"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Onboard_Search"
-        app:layout_constraintBottom_toTopOf="@id/Upload" />
-
     <!-- 9) “로그인” 텍스트 -->
     <TextView
         android:id="@+id/Onboard_login"
