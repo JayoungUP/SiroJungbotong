@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OnboardActivity">
+
+    <TextView
+        android:id="@+id/Onboard_Welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="115dp"
+        android:fontFamily="@font/helvetica_bold"
+        android:text="환영합니다"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/Onboard_WelcomeText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/helvetica_bold"
+        android:text="시흥의 전통시장 정보를 한 눈에 확인할 수 있습니다."
+        android:textColor="@color/gray01"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Onboard_Welcome" />
+
+    <!-- 4) “시장 둘러보기” 역할 ImageView -->
+    <ImageView
+        android:id="@+id/Onboard_Search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="300dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Onboard_WelcomeText"
+        />
+
+
+    <!-- 5) “전단지 등록하기” 역할 ImageView -->
+    <ImageView
+        android:id="@+id/Upload"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/upload"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Onboard_Search" />
+
+    <!-- 6) 왼쪽 캐릭터 이미지 -->
+
+    <!-- 8) “이미 계정이 있으신가요?” 텍스트 -->
+    <TextView
+        android:id="@+id/txtAlreadyAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/helvetica_bold"
+        android:text="이미 계정이 있으신가요?"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Upload" />
+
+    <ImageView
+        android:id="@+id/Onboard_HAERO"
+        android:layout_width="154dp"
+        android:layout_height="169dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/haero"
+        android:layout_marginStart="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/Onboard_Search"/>
+
+    <!-- 7) 오른쪽 캐릭터 이미지 -->
+    <ImageView
+        android:id="@+id/Onboard_TORO"
+        android:layout_width="130dp"
+        android:layout_height="167dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/toro"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Onboard_Search"
+        app:layout_constraintBottom_toTopOf="@id/Upload" />
+
+    <!-- 9) “로그인” 텍스트 -->
+    <TextView
+        android:id="@+id/Onboard_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/helvetica_bold"
+        android:text="로그인"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/txtAlreadyAccount"
+        app:layout_constraintTop_toBottomOf="@id/Upload" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
