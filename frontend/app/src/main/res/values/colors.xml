@@ -5,6 +5,7 @@
     <!-- res/values/colors.xml -->
     <!-- 메인 컬러 -->
     <color name="colorPrimary">#FF6B35</color>
+    <color name="colorPrimaryLight">#FF9B35</color>
 
     <!-- 그레이 톤 -->
     <color name="gray01">#565656</color>

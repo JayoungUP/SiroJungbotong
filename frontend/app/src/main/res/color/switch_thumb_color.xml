@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 스위치가 체크(On) 상태일 때 Primary 색 -->
+    <item android:color="@color/colorPrimary" android:state_checked="true" />
+    <!-- 그 외(Off) 상태일 때 사용할 기본 회색 예시 -->
+    <item android:color="@color/gray03" />
+</selector>
