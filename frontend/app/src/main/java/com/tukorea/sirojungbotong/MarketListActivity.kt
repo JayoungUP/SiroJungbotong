@@ -1,18 +1,18 @@
-package com.tukorea.sirojungbotong
+package com.david.siro
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.david.siro.LoginActivity
-import com.david.siro.MarketListActivity
-import com.david.siro.MarketUploadActivity
 import com.tukorea.sirojungbotong.databinding.OnBoardBinding
+import kotlin.jvm.java
 
-class OnboardActivity : AppCompatActivity(){
+class MarketListActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -46,10 +46,6 @@ class OnboardActivity : AppCompatActivity(){
         }
 
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
     }
-}}
+}
+}
