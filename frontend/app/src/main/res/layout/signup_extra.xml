@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:fillViewport="true"
+        android:overScrollMode="always"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="회원가입 완료"
+                android:textSize="30sp"
+                android:textStyle="normal"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/tvSubtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="사장님이시면"
+                android:textSize="14sp"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@color/gray02" />
+
+            <TextView
+                android:id="@+id/tvSubtitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="아래에 업장 정보를 등록해주세요."
+                android:textSize="14sp"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@color/gray02" />
+            <LinearLayout
+                android:id="@+id/layoutSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvSwitchLabel"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:text="업장 등록하기"
+                    android:textColor="@color/gray01"
+                    android:textSize="16sp" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchRegister"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:thumbTint="@color/switch_thumb_color"
+                    app:trackTint="@color/switch_track_color" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/StoreName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="업장명"
+                android:textStyle="normal"
+                android:fontFamily="@font/helvetica_bold"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:textColor="@color/gray01"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilStoreName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:hintEnabled="true"
+                android:visibility="gone"
+                android:hint="업장명">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etStoreName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/helvetica_bold" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/StoreAddressLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="업장 주소"
+                android:textStyle="normal"
+                android:visibility="gone"
+                android:fontFamily="@font/helvetica_bold"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/gray01"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilStoreAddress"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:hintEnabled="true"
+                android:visibility="gone"
+                android:hint="업장 주소">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etStoreAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPostalAddress"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/helvetica_bold" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/nothing1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="운영시간"
+                android:visibility="gone"
+                android:textStyle="normal"
+                android:fontFamily="@font/helvetica_bold"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/gray01"/>
+            <LinearLayout
+                android:id="@+id/layoutOperatingHours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:visibility="gone"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilOpenTime"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:endIconMode="custom"
+                    android:visibility="gone"
+                    app:endIconDrawable="@drawable/ic_time"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:hintEnabled="true"
+                    android:hint="운영 시작">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etOpenTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:inputType="none"
+                        android:visibility="gone"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/helvetica_bold" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:id="@+id/tvTimeSeparator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="~"
+                    android:visibility="gone"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCloseTime"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:endIconMode="custom"
+                    android:visibility="gone"
+                    app:endIconDrawable="@drawable/ic_time"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:hintEnabled="true"
+                    android:hint="운영 종료">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etCloseTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:visibility="gone"
+                        android:clickable="true"
+                        android:inputType="none"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/helvetica_bold" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tvLabelStorePhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="업장 사진"
+                android:visibility="gone"
+                android:textSize="16sp"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@color/gray01" />
+
+            <FrameLayout
+                android:id="@+id/layoutStorePhoto"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_upload_border"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:visibility="gone"
+                android:focusable="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/ivStorePhotoIcon"
+                        android:layout_width="48dp"
+                        android:visibility="gone"
+                        android:layout_height="48dp"
+                        android:src="@drawable/addimage" />
+
+                    <TextView
+                        android:id="@+id/tvStorePhotoGuidance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone"
+                        android:text="클릭하여 업장 사진을 업로드 해주세요"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/gray02" />
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/ivStorePhotoPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <TextView
+                android:id="@+id/tvLabelBusinessDoc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:visibility="gone"
+                android:text="사업자 등록 서류"
+                android:textSize="16sp"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@color/gray01" />
+
+            <FrameLayout
+                android:id="@+id/layoutBusinessDoc"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:background="@drawable/bg_upload_border"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/ivBusinessDocIcon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/addimage"/>
+
+                    <TextView
+                        android:id="@+id/tvBusinessDocGuidance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="클릭하여 사업자 등록증을 업로드 해주세요"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/gray02" />
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/ivBusinessDocPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnComplete"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="32dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="가입 완료하기"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/helvetica_bold"
+                app:cornerRadius="8dp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+

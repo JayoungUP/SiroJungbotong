@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- ON(체크) 상태: Primary 색 중에서 약간 투명도를 준 버전도 괜찮고 -->
+    <item android:color="@color/colorPrimaryLight" android:state_checked="true" />
+    <!-- OFF 상태: 연한 회색(예시) -->
+    <item android:color="@color/gray03" />
+</selector>
