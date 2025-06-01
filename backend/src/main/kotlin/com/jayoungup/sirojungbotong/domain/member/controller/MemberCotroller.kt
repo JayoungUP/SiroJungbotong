@@ -1,10 +1,15 @@
-package com.jayoungup.sirojungbotong.member.controller
+package com.jayoungup.sirojungbotong.domain.member.controller
 
-import com.jayoungup.sirojungbotong.Member.dto.request.*
-import com.jayoungup.sirojungbotong.Member.dto.response.*
-import com.jayoungup.sirojungbotong.Member.service.MemberService
+
+import com.jayoungup.sirojungbotong.domain.member.dto.request.LoginRequest
+import com.jayoungup.sirojungbotong.domain.member.dto.request.OwnerSignupRequest
+import com.jayoungup.sirojungbotong.domain.member.dto.request.UserSignupRequest
+import com.jayoungup.sirojungbotong.domain.member.dto.response.LoginResponse
+import com.jayoungup.sirojungbotong.domain.member.dto.response.MemberInfoResponse
+import com.jayoungup.sirojungbotong.domain.member.service.MemberService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+
 
 @RestController
 @RequestMapping("/api/member")

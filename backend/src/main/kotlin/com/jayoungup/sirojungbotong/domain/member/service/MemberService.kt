@@ -1,11 +1,16 @@
-package com.jayoungup.sirojungbotong.Member.service
+package com.jayoungup.sirojungbotong.domain.member.service
 
-import com.jayoungup.sirojungbotong.JwtTokenProvider
-import com.jayoungup.sirojungbotong.Member.dto.response.*
-import com.jayoungup.sirojungbotong.Member.dto.request.*
-import com.jayoungup.sirojungbotong.Member.entity.Member
-import com.jayoungup.sirojungbotong.Member.mapper.MemberMapper
-import com.jayoungup.sirojungbotong.Member.repository.*
+import com.jayoungup.sirojungbotong.domain.member.dto.request.LoginRequest
+import com.jayoungup.sirojungbotong.domain.member.dto.request.OwnerSignupRequest
+import com.jayoungup.sirojungbotong.domain.member.dto.request.UserSignupRequest
+import com.jayoungup.sirojungbotong.domain.member.dto.response.LoginResponse
+import com.jayoungup.sirojungbotong.domain.member.dto.response.MemberInfoResponse
+import com.jayoungup.sirojungbotong.domain.member.entity.Member
+import com.jayoungup.sirojungbotong.domain.member.mapper.MemberMapper
+import com.jayoungup.sirojungbotong.domain.member.repository.MemberRepository
+import com.jayoungup.sirojungbotong.domain.member.repository.OwnerRepository
+import com.jayoungup.sirojungbotong.domain.member.repository.UserRepository
+import com.jayoungup.sirojungbotong.domain.member.security.JwtTokenProvider
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

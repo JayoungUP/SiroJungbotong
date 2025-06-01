@@ -7,3 +7,10 @@ spring:
     web:
         resources:
             static-locations: file:uploads/
+
+    http:
+        encoding:
+            charset: UTF-8
+            enabled: true
+            force: true
+

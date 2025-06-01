@@ -1,9 +1,10 @@
-package com.jayoungup.sirojungbotong.Member.dto.request
+package com.jayoungup.sirojungbotong.domain.member.dto.request
 
-data class UserSignupRequest (
+data class OwnerSignupRequest (
     val loginId: String,
     val email: String,
     val name: String,
     val password: String,
     val nickname: String,
+    val b_no: String,
 )

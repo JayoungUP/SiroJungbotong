@@ -1,4 +1,4 @@
-package com.jayoungup.sirojungbotong.Member.entity
+package com.jayoungup.sirojungbotong.domain.member.entity
 
 import jakarta.persistence.*
 
@@ -44,7 +44,7 @@ class Owner(
     name: String,
     password: String,
     nickname: String,
-    role: Role =  Role.OWNER,
+    role: Role = Role.OWNER,
 
     @Column(name ="b_no",nullable = false)
     val bNo : String, // 사업자 등록 번호
@@ -59,7 +59,7 @@ class User(
     name: String,
     password: String,
     nickname: String,
-    role: Role =  Role.USER,
+    role: Role = Role.USER,
 ) : Member(id, loginId, email, name, password, nickname, role)
 
 @Entity
@@ -71,5 +71,5 @@ class Admin(
     name: String,
     password: String,
     nickname: String,
-    role: Role =  Role.ADMIN,
+    role: Role = Role.ADMIN,
 ) : Member(id, loginId, email, name, password, nickname, role)

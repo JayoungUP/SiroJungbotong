@@ -1,12 +1,13 @@
-package com.jayoungup.sirojungbotong.Member.mapper
+package com.jayoungup.sirojungbotong.domain.member.mapper
 
-import com.jayoungup.sirojungbotong.Member.dto.request.OwnerSignupRequest
-import com.jayoungup.sirojungbotong.Member.dto.request.UserSignupRequest
-import com.jayoungup.sirojungbotong.Member.dto.response.LoginResponse
-import com.jayoungup.sirojungbotong.Member.dto.response.MemberInfoResponse
-import com.jayoungup.sirojungbotong.Member.entity.Member
-import com.jayoungup.sirojungbotong.Member.entity.Owner
-import com.jayoungup.sirojungbotong.Member.entity.User
+
+import com.jayoungup.sirojungbotong.domain.member.dto.request.OwnerSignupRequest
+import com.jayoungup.sirojungbotong.domain.member.dto.request.UserSignupRequest
+import com.jayoungup.sirojungbotong.domain.member.dto.response.LoginResponse
+import com.jayoungup.sirojungbotong.domain.member.dto.response.MemberInfoResponse
+import com.jayoungup.sirojungbotong.domain.member.entity.Member
+import com.jayoungup.sirojungbotong.domain.member.entity.Owner
+import com.jayoungup.sirojungbotong.domain.member.entity.User
 import org.springframework.stereotype.Component
 
 @Component
