@@ -2,4 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- res/values/colors.xml -->
+    <!-- 메인 컬러 -->
+    <color name="colorPrimary">#FF6B35</color>
+
+    <!-- 그레이 톤 -->
+    <color name="gray01">#565656</color>
+    <color name="gray02">#989898</color>
+    <color name="gray03">#DEDEDE</color>
+    <color name="colorSub">#00C0A3</color>
 </resources>
