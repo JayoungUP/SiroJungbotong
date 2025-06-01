@@ -22,11 +22,7 @@ class FlyerController(
     @Operation(summary = "전단지 등록", description = "전단지를 새로 등록합니다.")
     @PostMapping
     fun create(
-        @RequestParam storeName: String,
-        @RequestParam category: String,
-        @RequestParam description: String,
-        @RequestParam expireAt: String,
-        @RequestParam usesSiro: Boolean,
+        @RequestPart("data") data: FlyerCreateRequestDto,
         @RequestParam(required = false) image: MultipartFile?
     ): FlyerResponseDto {
         val uploadDir = File("${System.getProperty("user.dir")}/backend/uploads")
@@ -43,15 +39,8 @@ class FlyerController(
             "backend/uploads/$filename"
         }
 
-        val dto = FlyerCreateRequestDto(
-            storeName = storeName,
-            category = category,
-            description = description,
-            expireAt = expireAt,
-            usesSiro = usesSiro
-        )
         return FlyerResponseDto.from(
-            flyerService.createFlyer(dto, uploadedImagePath)
+            flyerService.createFlyer(data, uploadedImagePath)
         )
     }
 
