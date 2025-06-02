@@ -1,6 +1,6 @@
-package com.jayoungup.sirojungbotong.Member.dto.response
+package com.jayoungup.sirojungbotong.member.dto.response
 
-import com.jayoungup.sirojungbotong.Member.entity.Role
+import com.jayoungup.sirojungbotong.member.entity.Role
 
 data class LoginResponse(
     val nickname: String,
