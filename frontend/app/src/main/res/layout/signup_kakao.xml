@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/signup_kakao_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingTop="48dp"
+    android:paddingBottom="48dp">
+
+    <!-- 회원가입 제목 (왼쪽 정렬) -->
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="회원가입"
+        android:textSize="28sp"
+        android:textColor="#000000"
+        android:fontFamily="@font/helvetica_bold"
+        android:textStyle="bold"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="80dp" />
+
+    <!-- 설명 텍스트 (왼쪽 정렬) -->
+    <TextView
+        android:id="@+id/tv_subtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:layout_marginTop="12dp"
+        android:layout_alignStart="@id/tv_title"
+        android:fontFamily="@font/helvetica_bold"
+        android:textStyle="normal"
+        android:text="전단지 등록 기능은\n가입 후에 이용할 수 있습니다."
+        android:textSize="16sp"
+        android:textColor="#888888" />
+
+    <!-- 카카오 이미지 버튼 (가운데 정렬, 비율 유지) -->
+    <ImageButton
+        android:id="@+id/btn_kakao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="48dp"
+        android:background="@null"
+        android:src="@drawable/kakao_button"
+        android:contentDescription="카카오로 시작하기"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter" />
+</RelativeLayout>
