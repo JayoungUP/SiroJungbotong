@@ -1,4 +1,4 @@
-package com.jayoungup.sirojungbotong.Member.dto.request
+package com.jayoungup.sirojungbotong.member.dto.request
 
 data class LoginRequest(
     val loginId: String,

@@ -1,6 +1,6 @@
 package com.jayoungup.sirojungbotong
 
-import com.jayoungup.sirojungbotong.Member.entity.Role
+import com.jayoungup.sirojungbotong.member.entity.Role
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
