@@ -7,9 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.david.siro.LoginActivity
-import com.david.siro.MarketListActivity
-import com.david.siro.MarketUploadActivity
 import com.tukorea.sirojungbotong.databinding.OnBoardBinding
 
 class OnboardActivity : AppCompatActivity(){
@@ -30,7 +27,6 @@ class OnboardActivity : AppCompatActivity(){
         bind.Upload.setOnClickListener {
             try{
                 val intent=Intent(this,SignupKakaoActivity::class.java)
-
                 startActivity(intent)
             }
             catch(e:Exception){

@@ -35,16 +35,22 @@
                 인텐트 필터를 추가해서 특별한 액션으로 호출할 수도 있습니다.
             -->
         </activity>
+
         <activity
             android:name=".MarketListupActivity"
             android:exported="true">
         </activity>
 
-
         <!-- SignupKakaoActivity -->
         <activity
             android:name=".SignupKakaoActivity"
             android:exported="true"/>
+
+        <!-- LoginActivity -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"/>
 
         <!-- 필요하다면 다른 Activity를 계속 추가 -->
 
