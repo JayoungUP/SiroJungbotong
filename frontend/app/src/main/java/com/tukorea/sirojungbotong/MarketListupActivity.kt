@@ -4,10 +4,13 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.os.postDelayed
 import com.tukorea.sirojungbotong.databinding.ListUpBinding
 import java.util.Locale
 
@@ -116,6 +119,25 @@ class MarketListupActivity : AppCompatActivity() {
         setupPhotoPickers()
 
         restoreAllFields()
+        setupRegisterButton()
+
+    }
+
+    private fun setupRegisterButton() {
+        binding.btnRegister.setOnClickListener {
+            // 클릭 후 중복 방지
+            binding.btnRegister.isEnabled = false
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.ivRegisterDoneOverlay.visibility = View.VISIBLE
+
+                // 3) 3초 후에 액티비티 종료
+                Handler(Looper.getMainLooper()).postDelayed({
+                    finish()
+                }, 3000L)
+
+            }, 1500L)
+        }
     }
 
     /** 언어 변경 버튼 클릭 리스너 설정 **/

@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="115dp"
         android:fontFamily="@font/helvetica_bold"
         android:text="환영합니다"
         android:textSize="34sp"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/helvetica_bold"
         android:text="시흥의 전통시장 정보를 한 눈에 확인할 수 있습니다."
         android:textColor="@color/gray01"
@@ -62,13 +62,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginBottom="4dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:src="@drawable/search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Onboard_WelcomeText"
+        app:layout_constraintBottom_toTopOf="@id/Upload"
         />
 
 
@@ -79,13 +79,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:src="@drawable/upload"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Onboard_Search" />
+        app:layout_constraintBottom_toTopOf="@id/txtAlreadyAccount" />
 
     <!-- 6) 왼쪽 캐릭터 이미지 -->
 
@@ -95,12 +95,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="112dp"
-        android:layout_marginTop="24dp"
         android:fontFamily="@font/helvetica_bold"
         android:text="이미 계정이 있으신가요?"
         android:textSize="12sp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Upload" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <!-- 9) “로그인” 텍스트 -->
     <TextView
@@ -109,11 +109,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="30dp"
         android:fontFamily="@font/helvetica_bold"
         android:text="로그인"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/txtAlreadyAccount"
-        app:layout_constraintTop_toBottomOf="@id/Upload" />
+        app:layout_constraintRight_toRightOf="@id/txtAlreadyAccount"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

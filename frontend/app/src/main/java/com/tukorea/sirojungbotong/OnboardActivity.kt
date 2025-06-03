@@ -30,6 +30,7 @@ class OnboardActivity : AppCompatActivity(){
         bind.Upload.setOnClickListener {
             try{
                 val intent=Intent(this,SignupKakaoActivity::class.java)
+
                 startActivity(intent)
             }
             catch(e:Exception){
