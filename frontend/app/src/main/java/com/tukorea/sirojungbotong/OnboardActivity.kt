@@ -29,7 +29,7 @@ class OnboardActivity : AppCompatActivity(){
         }
         bind.Upload.setOnClickListener {
             try{
-                val intent=Intent(this,MarketUploadActivity::class.java)
+                val intent=Intent(this,MarketListupActivity::class.java)
                 startActivity(intent)
             }
             catch(e:Exception){
