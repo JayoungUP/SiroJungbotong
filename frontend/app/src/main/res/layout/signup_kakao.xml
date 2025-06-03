@@ -9,6 +9,18 @@
     android:paddingTop="48dp"
     android:paddingBottom="48dp">
 
+    <!-- 뒤로가기 아이콘 -->
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back"
+        android:background="@null"
+        android:contentDescription="뒤로가기"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp" />
+
     <!-- 회원가입 제목 (왼쪽 정렬) -->
     <TextView
         android:id="@+id/tv_title"
@@ -36,16 +48,30 @@
         android:textSize="16sp"
         android:textColor="#888888" />
 
-    <!-- 카카오 이미지 버튼 (가운데 정렬, 비율 유지) -->
+    <!-- 이메일로 시작하기 버튼 (하단 기준) -->
     <ImageButton
-        android:id="@+id/btn_kakao"
+        android:id="@+id/btn_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="48dp"
-        android:background="@null"
-        android:src="@drawable/kakao_button"
-        android:contentDescription="카카오로 시작하기"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter" />
+        android:background="@null"
+        android:contentDescription="이메일로 시작하기"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_email" />
+
+    <!-- 카카오로 시작하기 버튼 (이메일 버튼 위) -->
+    <ImageButton
+        android:id="@+id/btn_kakao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_email"
+        android:layout_marginBottom="16dp"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:contentDescription="카카오로 시작하기"
+        android:scaleType="fitCenter"
+        android:src="@drawable/kakao_button" />
+
 </RelativeLayout>
