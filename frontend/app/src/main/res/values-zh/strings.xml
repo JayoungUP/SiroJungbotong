@@ -17,18 +17,18 @@
     <string name="label_item">商品 %1$d</string>
 
     <!-- 품목 안의 각 필드 레이블/힌트 -->
-    <string name="label_item_name">商品名称 *</string>
+    <string name="label_item_name">商品名称 <font color="#FF6B35">*</font></string>
     <string name="hint_item_name">请输入商品名称</string>
 
-    <string name="label_item_desc">商品说明 *</string>
+    <string name="label_item_desc">商品说明 <font color="#FF6B35">*</font></string>
     <string name="hint_item_desc">请填写商品的说明</string>
 
-    <string name="label_price">价格 *</string>
+    <string name="label_price">价格 <font color="#FF6B35">*</font></string>
     <string name="hint_price">0</string>
     <string name="unit_won">韩元</string>
     <string name="use_now_marker">可使用Siru</string>
 
-    <string name="label_valid_period">有效期 *</string>
+    <string name="label_valid_period">有效期 <font color="#FF6B35">*</font></string>
     <string name="hint_start_date">月/日</string>
     <string name="separator_tilde"> ~ </string>
     <string name="hint_end_date">月/日</string>

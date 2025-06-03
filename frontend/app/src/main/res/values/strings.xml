@@ -17,18 +17,18 @@
     <string name="label_item">품목 %1$d</string>
 
     <!-- 품목 안의 각 필드 레이블/힌트 -->
-    <string name="label_item_name">품명 *</string>
-    <string name="hint_item_name">품명을 입력해주세요</string>
+    <string name="label_item_name">품명 <font color="#FF6B35">*</font></string>
+    <string name="hint_item_name">품명을 입력해주세요<font color="#FF6B35"></font></string>
 
-    <string name="label_item_desc">품목 설명 *</string>
+    <string name="label_item_desc">품목 설명 <font color="#FF6B35">*</font></string>
     <string name="hint_item_desc">품목에 대한 설명을 적어주세요</string>
 
-    <string name="label_price">가격 *</string>
+    <string name="label_price">가격 <font color="#FF6B35">*</font></string>
     <string name="hint_price">0</string>
     <string name="unit_won">원</string>
     <string name="use_now_marker">시루 사용 가능</string>
 
-    <string name="label_valid_period">유효기간 *</string>
+    <string name="label_valid_period">유효기간 <font color="#FF6B35">*</font></string>
     <string name="hint_start_date">월/일</string>
     <string name="separator_tilde"> ~ </string>
     <string name="hint_end_date">월/일</string>
