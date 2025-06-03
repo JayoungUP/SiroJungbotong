@@ -9,8 +9,7 @@ enum class Role{
 }
 @Entity
 @Table(name = "members")
-@Inheritance(strategy = InheritanceType.JOINED)
-open class Member(
+class Member(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
@@ -31,45 +30,8 @@ open class Member(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val role: Role
+    val role: Role,
+
+    @Column(name ="b_no",nullable = true)
+    val bNo : String? = null
 )
-
-
-@Entity
-@Table(name = "owners")
-class Owner(
-    id: Long = 0,
-    loginId: String,
-    email: String,
-    name: String,
-    password: String,
-    nickname: String,
-    role: Role = Role.OWNER,
-
-    @Column(name ="b_no",nullable = false)
-    val bNo : String, // 사업자 등록 번호
-) : Member(id, loginId, email, name, password, nickname, role)
-
-@Entity
-@Table(name = "users")
-class User(
-    id: Long = 0,
-    loginId: String,
-    email: String,
-    name: String,
-    password: String,
-    nickname: String,
-    role: Role = Role.USER,
-) : Member(id, loginId, email, name, password, nickname, role)
-
-@Entity
-@Table(name = "admins")
-class Admin(
-    id: Long = 0,
-    loginId: String,
-    email: String,
-    name: String,
-    password: String,
-    nickname: String,
-    role: Role = Role.ADMIN,
-) : Member(id, loginId, email, name, password, nickname, role)

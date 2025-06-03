@@ -7,9 +7,11 @@ import com.jayoungup.sirojungbotong.domain.flyer.entity.Flyer
 import com.jayoungup.sirojungbotong.domain.flyer.exception.FlyerNotFoundException
 import com.jayoungup.sirojungbotong.domain.flyer.repository.FlyerRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Service
+@Transactional
 class FlyerService(
     private val flyerRepository: FlyerRepository
 ) {
@@ -26,11 +28,13 @@ class FlyerService(
         return flyerRepository.save(flyer)
     }
 
+    @Transactional(readOnly = true)
     fun getFlyer(id: Long): Flyer =
         flyerRepository.findById(id).orElseThrow {
             FlyerNotFoundException(id)
         }
 
+    @Transactional(readOnly = true)
     fun getAllFlyers(): List<Flyer> = flyerRepository.findAll()
 
     fun updateFlyerText(id: Long, dto: FlyerUpdateRequestDto): Flyer {

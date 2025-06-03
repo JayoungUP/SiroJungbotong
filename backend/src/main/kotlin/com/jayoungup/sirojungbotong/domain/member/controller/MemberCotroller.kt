@@ -1,8 +1,7 @@
 package com.jayoungup.sirojungbotong.domain.member.controller
 
 import com.jayoungup.sirojungbotong.domain.member.dto.request.LoginRequest
-import com.jayoungup.sirojungbotong.domain.member.dto.request.OwnerSignupRequest
-import com.jayoungup.sirojungbotong.domain.member.dto.request.UserSignupRequest
+import com.jayoungup.sirojungbotong.domain.member.dto.request.SignupRequest
 import com.jayoungup.sirojungbotong.domain.member.dto.response.LoginResponse
 import com.jayoungup.sirojungbotong.domain.member.dto.response.MemberInfoResponse
 import com.jayoungup.sirojungbotong.domain.member.service.MemberService
@@ -18,17 +17,10 @@ class MemberController(
     private val memberService: MemberService
 ) {
 
-    @PostMapping("/signup/user")
-    @Operation(summary = "일반 사용자 회원가입")
-    fun signupUser(@RequestBody request: UserSignupRequest): ResponseEntity<Void> {
-        memberService.signupUser(request)
-        return ResponseEntity.status(201).build()
-    }
-
-    @PostMapping("/signup/owner")
-    @Operation(summary = "사장님 회원가입")
-    fun signupOwner(@RequestBody request: OwnerSignupRequest): ResponseEntity<Void> {
-        memberService.signupOwner(request)
+    @PostMapping("/signup")
+    @Operation(summary = "회원가입", description = "일반 사용자 또는 사장님 회원가입")
+    fun signup(@RequestBody request: SignupRequest): ResponseEntity<Void> {
+        memberService.signup(request)
         return ResponseEntity.status(201).build()
     }
 

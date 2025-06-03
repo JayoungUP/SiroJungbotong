@@ -1,35 +1,25 @@
 package com.jayoungup.sirojungbotong.domain.member.mapper
 
 
-import com.jayoungup.sirojungbotong.domain.member.dto.request.OwnerSignupRequest
-import com.jayoungup.sirojungbotong.domain.member.dto.request.UserSignupRequest
+import com.jayoungup.sirojungbotong.domain.member.dto.request.SignupRequest
 import com.jayoungup.sirojungbotong.domain.member.dto.response.LoginResponse
 import com.jayoungup.sirojungbotong.domain.member.dto.response.MemberInfoResponse
 import com.jayoungup.sirojungbotong.domain.member.entity.Member
-import com.jayoungup.sirojungbotong.domain.member.entity.Owner
-import com.jayoungup.sirojungbotong.domain.member.entity.User
+import com.jayoungup.sirojungbotong.domain.member.entity.Role
 import org.springframework.stereotype.Component
 
 @Component
 class MemberMapper {
 
-    fun toUserEntity(request: UserSignupRequest): User {
-        return User(
-            loginId = request.loginId,
-            email = request.email,
-            name = request.name,
-            password = request.password,
-            nickname = request.nickname
-        )
-    }
-
-    fun toOwnerEntity(request: OwnerSignupRequest): Owner {
-        return Owner(
+    fun toSignupEntity(request: SignupRequest): Member {
+        val role = if (request.b_no.isNullOrBlank()) Role.USER else Role.OWNER
+        return Member(
             loginId = request.loginId,
             email = request.email,
             name = request.name,
             password = request.password,
             nickname = request.nickname,
+            role = role,
             bNo = request.b_no
         )
     }
@@ -41,7 +31,7 @@ class MemberMapper {
             nickname = member.nickname,
             name = member.name,
             role = member.role,
-            b_no = if (member is Owner) member.bNo else null
+            b_no = member.bNo
         )
     }
 
