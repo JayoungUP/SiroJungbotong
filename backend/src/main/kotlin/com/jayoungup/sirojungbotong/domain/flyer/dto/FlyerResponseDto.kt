@@ -25,7 +25,7 @@ data class FlyerResponseDto(
     @Schema(description = "시로 이용 여부", example = "true")
     val usesSiro: Boolean,
 
-    @Schema(description = "이미지 파일 경로 또는 URL", example = "backend/uploads/20250602_101530_image.png")
+    @Schema(description = "이미지 파일 경로 또는 URL", example = "backend/uploads/flyers/20250602_101530_image.png")
     val imageUrl: String?,
 
     @Schema(description = "전단지 생성 시각", example = "2025-06-02T10:15:30")

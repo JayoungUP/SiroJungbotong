@@ -42,7 +42,7 @@ class FlyerController(
         )
         image: MultipartFile?
     ): ResponseEntity<FlyerResponseDto> {
-        val uploadDir = File("${System.getProperty("user.dir")}/backend/uploads")
+        val uploadDir = File("${System.getProperty("user.dir")}/backend/uploads/flyers")
         if (!uploadDir.exists()) uploadDir.mkdirs()
 
         val uploadedImagePath = image?.let {
@@ -51,7 +51,7 @@ class FlyerController(
             val filename = "${timestamp}_${it.originalFilename}"
             val file = File(uploadDir, filename)
             it.transferTo(file)
-            "backend/uploads/$filename"
+            "backend/uploads/flyers/$filename"
         }
 
         val createdFlyer = FlyerResponseDto.from(
@@ -91,7 +91,7 @@ class FlyerController(
         @PathVariable id: Long,
         @RequestParam image: MultipartFile
     ): ResponseEntity<FlyerResponseDto> {
-        val uploadDir = File("${System.getProperty("user.dir")}/backend/uploads")
+        val uploadDir = File("${System.getProperty("user.dir")}/backend/uploads/flyers")
         if (!uploadDir.exists()) uploadDir.mkdirs()
 
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")
@@ -101,7 +101,7 @@ class FlyerController(
         image.transferTo(file)
 
         val updatedDto = FlyerResponseDto.from(
-            flyerService.updateFlyerImage(id, "backend/uploads/$filename")
+            flyerService.updateFlyerImage(id, "backend/uploads/flyers/$filename")
         )
         return ResponseEntity.ok(updatedDto)
     }

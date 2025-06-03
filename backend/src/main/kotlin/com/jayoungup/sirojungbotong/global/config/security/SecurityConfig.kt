@@ -1,5 +1,6 @@
 package com.jayoungup.sirojungbotong.global.config.security
 
+import com.jayoungup.sirojungbotong.domain.member.repository.MemberRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -7,10 +8,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig {
+class SecurityConfig(
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val memberRepository: MemberRepository
+) {
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
@@ -31,10 +36,12 @@ class SecurityConfig {
                     ).permitAll()
                     .anyRequest().authenticated()
             }
+            .addFilterBefore(
+                JwtAuthenticationFilter(jwtTokenProvider, memberRepository),
+                UsernamePasswordAuthenticationFilter::class.java
+            )
             .formLogin { it.disable() }
             .httpBasic { it.disable() }
             .build()
     }
 }
-
-
