@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="?attr/actionBarSize"
-            android:backgroundTint="@color/white"
+            android:background="@color/white"
             android:elevation="4dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
@@ -124,7 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
-            android:backgroundTint="@color/white"
+            android:background="@color/white"
             android:paddingTop="60dp"
             android:fillViewport="true"
             android:overScrollMode="always"

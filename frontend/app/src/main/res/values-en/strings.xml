@@ -7,15 +7,15 @@
     <string name="lang_en">En</string>
     <string name="lang_zh">中</string>
     <string name="label_item">Item %1$d</string>
-    <string name="label_item_name">Item Name *</string>
+    <string name="label_item_name">Item Name <font color="#FF6B35">*</font></string>
     <string name="hint_item_name">Please enter the business name</string>
-    <string name="label_item_desc">Item Description *</string>
+    <string name="label_item_desc">Item Description <font color="#FF6B35">*</font></string>
     <string name="hint_item_desc">Please write a description of the item</string>
-    <string name="label_price">Price *</string>
+    <string name="label_price">Price <font color="#FF6B35">*</font></string>
     <string name="hint_price">0</string>
     <string name="unit_won">KRW</string>
     <string name="use_now_marker">Siru available</string>
-    <string name="label_valid_period">Validity Period *</string>
+    <string name="label_valid_period">Validity Period <font color="#FF6B35">*</font></string>
     <string name="hint_start_date">Month/Day</string>
     <string name="separator_tilde"> ~ </string>
     <string name="hint_end_date">Month/Day</string>
