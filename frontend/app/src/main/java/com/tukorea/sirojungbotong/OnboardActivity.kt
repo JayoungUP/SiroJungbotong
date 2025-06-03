@@ -29,11 +29,12 @@ class OnboardActivity : AppCompatActivity(){
         }
         bind.Upload.setOnClickListener {
             try{
-                val intent=Intent(this,MarketListupActivity::class.java)
+                val intent=Intent(this,SignupKakaoActivity::class.java)
+
                 startActivity(intent)
             }
             catch(e:Exception){
-                Toast.makeText(this, "MarketListActivity를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "SignupKakaoActivity를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
             bind.OnboardLogin.setOnClickListener {
                 // 예시: LoginActivity 로 이동
