@@ -1,0 +1,912 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="@color/black"
+        app:navigationIcon="@drawable/drawback"
+        app:logoDescription="@string/desc_back">
+
+        <TextView
+            android:id="@+id/btnRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:paddingEnd="16dp"
+            android:text="@string/action_register"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:fontFamily="@font/helvetica_bold" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutLanguageSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <!-- 1) “새 전단지 등록하기” 타이틀 -->
+        <TextView
+            android:id="@+id/tvTitleRegister"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/helvetica_bold"
+            android:text="@string/title_register_item"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/langToggleGroup"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!-- 2) MaterialButtonToggleGroup -->
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/langToggleGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            app:singleSelection="true"
+            app:ensureMinTouchTargetSize="false"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="2dp"
+            app:cornerRadius="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLangKo"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="52dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/lang_ko"
+                android:textColor="@color/lang_active_color"
+                android:backgroundTint="@color/white"
+                android:textAllCaps="false"
+                android:textSize="12sp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLangEn"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="52dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/lang_en"
+                android:textColor="@color/lang_inactive_color"
+                android:backgroundTint="@color/gray01"
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                android:layout_marginStart="4dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLangZh"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="52dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/lang_zh"
+                android:backgroundTint="@color/gray01"
+                android:textColor="@color/lang_inactive_color"
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                android:layout_marginStart="4dp"/>
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:paddingTop="60dp"
+        android:fillViewport="true"
+        android:overScrollMode="always"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="32dp">
+
+
+            <TextView
+                android:id="@+id/tvItemLabel1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_item"
+                android:textSize="18sp"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tvItemNameLabel1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_item_name"
+                android:textSize="14sp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@color/gray01" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilItemName1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                android:hint="@string/hint_item_name">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etItemName1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tvItemDescLabel1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_item_desc"
+                android:textSize="14sp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@color/gray01" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilItemDesc1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                android:hint="@string/hint_item_desc">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etItemDesc1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tvPriceLabel1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_price"
+                android:textSize="14sp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@color/gray01" />
+            <LinearLayout
+                android:id="@+id/layoutPrice1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPrice1"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_price">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPrice1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvUnitWon1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unit_won"
+                    android:textSize="14sp"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+
+                <CheckBox
+                    android:id="@+id/cbUseNow1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
+                    android:text="@string/use_now_marker"
+                    android:textSize="14sp"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvValidPeriodLabel1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_valid_period"
+                android:textSize="14sp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@color/gray01" />
+            <LinearLayout
+                android:id="@+id/layoutValidPeriod1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilStartDate1"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_start_date"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/deadline">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etStartDate1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:inputType="none"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvTilde1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/separator_tilde"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEndDate1"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_end_date"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/deadline">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEndDate1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:inputType="none"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvItemPhotoLabel1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_item_photo"
+                android:textSize="14sp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@color/gray01" />
+            <FrameLayout
+                android:id="@+id/layoutItemPhoto1"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_upload_border"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp">
+                    <ImageView
+                        android:id="@+id/ivItemPhotoIcon1"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/addimage" />
+                    <TextView
+                        android:id="@+id/tvItemPhotoGuidance1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/hint_upload_item_photo"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/gray02" />
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/ivItemPhotoPreview1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"/>
+            </FrameLayout>
+
+            <!-- ───────────────────────────────
+                 Item 2 (초기 visibility="gone")
+               ───────────────────────────────
+               위 Item 1 블록과 완전히 동일하되,
+               - 모든 ID 끝에 “1” 대신 “2”를 붙여서 복사
+               - 최상단 TextView(tvItemLabel2)는 getString(R.string.label_item, 2)로 세팅
+            -->
+            <LinearLayout
+                android:id="@+id/layoutItem2Container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginTop="24dp">
+                <TextView
+                    android:id="@+id/tvItemLabel2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_item"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/tvItemNameLabel2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_item_name"
+                    android:textSize="14sp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilItemName2"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    android:hint="@string/hint_item_name">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etItemName2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvItemDescLabel2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_item_desc"
+                    android:textSize="14sp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilItemDesc2"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    android:hint="@string/hint_item_desc">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etItemDesc2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvPriceLabel2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_price"
+                    android:textSize="14sp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+                <LinearLayout
+                    android:id="@+id/layoutPrice2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPrice2"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/hint_price">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPrice2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/helvetica_bold"
+                            android:textColor="@color/black" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/tvUnitWon2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/unit_won"
+                        android:textSize="14sp"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/gray01" />
+
+                    <CheckBox
+                        android:id="@+id/cbUseNow2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorPrimary"
+                        android:text="@string/use_now_marker"
+                        android:textSize="14sp"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/gray01" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvValidPeriodLabel2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_valid_period"
+                    android:textSize="14sp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+                <LinearLayout
+                    android:id="@+id/layoutValidPeriod2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilStartDate2"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/hint_start_date"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/deadline">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etStartDate2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:inputType="none"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/helvetica_bold"
+                            android:textColor="@color/black" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/tvTilde2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/separator_tilde"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/gray01"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilEndDate2"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/hint_end_date"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/deadline">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etEndDate2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:inputType="none"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/helvetica_bold"
+                            android:textColor="@color/black" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvItemPhotoLabel2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_item_photo"
+                    android:textSize="14sp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+                <FrameLayout
+                    android:id="@+id/layoutItemPhoto2"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_upload_border"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="16dp">
+                        <ImageView
+                            android:id="@+id/ivItemPhotoIcon2"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/addimage" />
+                        <TextView
+                            android:id="@+id/tvItemPhotoGuidance2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/hint_upload_item_photo"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/helvetica_bold"
+                            android:textColor="@color/gray02" />
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/ivItemPhotoPreview2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"/>
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <!-- ───────────────────────────────
+                 Item 3 (초기 visibility="gone")
+               ───────────────────────────────
+               위 Item 1 블록과 완전히 동일하되,
+               - 모든 ID 끝에 “1” 대신 “3”을 붙여서 복사
+               - 최상단 TextView(tvItemLabel3)는 getString(R.string.label_item, 3)로 세팅
+            -->
+            <LinearLayout
+                android:id="@+id/layoutItem3Container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginTop="24dp">
+                <TextView
+                    android:id="@+id/tvItemLabel3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_item"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/tvItemNameLabel3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_item_name"
+                    android:textSize="14sp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilItemName3"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    android:hint="@string/hint_item_name">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etItemName3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvItemDescLabel3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_item_desc"
+                    android:textSize="14sp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilItemDesc3"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    android:hint="@string/hint_item_desc">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etItemDesc3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvPriceLabel3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_price"
+                    android:textSize="14sp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+                <LinearLayout
+                    android:id="@+id/layoutPrice3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPrice3"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/hint_price">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPrice3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/helvetica_bold"
+                            android:textColor="@color/black" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/tvUnitWon3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/unit_won"
+                        android:textSize="14sp"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/gray01" />
+
+                    <CheckBox
+                        android:id="@+id/cbUseNow3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorPrimary"
+                        android:text="@string/use_now_marker"
+                        android:textSize="14sp"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/gray01" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvValidPeriodLabel3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_valid_period"
+                    android:textSize="14sp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+                <LinearLayout
+                    android:id="@+id/layoutValidPeriod3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilStartDate3"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/hint_start_date"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/deadline">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etStartDate3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:inputType="none"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/helvetica_bold"
+                            android:textColor="@color/black" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/tvTilde3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/separator_tilde"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/gray01"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilEndDate3"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/hint_end_date"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/deadline">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etEndDate3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:inputType="none"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/helvetica_bold"
+                            android:textColor="@color/black" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvItemPhotoLabel3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_item_photo"
+                    android:textSize="14sp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+                <FrameLayout
+                    android:id="@+id/layoutItemPhoto3"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_upload_border"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="16dp">
+                        <ImageView
+                            android:id="@+id/ivItemPhotoIcon3"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/addimage" />
+                        <TextView
+                            android:id="@+id/tvItemPhotoGuidance3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/hint_upload_item_photo"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/helvetica_bold"
+                            android:textColor="@color/gray02" />
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/ivItemPhotoPreview3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"/>
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- + 품목 추가하기 버튼 -->
+            <TextView
+                android:id="@+id/tvAddItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_add_item"
+                android:textSize="16sp"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_gravity="right"
+                android:layout_marginTop="24dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="60dp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

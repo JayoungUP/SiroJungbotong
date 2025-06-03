@@ -12,4 +12,8 @@
     <color name="gray02">#989898</color>
     <color name="gray03">#DEDEDE</color>
     <color name="colorSub">#00C0A3</color>
+        <!-- 활성 텍스트 색(예: 검정) -->
+        <color name="lang_active_color">#000000</color>
+        <!-- 비활성 텍스트 색(회색) -->
+        <color name="lang_inactive_color">#A0A0A0</color>
 </resources>
