@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 액션바의 뒤로가기 버튼 설명 -->
+    <string name="desc_back">返回</string>
+    <!-- 오른쪽 상단 “등록” 버튼 -->
+    <string name="action_register">注册</string>
+
+    <!-- 화면 타이틀 -->
+    <string name="title_register_item">注册新传单</string>
+
+    <!-- 언어 선택 버튼 레이블 (한·En·中) -->
+    <string name="lang_ko">한</string>
+    <string name="lang_en">En</string>
+    <string name="lang_zh">中</string>
+
+    <!-- “품목 N” 레이블 (N은 코드에서 getString으로 채워줍니다) -->
+    <string name="label_item">商品 %1$d</string>
+
+    <!-- 품목 안의 각 필드 레이블/힌트 -->
+    <string name="label_item_name">商品名称 *</string>
+    <string name="hint_item_name">请输入商品名称</string>
+
+    <string name="label_item_desc">商品说明 *</string>
+    <string name="hint_item_desc">请填写商品的说明</string>
+
+    <string name="label_price">价格 *</string>
+    <string name="hint_price">0</string>
+    <string name="unit_won">韩元</string>
+    <string name="use_now_marker">可使用Siru</string>
+
+    <string name="label_valid_period">有效期 *</string>
+    <string name="hint_start_date">月/日</string>
+    <string name="separator_tilde"> ~ </string>
+    <string name="hint_end_date">月/日</string>
+
+    <string name="label_item_photo">商品照片</string>
+    <string name="hint_upload_item_photo">点击上传要注册的商品照片</string>
+
+    <!-- “+ 품목 추가하기” 버튼 텍스트 -->
+    <string name="action_add_item">+ 添加商品</string>
+</resources>

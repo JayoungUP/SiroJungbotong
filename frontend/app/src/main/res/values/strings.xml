@@ -1,3 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SiroJungbotong</string>
+    <!-- 액션바의 뒤로가기 버튼 설명 -->
+    <string name="desc_back">뒤로가기</string>
+    <!-- 오른쪽 상단 “등록” 버튼 -->
+    <string name="action_register">등록</string>
+
+    <!-- 화면 타이틀 -->
+    <string name="title_register_item">새 전단지 등록하기</string>
+
+    <!-- 언어 선택 버튼 레이블 (한·En·中) -->
+    <string name="lang_ko">한</string>
+    <string name="lang_en">En</string>
+    <string name="lang_zh">中</string>
+
+    <!-- “품목 N” 레이블 (N은 코드에서 getString으로 채워줍니다) -->
+    <string name="label_item">품목 %1$d</string>
+
+    <!-- 품목 안의 각 필드 레이블/힌트 -->
+    <string name="label_item_name">품명 *</string>
+    <string name="hint_item_name">품명을 입력해주세요</string>
+
+    <string name="label_item_desc">품목 설명 *</string>
+    <string name="hint_item_desc">품목에 대한 설명을 적어주세요</string>
+
+    <string name="label_price">가격 *</string>
+    <string name="hint_price">0</string>
+    <string name="unit_won">원</string>
+    <string name="use_now_marker">시루 사용 가능</string>
+
+    <string name="label_valid_period">유효기간 *</string>
+    <string name="hint_start_date">월/일</string>
+    <string name="separator_tilde"> ~ </string>
+    <string name="hint_end_date">월/일</string>
+
+    <string name="label_item_photo">품목 사진</string>
+    <string name="hint_upload_item_photo">클릭하여 등록하는 품목 사진을 업로드해 주세요</string>
+
+    <!-- “+ 품목 추가하기” 버튼 텍스트 -->
+    <string name="action_add_item">+ 품목 추가하기</string>
+    <string name="app_name" translatable="false">시로정보통</string>
 </resources>

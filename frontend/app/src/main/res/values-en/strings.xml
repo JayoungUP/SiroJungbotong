@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desc_back">Go Back</string>
+    <string name="action_register">Submit</string>
+    <string name="title_register_item">Register New Flyer</string>
+    <string name="lang_ko">한</string>
+    <string name="lang_en">En</string>
+    <string name="lang_zh">中</string>
+    <string name="label_item">Item %1$d</string>
+    <string name="label_item_name">Item Name *</string>
+    <string name="hint_item_name">Please enter the business name</string>
+    <string name="label_item_desc">Item Description *</string>
+    <string name="hint_item_desc">Please write a description of the item</string>
+    <string name="label_price">Price *</string>
+    <string name="hint_price">0</string>
+    <string name="unit_won">KRW</string>
+    <string name="use_now_marker">Siru available</string>
+    <string name="label_valid_period">Validity Period *</string>
+    <string name="hint_start_date">Month/Day</string>
+    <string name="separator_tilde"> ~ </string>
+    <string name="hint_end_date">Month/Day</string>
+    <string name="label_item_photo">Item Photo</string>
+    <string name="hint_upload_item_photo">Click to upload the item photo you want to register</string>
+    <string name="action_add_item">+ Add Item</string>
+</resources>
