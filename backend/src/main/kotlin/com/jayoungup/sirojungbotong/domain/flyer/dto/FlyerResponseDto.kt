@@ -10,8 +10,8 @@ data class FlyerResponseDto(
     @field:Schema(description = "전단지 ID", example = "1")
     val id: Long,
 
-    @field:Schema(description = "가게 이름", example = "김밥천국 신림점")
-    val storeName: String,
+    @field:Schema(description = "가게 ID", example = "1")
+    val storeId: Long,
 
     @field:Schema(description = "카테고리", example = "음식점")
     val category: String,
@@ -37,7 +37,7 @@ data class FlyerResponseDto(
     companion object {
         fun from(flyer: Flyer): FlyerResponseDto = FlyerResponseDto(
             flyer.id,
-            flyer.storeName,
+            flyer.store.id,
             flyer.category,
             flyer.description,
             flyer.expireAt,

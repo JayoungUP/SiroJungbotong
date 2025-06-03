@@ -1,5 +1,6 @@
 package com.jayoungup.sirojungbotong.domain.member.entity
 
+import com.jayoungup.sirojungbotong.domain.store.entity.Store
 import jakarta.persistence.*
 
 enum class Role{
@@ -33,5 +34,8 @@ class Member(
     val role: Role,
 
     @Column(name ="b_no",nullable = true)
-    val bNo : String? = null
+    val bNo : String? = null,
+
+    @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val stores: MutableList<Store> = mutableListOf()
 )

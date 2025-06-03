@@ -8,6 +8,9 @@ data class StoreResponseDto(
     @field:Schema(description = "업장 ID", example = "1")
     val id: Long,
 
+    @field:Schema(description = "사장 회원 ID", example = "2")
+    val ownerId: Long,
+
     @field:Schema(description = "업장명", example = "김밥천국 신림점")
     val name: String,
 
@@ -24,7 +27,7 @@ data class StoreResponseDto(
     val imageUrl: String?,
 
     @field:Schema(description = "사업자 등록 서류 경로", example = "backend/uploads/stores/1720038880000_bizdoc.jpg")
-    val businessDocumentUrl: String?
+    val businessDocumentUrl: String?,
 ) {
     companion object {
         fun from(store: Store): StoreResponseDto = StoreResponseDto(
@@ -34,7 +37,8 @@ data class StoreResponseDto(
             openTime = store.openTime,
             closeTime = store.closeTime,
             imageUrl = store.imageUrl,
-            businessDocumentUrl = store.businessDocumentUrl
+            businessDocumentUrl = store.businessDocumentUrl,
+            ownerId = store.owner.id
         )
     }
 }

@@ -4,6 +4,7 @@ import com.jayoungup.sirojungbotong.domain.flyer.dto.FlyerCreateRequestDto
 import com.jayoungup.sirojungbotong.domain.flyer.dto.FlyerUpdateRequestDto
 import com.jayoungup.sirojungbotong.domain.flyer.dto.FlyerResponseDto
 import com.jayoungup.sirojungbotong.domain.flyer.service.FlyerService
+import com.jayoungup.sirojungbotong.domain.member.entity.Member
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
@@ -27,6 +28,7 @@ class FlyerController(
     @Operation(summary = "전단지 등록", description = "전단지를 새로 등록합니다.")
     @PostMapping(consumes = ["multipart/form-data"])
     fun create(
+        @RequestAttribute member: Member,
         @ParameterObject
         data: FlyerCreateRequestDto,
 
@@ -55,7 +57,7 @@ class FlyerController(
         }
 
         val createdFlyer = FlyerResponseDto.from(
-            flyerService.createFlyer(data, uploadedImagePath)
+            flyerService.createFlyer(member, data, uploadedImagePath)
         )
         return ResponseEntity.ok(createdFlyer)
     }
@@ -73,21 +75,26 @@ class FlyerController(
     @Operation(summary = "전단지 텍스트 수정", description = "전단지의 텍스트 내용을 수정합니다.")
     @PutMapping("/{id}")
     fun updateText(
+        @RequestAttribute member: Member,
         @PathVariable id: Long,
         @RequestBody updated: FlyerUpdateRequestDto
     ): ResponseEntity<FlyerResponseDto> =
-        ResponseEntity.ok(FlyerResponseDto.from(flyerService.updateFlyerText(id, updated)))
+        ResponseEntity.ok(FlyerResponseDto.from(flyerService.updateFlyerText(member, id, updated)))
 
     @Operation(summary = "전단지 삭제", description = "ID로 전단지를 삭제합니다.")
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Long): ResponseEntity<Void> {
-        flyerService.deleteFlyer(id)
+    fun delete(
+        @RequestAttribute member: Member,
+        @PathVariable id: Long
+    ): ResponseEntity<Void> {
+        flyerService.deleteFlyer(member, id)
         return ResponseEntity.noContent().build()
     }
 
     @Operation(summary = "전단지 이미지 수정", description = "전단지의 이미지를 새 파일로 교체합니다.")
     @PatchMapping("/{id}/image")
     fun updateImage(
+        @RequestAttribute member: Member,
         @PathVariable id: Long,
         @RequestParam image: MultipartFile
     ): ResponseEntity<FlyerResponseDto> {
@@ -101,7 +108,7 @@ class FlyerController(
         image.transferTo(file)
 
         val updatedDto = FlyerResponseDto.from(
-            flyerService.updateFlyerImage(id, "backend/uploads/flyers/$filename")
+            flyerService.updateFlyerImage(member, id, "backend/uploads/flyers/$filename")
         )
         return ResponseEntity.ok(updatedDto)
     }

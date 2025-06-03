@@ -1,5 +1,6 @@
 package com.jayoungup.sirojungbotong.domain.store.entity
 
+import com.jayoungup.sirojungbotong.domain.flyer.entity.Flyer
 import com.jayoungup.sirojungbotong.domain.member.entity.Member
 import jakarta.persistence.*
 import java.time.LocalTime
@@ -30,5 +31,8 @@ class Store(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
-    var owner: Member
+    var owner: Member,
+
+    @OneToMany(mappedBy = "store", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val flyers: MutableList<Flyer> = mutableListOf()
 )

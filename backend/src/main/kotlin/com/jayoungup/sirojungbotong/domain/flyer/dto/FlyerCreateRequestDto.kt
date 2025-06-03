@@ -5,8 +5,8 @@ import lombok.Data
 
 @Data
 data class FlyerCreateRequestDto(
-    @field:Schema(description = "가게 이름", example = "김밥천국 신림점")
-    val storeName: String,
+    @field:Schema(description = "업장 ID", example = "1")
+    val storeId: Long,
 
     @field:Schema(description = "카테고리", example = "음식점")
     val category: String,
