@@ -8,30 +8,48 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.tukorea.sirojungbotong.databinding.FindCommonBinding
+import retrofit2.*
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 class FindActivity : AppCompatActivity() {
 
     private lateinit var binding: FindCommonBinding
+
+    // 요청/응답 데이터 클래스
+    data class FindIdRequest(val email: String)
+    data class VerifyCodeRequest(val email: String, val code: String)
+    data class VerifyCodeResponse(val loginId: String)
+
+    // Retrofit 인터페이스
+    interface ApiService {
+        @POST("/api/auth/id/find")
+        fun requestVerificationCode(@Body request: FindIdRequest): Call<Void>
+
+        @POST("/api/auth/id/verify")
+        fun verifyCode(@Body request: VerifyCodeRequest): Call<VerifyCodeResponse>
+    }
+
+    // Retrofit 객체
+    private val retrofit: ApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl("http://sirojungbotong.r-e.kr")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ApiService::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FindCommonBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // ← 뒤로가기
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
+        binding.btnBack.setOnClickListener { finish() }
 
-        // mode에 따라 초기 탭 표시
         val mode = intent.getStringExtra("mode") ?: "id"
-        if (mode == "pw") {
-            showPwForm()
-        } else {
-            showIdForm()
-        }
+        if (mode == "pw") showPwForm() else showIdForm()
 
-        // 탭 전환 이벤트
         binding.btnTabId.setOnClickListener { showIdForm() }
         binding.btnTabPw.setOnClickListener { showPwForm() }
     }
@@ -46,13 +64,10 @@ class FindActivity : AppCompatActivity() {
         val idForm = layoutInflater.inflate(R.layout.layout_find_id_form, binding.formContainer, false)
         binding.formContainer.addView(idForm)
 
-        // 이메일 및 인증 처리 로직
         val emailEdit = idForm.findViewById<EditText>(R.id.edit_email)
         val sendBtn = idForm.findViewById<TextView>(R.id.btn_send_email)
         val codeEdit = idForm.findViewById<EditText>(R.id.edit_code)
         val checkCodeBtn = idForm.findViewById<TextView>(R.id.btn_check_code)
-
-        var sentCode: String? = null
 
         sendBtn.setOnClickListener {
             val email = emailEdit.text.toString()
@@ -61,24 +76,46 @@ class FindActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // 실제 전송 로직 대신 테스트용 코드
-            sentCode = "123456"
-            Toast.makeText(this, "인증번호를 전송했습니다 (테스트 코드: $sentCode)", Toast.LENGTH_SHORT).show()
+            retrofit.requestVerificationCode(FindIdRequest(email)).enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@FindActivity, "인증번호를 이메일로 전송했습니다", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@FindActivity, "이메일 전송 실패", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(this@FindActivity, "서버 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
 
         checkCodeBtn.setOnClickListener {
+            val email = emailEdit.text.toString()
             val inputCode = codeEdit.text.toString()
-            if (inputCode == sentCode) {
-                Toast.makeText(this, "인증 완료", Toast.LENGTH_SHORT).show()
-
-                val foundId = "example_user_id" // 실제 백엔드에서 받은 사용자 ID로 대체
-                val intent = Intent(this, FoundIdActivity::class.java)
-                intent.putExtra("userId", foundId)
-                startActivity(intent)
-                finish()
-            } else {
-                Toast.makeText(this, "인증번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
+            if (email.isBlank() || inputCode.isBlank()) {
+                Toast.makeText(this, "이메일과 인증번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            retrofit.verifyCode(VerifyCodeRequest(email, inputCode)).enqueue(object : Callback<VerifyCodeResponse> {
+                override fun onResponse(call: Call<VerifyCodeResponse>, response: Response<VerifyCodeResponse>) {
+                    if (response.isSuccessful) {
+                        val userId = response.body()?.loginId ?: "알 수 없음"
+                        val intent = Intent(this@FindActivity, FoundIdActivity::class.java)
+                        intent.putExtra("userId", userId)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(this@FindActivity, "인증번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<VerifyCodeResponse>, t: Throwable) {
+                    Toast.makeText(this@FindActivity, "서버 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
     }
 
@@ -91,7 +128,5 @@ class FindActivity : AppCompatActivity() {
         binding.formContainer.removeAllViews()
         val pwForm = layoutInflater.inflate(R.layout.layout_find_pw_form, binding.formContainer, false)
         binding.formContainer.addView(pwForm)
-
-        // 비밀번호 찾기 로직도 필요시 여기에 추가 가능
     }
 }

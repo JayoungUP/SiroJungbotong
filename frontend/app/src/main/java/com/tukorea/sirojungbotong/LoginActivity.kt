@@ -8,17 +8,23 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.tukorea.sirojungbotong.databinding.LoginBinding
+import retrofit2.*
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: LoginBinding
     private var isPasswordVisible = false
 
+    // 🔸 요청 데이터 클래스
     data class LoginRequest(
         val loginId: String,
         val password: String
     )
 
+    // 🔸 응답 데이터 클래스
     data class LoginResponse(
         val nickname: String,
         val accessToken: String,
@@ -26,61 +32,30 @@ class LoginActivity : AppCompatActivity() {
         val role: String
     )
 
+    // 🔸 Retrofit 인터페이스
+    interface ApiService {
+        @POST("/api/auth/login")
+        fun login(@Body request: LoginRequest): Call<LoginResponse>
+    }
+
+    // 🔸 Retrofit 객체 생성
+    private val retrofit: ApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl("http://sirojungbotong.r-e.kr")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ApiService::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // ← 뒤로가기 버튼
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
+        // ← 뒤로가기
+        binding.btnBack.setOnClickListener { finish() }
 
-        // 카카오 로그인 버튼
-        binding.btnKakaoLogin.setOnClickListener {
-            Toast.makeText(this, "카카오 로그인 버튼 클릭.", Toast.LENGTH_SHORT).show()
-            // val intent = Intent(this, KakaoLoginActivity::class.java)
-            // startActivity(intent)
-        }
-
-        // 로그인 버튼
-        binding.btnLogin.setOnClickListener {
-            val id = binding.editId.text.toString()
-            val pw = binding.editPassword.text.toString()
-
-            // 초기화
-            binding.tvIdError.visibility = View.GONE
-            binding.tvIdLabel.setTextColor(Color.BLACK)
-            binding.tvPwLabel.setTextColor(Color.BLACK)
-            binding.editId.setBackgroundResource(R.drawable.edit_text_background)
-            (binding.editPassword.parent as View).setBackgroundResource(R.drawable.edit_text_background)
-
-            // 빈 입력 확인
-            if (id.isBlank() || pw.isBlank()) {
-                Toast.makeText(this, "아이디와 비밀번호를 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            // 로그인 실패 처리
-            if (id != "admin" || pw != "1234") {
-                binding.tvIdError.visibility = View.VISIBLE
-                binding.tvIdError.text = "아이디 또는 비밀번호가 일치하지 않습니다."
-
-                binding.tvIdLabel.setTextColor(Color.RED)
-                binding.tvPwLabel.setTextColor(Color.RED)
-
-                binding.editId.setBackgroundResource(R.drawable.edit_text_background_error)
-                (binding.editPassword.parent as View).setBackgroundResource(R.drawable.edit_text_background_error)
-
-                return@setOnClickListener
-            }
-
-            // 로그인 성공
-            Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, MainActivity::class.java))
-        }
-
-        // 비밀번호 보기/숨기기 토글
+        // 비밀번호 보기 토글
         binding.btnTogglePw.setOnClickListener {
             isPasswordVisible = !isPasswordVisible
             if (isPasswordVisible) {
@@ -104,6 +79,53 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, FindActivity::class.java)
             intent.putExtra("mode", "pw")
             startActivity(intent)
+        }
+
+        // 🔸 로그인 버튼
+        binding.btnLogin.setOnClickListener {
+            val id = binding.editId.text.toString()
+            val pw = binding.editPassword.text.toString()
+
+            // 초기화
+            binding.tvIdError.visibility = View.GONE
+            binding.tvIdLabel.setTextColor(Color.BLACK)
+            binding.tvPwLabel.setTextColor(Color.BLACK)
+            binding.editId.setBackgroundResource(R.drawable.edit_text_background)
+            (binding.editPassword.parent as View).setBackgroundResource(R.drawable.edit_text_background)
+
+            if (id.isBlank() || pw.isBlank()) {
+                Toast.makeText(this, "아이디와 비밀번호를 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val loginRequest = LoginRequest(id, pw)
+
+            retrofit.login(loginRequest).enqueue(object : Callback<LoginResponse> {
+                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                    if (response.isSuccessful) {
+                        val result = response.body()
+                        Toast.makeText(this@LoginActivity, "${result?.nickname}님 환영합니다!", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finish()
+                    } else {
+                        binding.tvIdError.visibility = View.VISIBLE
+                        binding.tvIdError.text = "아이디 또는 비밀번호가 일치하지 않습니다."
+                        binding.tvIdLabel.setTextColor(Color.RED)
+                        binding.tvPwLabel.setTextColor(Color.RED)
+                        binding.editId.setBackgroundResource(R.drawable.edit_text_background_error)
+                        (binding.editPassword.parent as View).setBackgroundResource(R.drawable.edit_text_background_error)
+                    }
+                }
+
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    Toast.makeText(this@LoginActivity, "서버 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+        // 카카오 로그인 (미구현 상태 유지)
+        binding.btnKakaoLogin.setOnClickListener {
+            Toast.makeText(this, "카카오 로그인 버튼 클릭.", Toast.LENGTH_SHORT).show()
         }
     }
 }
