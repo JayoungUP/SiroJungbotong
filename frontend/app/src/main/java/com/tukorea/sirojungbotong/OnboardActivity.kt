@@ -25,21 +25,21 @@ class OnboardActivity : AppCompatActivity(){
             }
         }
         bind.Upload.setOnClickListener {
-            try{
-                val intent=Intent(this,SignupKakaoActivity::class.java)
+            try {
+                val intent = Intent(this, SignupKakaoActivity::class.java)
                 startActivity(intent)
-            }
-            catch(e:Exception){
+            } catch (e: Exception) {
                 Toast.makeText(this, "SignupKakaoActivity를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
-            bind.OnboardLogin.setOnClickListener {
-                // 예시: LoginActivity 로 이동
-                try {
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                } catch (e: Exception) {
-                    Toast.makeText(this, "LoginActivity를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
-                }
+        }
+        bind.OnboardLogin.setOnClickListener {
+            // 예시: LoginActivity 로 이동
+            try {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(this, "LoginActivity를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
 
 
@@ -49,4 +49,4 @@ class OnboardActivity : AppCompatActivity(){
             insets
         }
     }
-}}
+}
