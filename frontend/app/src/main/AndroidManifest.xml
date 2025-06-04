@@ -52,6 +52,11 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize"/>
 
+        <!-- FindActivity -->
+        <activity
+            android:name=".FindActivity"
+            android:exported="true"/>
+
         <!-- 필요하다면 다른 Activity를 계속 추가 -->
 
     </application>

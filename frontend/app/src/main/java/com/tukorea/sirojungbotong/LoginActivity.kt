@@ -94,16 +94,16 @@ class LoginActivity : AppCompatActivity() {
 
         // 아이디 찾기
         binding.tvFindId.setOnClickListener {
-            Toast.makeText(this, "아이디 찾기 버튼 클릭", Toast.LENGTH_SHORT).show()
-            // val intent = Intent(this, FindIdActivity::class.java)
-            // startActivity(intent)
+            val intent = Intent(this, FindActivity::class.java)
+            intent.putExtra("mode", "id")
+            startActivity(intent)
         }
 
         // 비밀번호 찾기
         binding.tvFindPw.setOnClickListener {
-            Toast.makeText(this, "비밀번호를 찾기 버튼 클릭", Toast.LENGTH_SHORT).show()
-            // val intent = Intent(this, FindPasswordActivity::class.java)
-            // startActivity(intent)
+            val intent = Intent(this, FindActivity::class.java)
+            intent.putExtra("mode", "pw")
+            startActivity(intent)
         }
     }
 }
