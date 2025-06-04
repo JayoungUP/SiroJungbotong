@@ -65,6 +65,16 @@
             android:name=".FoundIdActivity"
             android:exported="true"/>
 
+        <!-- ResetPwActivity -->
+        <activity
+            android:name=".ResetPwActivity"
+            android:exported="true"/>
+
+        <!-- ResetPwEndActivity -->
+        <activity
+            android:name=".ResetPwEndActivity"
+            android:exported="true"/>
+
         <!-- 필요하다면 다른 Activity를 계속 추가 -->
 
     </application>

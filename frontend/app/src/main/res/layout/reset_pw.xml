@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:padding="24dp">
+
+    <!-- 로그인 제목 -->
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="비밀번호 재설정"
+        android:textSize="28sp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:fontFamily="@font/helvetica_bold" />
+
+
+    <!-- 아이디 입력 -->
+    <TextView
+        android:id="@+id/tv_id_label"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="새 비밀번호"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:fontFamily="@font/helvetica_bold" />
+
+    <EditText
+        android:id="@+id/etNewPassword"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="새로 설정할 비밀번호를 입력해주세요"
+        android:background="@drawable/edit_text_background"
+        android:textSize="13sp"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textColorHint="#CCCCCC"
+        android:inputType="textVisiblePassword"
+        android:fontFamily="@font/helvetica_bold"
+        android:theme="@style/NoUnderlineEditText" />
+
+
+    <!-- 비밀번호 입력 -->
+    <TextView
+        android:id="@+id/tv_pw_label"
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="새 비밀번호 확인"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:fontFamily="@font/helvetica_bold" />
+
+    <EditText
+        android:id="@+id/etConfirmPassword"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="새로 설정할 비밀번호를 다시 입력해주세요"
+        android:background="@drawable/edit_text_background"
+        android:textSize="13sp"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textColorHint="#CCCCCC"
+        android:inputType="textVisiblePassword"
+        android:fontFamily="@font/helvetica_bold"
+        android:theme="@style/NoUnderlineEditText" />
+
+    <!-- 공간 확보 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- 버튼 -->
+    <ImageButton
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:contentDescription="비밀번호 재설정 하기"
+        android:scaleType="fitCenter"
+        android:src="@drawable/btn_save" />
+
+</LinearLayout>

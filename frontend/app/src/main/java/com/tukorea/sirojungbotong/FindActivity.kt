@@ -128,5 +128,14 @@ class FindActivity : AppCompatActivity() {
         binding.formContainer.removeAllViews()
         val pwForm = layoutInflater.inflate(R.layout.layout_find_pw_form, binding.formContainer, false)
         binding.formContainer.addView(pwForm)
+
+        // 테스트용: 인증번호 확인 버튼 클릭 시 ResetPwActivity로 이동
+        val checkCodeBtn = pwForm.findViewById<TextView>(R.id.btn_check_code)
+        checkCodeBtn.setOnClickListener {
+            // TODO: 실제 인증 절차 성공 시 실행되도록 교체할 수 있음
+            val intent = Intent(this, ResetPwActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }
