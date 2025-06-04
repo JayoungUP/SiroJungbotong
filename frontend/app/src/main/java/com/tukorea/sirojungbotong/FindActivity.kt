@@ -21,6 +21,8 @@ class FindActivity : AppCompatActivity() {
     data class FindIdRequest(val email: String)
     data class VerifyCodeRequest(val email: String, val code: String)
     data class VerifyCodeResponse(val loginId: String)
+    data class ResetPwEmailRequest(val email: String)
+    data class VerifyResetPwRequest(val email: String, val code: String)
 
     // Retrofit 인터페이스
     interface ApiService {
@@ -29,6 +31,12 @@ class FindActivity : AppCompatActivity() {
 
         @POST("/api/auth/id/verify")
         fun verifyCode(@Body request: VerifyCodeRequest): Call<VerifyCodeResponse>
+
+        @POST("/api/auth/password/findByEmail")
+        fun sendResetCode(@Body request: ResetPwEmailRequest): Call<Void>
+
+        @POST("/api/auth/password/verify")
+        fun verifyResetCode(@Body request: VerifyResetPwRequest): Call<Void>
     }
 
     // Retrofit 객체
@@ -129,13 +137,60 @@ class FindActivity : AppCompatActivity() {
         val pwForm = layoutInflater.inflate(R.layout.layout_find_pw_form, binding.formContainer, false)
         binding.formContainer.addView(pwForm)
 
-        // 테스트용: 인증번호 확인 버튼 클릭 시 ResetPwActivity로 이동
+        val emailEdit = pwForm.findViewById<EditText>(R.id.edit_email)
+        val codeEdit = pwForm.findViewById<EditText>(R.id.edit_code)
+        val sendBtn = pwForm.findViewById<TextView>(R.id.btn_send_email)
         val checkCodeBtn = pwForm.findViewById<TextView>(R.id.btn_check_code)
+
+        // 1. 이메일로 인증코드 요청
+        sendBtn.setOnClickListener {
+            val email = emailEdit.text.toString()
+            if (email.isBlank()) {
+                Toast.makeText(this, "이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            retrofit.sendResetCode(ResetPwEmailRequest(email)).enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@FindActivity, "인증번호 전송 완료", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@FindActivity, "등록되지 않은 이메일이거나 오류입니다", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(this@FindActivity, "서버 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+        // 2. 인증번호 확인
         checkCodeBtn.setOnClickListener {
-            // TODO: 실제 인증 절차 성공 시 실행되도록 교체할 수 있음
-            val intent = Intent(this, ResetPwActivity::class.java)
-            startActivity(intent)
-            finish()
+            val email = emailEdit.text.toString()
+            val code = codeEdit.text.toString()
+
+            if (email.isBlank() || code.isBlank()) {
+                Toast.makeText(this, "이메일과 인증번호를 모두 입력해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            retrofit.verifyResetCode(VerifyResetPwRequest(email, code)).enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        val intent = Intent(this@FindActivity, ResetPwActivity::class.java)
+                        intent.putExtra("email", email)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(this@FindActivity, "인증번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(this@FindActivity, "서버 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
     }
 }
