@@ -5,6 +5,7 @@ import com.jayoungup.sirojungbotong.domain.flyer.dto.FlyerUpdateRequestDto
 import com.jayoungup.sirojungbotong.domain.flyer.entity.Flyer
 import com.jayoungup.sirojungbotong.domain.flyer.exception.FlyerNotFoundException
 import com.jayoungup.sirojungbotong.domain.flyer.exception.NoFlyerPermissionException
+import com.jayoungup.sirojungbotong.domain.flyer.mapper.FlyerMapper
 import com.jayoungup.sirojungbotong.domain.flyer.repository.FlyerRepository
 import com.jayoungup.sirojungbotong.domain.store.exception.StoreNotFoundException
 import com.jayoungup.sirojungbotong.domain.store.repository.StoreRepository
@@ -26,30 +27,20 @@ class FlyerService(
 
         if (store.owner.id != member.id) throw NoFlyerPermissionException()
 
-        val flyer = Flyer(
-            store = store,
-            category = dto.category,
-            description = dto.description,
-            expireAt = LocalDateTime.parse(dto.expireAt),
-            usesSiro = dto.usesSiro,
-            imageUrl = imageUrl
-        )
+        val flyer = FlyerMapper.toEntity(dto, imageUrl, store)
         return flyerRepository.save(flyer)
     }
 
     @Transactional(readOnly = true)
     fun getFlyer(id: Long): Flyer =
-        flyerRepository.findById(id).orElseThrow {
-            FlyerNotFoundException(id)
-        }
+        flyerRepository.findById(id).orElseThrow { FlyerNotFoundException(id) }
 
     @Transactional(readOnly = true)
     fun getAllFlyers(): List<Flyer> = flyerRepository.findAll()
 
     fun updateFlyerText(member: Member, id: Long, dto: FlyerUpdateRequestDto): Flyer {
-        val flyer = flyerRepository.findById(id).orElseThrow {
-            FlyerNotFoundException(id)
-        }
+        val flyer = flyerRepository.findById(id).orElseThrow { FlyerNotFoundException(id) }
+
         if (flyer.store.owner.id != member.id) throw NoFlyerPermissionException()
 
         flyer.category = dto.category
@@ -62,9 +53,8 @@ class FlyerService(
     }
 
     fun updateFlyerImage(member: Member, id: Long, imageUrl: String): Flyer {
-        val flyer = flyerRepository.findById(id).orElseThrow {
-            FlyerNotFoundException(id)
-        }
+        val flyer = flyerRepository.findById(id).orElseThrow { FlyerNotFoundException(id) }
+
         if (flyer.store.owner.id != member.id) throw NoFlyerPermissionException()
 
         flyer.imageUrl = imageUrl
@@ -74,10 +64,10 @@ class FlyerService(
     }
 
     fun deleteFlyer(member: Member, id: Long) {
-        val flyer = flyerRepository.findById(id).orElseThrow {
-            FlyerNotFoundException(id)
-        }
+        val flyer = flyerRepository.findById(id).orElseThrow { FlyerNotFoundException(id) }
+
         if (flyer.store.owner.id != member.id) throw NoFlyerPermissionException()
-        flyerRepository.deleteById(id)
+
+        flyerRepository.delete(flyer)
     }
 }

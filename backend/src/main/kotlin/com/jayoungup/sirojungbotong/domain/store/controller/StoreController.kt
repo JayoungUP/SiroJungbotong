@@ -23,16 +23,16 @@ class StoreController(
         @ModelAttribute dto: StoreCreateRequestDto,
         @RequestPart(required = false) image: MultipartFile?,
         @RequestPart(required = false) businessDocument: MultipartFile?
-    ): ResponseEntity<StoreResponseDto> {
+    ): ResponseEntity<StoreDetailResponseDto> {
         return ResponseEntity.ok(storeService.createStore(member, dto, image, businessDocument))
     }
 
     @GetMapping("/{id}")
-    fun getOne(@PathVariable id: Long): ResponseEntity<StoreResponseDto> =
+    fun getOne(@PathVariable id: Long): ResponseEntity<StoreDetailResponseDto> =
         ResponseEntity.ok(storeService.getStore(id))
 
     @GetMapping
-    fun getAll(): ResponseEntity<List<StoreResponseDto>> =
+    fun getAll(): ResponseEntity<List<StoreSimpleResponseDto>> =
         ResponseEntity.ok(storeService.getAllStores())
 
     @PutMapping("/{id}", consumes = ["multipart/form-data"])
@@ -43,7 +43,7 @@ class StoreController(
         @ModelAttribute dto: StoreUpdateRequestDto,
         @RequestPart(required = false) image: MultipartFile?,
         @RequestPart(required = false) businessDocument: MultipartFile?
-    ): ResponseEntity<StoreResponseDto> =
+    ): ResponseEntity<StoreDetailResponseDto> =
         ResponseEntity.ok(storeService.updateStore(member, id, dto, image, businessDocument))
 
     @DeleteMapping("/{id}")

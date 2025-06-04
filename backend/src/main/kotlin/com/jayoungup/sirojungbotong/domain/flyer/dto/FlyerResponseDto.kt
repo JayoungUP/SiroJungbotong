@@ -1,6 +1,5 @@
 package com.jayoungup.sirojungbotong.domain.flyer.dto
 
-import com.jayoungup.sirojungbotong.domain.flyer.entity.Flyer
 import io.swagger.v3.oas.annotations.media.Schema
 import lombok.Data
 import java.time.LocalDateTime
@@ -33,18 +32,4 @@ data class FlyerResponseDto(
 
     @Schema(description = "전단지 최종 수정 시각", example = "2025-06-02T10:20:00")
     val updatedAt: LocalDateTime
-) {
-    companion object {
-        fun from(flyer: Flyer): FlyerResponseDto = FlyerResponseDto(
-            flyer.id,
-            flyer.store.id,
-            flyer.category,
-            flyer.description,
-            flyer.expireAt,
-            flyer.usesSiro,
-            flyer.imageUrl,
-            flyer.createdAt,
-            flyer.updatedAt
-        )
-    }
-}
+)

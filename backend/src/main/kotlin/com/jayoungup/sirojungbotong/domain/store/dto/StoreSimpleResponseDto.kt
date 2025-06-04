@@ -1,10 +1,9 @@
 package com.jayoungup.sirojungbotong.domain.store.dto
 
-import com.jayoungup.sirojungbotong.domain.store.entity.Store
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalTime
 
-data class StoreResponseDto(
+data class StoreSimpleResponseDto(
     @field:Schema(description = "업장 ID", example = "1")
     val id: Long,
 
@@ -27,18 +26,5 @@ data class StoreResponseDto(
     val imageUrl: String?,
 
     @field:Schema(description = "사업자 등록 서류 경로", example = "backend/uploads/stores/1720038880000_bizdoc.jpg")
-    val businessDocumentUrl: String?,
-) {
-    companion object {
-        fun from(store: Store): StoreResponseDto = StoreResponseDto(
-            id = store.id,
-            name = store.name,
-            address = store.address,
-            openTime = store.openTime,
-            closeTime = store.closeTime,
-            imageUrl = store.imageUrl,
-            businessDocumentUrl = store.businessDocumentUrl,
-            ownerId = store.owner.id
-        )
-    }
-}
+    val businessDocumentUrl: String?
+)

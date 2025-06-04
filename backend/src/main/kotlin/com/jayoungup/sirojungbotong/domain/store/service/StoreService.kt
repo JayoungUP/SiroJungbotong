@@ -2,9 +2,9 @@ package com.jayoungup.sirojungbotong.domain.store.service
 
 import com.jayoungup.sirojungbotong.domain.member.entity.Member
 import com.jayoungup.sirojungbotong.domain.store.dto.*
-import com.jayoungup.sirojungbotong.domain.store.entity.Store
 import com.jayoungup.sirojungbotong.domain.store.exception.NoStorePermissionException
 import com.jayoungup.sirojungbotong.domain.store.exception.StoreNotFoundException
+import com.jayoungup.sirojungbotong.domain.store.mapper.StoreMapper
 import com.jayoungup.sirojungbotong.domain.store.repository.StoreRepository
 import com.jayoungup.sirojungbotong.global.config.app.AppProperties
 import org.springframework.stereotype.Service
@@ -19,23 +19,15 @@ class StoreService(
     private val appProperties: AppProperties
 ) {
 
-    fun createStore(owner: Member, dto: StoreCreateRequestDto, image: MultipartFile?, businessDocument: MultipartFile?): StoreResponseDto {
+    fun createStore(owner: Member, dto: StoreCreateRequestDto, image: MultipartFile?, businessDocument: MultipartFile?): StoreDetailResponseDto {
         val imagePath = image?.let { saveFile(it, appProperties.uploadPath.store) }
         val docPath = businessDocument?.let { saveFile(it, appProperties.uploadPath.store) }
 
-        val store = Store(
-            name = dto.name,
-            address = dto.address,
-            openTime = dto.openTime,
-            closeTime = dto.closeTime,
-            imageUrl = imagePath,
-            businessDocumentUrl = docPath,
-            owner = owner
-        )
-        return StoreResponseDto.from(storeRepository.save(store))
+        val store = StoreMapper.toEntity(dto, imagePath, docPath, owner)
+        return StoreMapper.toDetailDto(storeRepository.save(store))
     }
 
-    fun updateStore(owner: Member, id: Long, dto: StoreUpdateRequestDto, image: MultipartFile?, businessDocument: MultipartFile?): StoreResponseDto {
+    fun updateStore(owner: Member, id: Long, dto: StoreUpdateRequestDto, image: MultipartFile?, businessDocument: MultipartFile?): StoreDetailResponseDto {
         val store = storeRepository.findById(id).orElseThrow { StoreNotFoundException() }
 
         if (store.owner.id != owner.id) throw NoStorePermissionException()
@@ -47,16 +39,18 @@ class StoreService(
         image?.let { store.imageUrl = saveFile(it, appProperties.uploadPath.store) }
         businessDocument?.let { store.businessDocumentUrl = saveFile(it, appProperties.uploadPath.store) }
 
-        return StoreResponseDto.from(storeRepository.save(store))
+        return StoreMapper.toDetailDto(storeRepository.save(store))
     }
 
     @Transactional(readOnly = true)
-    fun getStore(id: Long): StoreResponseDto =
-        StoreResponseDto.from(storeRepository.findById(id).orElseThrow { StoreNotFoundException() })
+    fun getStore(id: Long): StoreDetailResponseDto {
+        val store = storeRepository.findById(id).orElseThrow { StoreNotFoundException() }
+        return StoreMapper.toDetailDto(store)
+    }
 
     @Transactional(readOnly = true)
-    fun getAllStores(): List<StoreResponseDto> =
-        storeRepository.findAll().map { StoreResponseDto.from(it) }
+    fun getAllStores(): List<StoreSimpleResponseDto> =
+        storeRepository.findAll().map { StoreMapper.toSimpleDto(it) }
 
     fun deleteStore(owner: Member, id: Long) {
         val store = storeRepository.findById(id).orElseThrow { StoreNotFoundException() }
@@ -65,7 +59,6 @@ class StoreService(
     }
 
     private fun saveFile(file: MultipartFile, basePath: String): String {
-
         val absoluteBasePath = File(System.getProperty("user.dir"), basePath)
         if (!absoluteBasePath.exists()) absoluteBasePath.mkdirs()
 
