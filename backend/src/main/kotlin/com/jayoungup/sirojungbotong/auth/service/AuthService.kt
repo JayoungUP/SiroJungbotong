@@ -5,10 +5,12 @@ import com.jayoungup.sirojungbotong.member.dto.request.LoginRequest
 import com.jayoungup.sirojungbotong.member.dto.response.LoginResponse
 import com.jayoungup.sirojungbotong.member.entity.Member
 import com.jayoungup.sirojungbotong.member.mapper.MemberMapper
-import com.jayoungup.sirojungbotong.auth.dto.ResetPasswordRequest
+import com.jayoungup.sirojungbotong.auth.dto.FindIdRequest
+import com.jayoungup.sirojungbotong.auth.dto.FindIdResponse
+import com.jayoungup.sirojungbotong.auth.dto.ResetPasswordRequestByEmail
 import com.jayoungup.sirojungbotong.auth.dto.ResetPasswordConfirmRequest
-import com.jayoungup.sirojungbotong.auth.dto.FindPasswordRequest
-import com.jayoungup.sirojungbotong.auth.dto.PasswordVerifyRequest
+import com.jayoungup.sirojungbotong.auth.dto.ResetPasswordRequestById
+import com.jayoungup.sirojungbotong.auth.dto.VerifyRequest
 import com.jayoungup.sirojungbotong.member.repository.EmailUserRepository
 import com.jayoungup.sirojungbotong.member.repository.KakaoUserRepository
 import com.jayoungup.sirojungbotong.member.repository.EmailOwnerRepository
@@ -16,8 +18,6 @@ import com.jayoungup.sirojungbotong.member.repository.KakaoOwnerRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
-
 
 @Service
 @Transactional(readOnly = true)
@@ -33,6 +33,10 @@ class AuthService(
     private val kakaoService: KakaoService,
     private val memberMapper: MemberMapper
 ) {
+    fun isValidPassword(password: String): Boolean {
+        val regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d!@#\$%^&*()_+=-]{8,}$".toRegex()
+        return regex.matches(password)
+    }
 
     @Transactional
     fun login(request: LoginRequest): LoginResponse {
@@ -95,22 +99,8 @@ class AuthService(
         return memberMapper.toLoginResponse(member, newAccessToken, newRefreshToken)
     }
 
-    @Transactional
-    fun sendPasswordResetEmail(email: String) {
-        val member = emailUserRepository.findByEmail(email)
-            ?: throw IllegalArgumentException("존재하지 않는 이메일입니다.")
-
-        val resetToken = UUID.randomUUID().toString()
-
-        tokenService.savePasswordResetToken(email, resetToken)
-
-        emailService.sendVerificationEmail(email, resetToken)
-    }
-
-
     private val verifiedEmails = mutableSetOf<String>()
     private val verificationCodes = mutableMapOf<String, String>()
-
 
     fun generateVerificationCode(): String {
         return (100000..999999).random().toString()
@@ -118,18 +108,37 @@ class AuthService(
 
     // 인증번호 이메일 발송
     @Transactional
-    fun sendVerificationCode(request: ResetPasswordRequest) {
+    fun sendVerificationCode(request: ResetPasswordRequestByEmail) {
         val emailUser = emailUserRepository.findByEmail(request.email)
-            ?: throw IllegalArgumentException("등록되지 않은 이메일입니다.")
+        val emailOwner = emailOwnerRepository.findByEmail(request.email)
+
+        val email = when {
+            emailUser != null -> emailUser.email
+            emailOwner != null -> emailOwner.email
+            else -> throw IllegalArgumentException("등록되지 않은 이메일입니다.")
+        }
 
         val code = generateVerificationCode()
-        verificationCodes[emailUser.email] = code
+        verificationCodes[email] = code
 
-        emailService.sendVerificationEmail(emailUser.email, code)
+        emailService.sendVerificationEmail(email, code)
+    }
+    @Transactional
+    fun sendVerificationCode(request: ResetPasswordRequestById) {
+        val emailUser = emailUserRepository.findByLoginId(request.loginId)
+        val emailOwner = emailOwnerRepository.findByLoginId(request.loginId)
+
+        val email = when {
+            emailUser != null -> emailUser.email
+            emailOwner != null -> emailOwner.email
+            else -> throw IllegalArgumentException("등록되지 않은 아이디입니다.")
+        }
+
+        sendVerificationCode(ResetPasswordRequestByEmail(email))
     }
 
     // 인증번호 검증
-    fun verifyCode(request: PasswordVerifyRequest) {
+    fun verifyCode(request: VerifyRequest) {
         val savedCode = verificationCodes[request.email]
             ?: throw IllegalArgumentException("인증번호가 존재하지 않습니다.")
 
@@ -137,28 +146,70 @@ class AuthService(
             throw IllegalArgumentException("인증번호가 일치하지 않습니다.")
         }
 
-        // 인증 성공 시, 인증 상태 저장 (간단히 인증된 이메일 목록 저장)
         verifiedEmails.add(request.email)
-
-        // 인증번호 사용 후 삭제 (원칙)
         verificationCodes.remove(request.email)
     }
 
-    // 비밀번호 재설정
     @Transactional
     fun resetPassword(request: ResetPasswordConfirmRequest) {
         if (!verifiedEmails.contains(request.email)) {
             throw IllegalArgumentException("이메일 인증이 필요합니다.")
         }
+        if (!isValidPassword(request.newPassword)) {
+            throw IllegalArgumentException("비밀번호는 8자 이상, 영문자와 숫자, 특수문자를 포함해야 합니다.")
+        }
 
         val emailUser = emailUserRepository.findByEmail(request.email)
-            ?: throw IllegalArgumentException("등록되지 않은 이메일입니다.")
+        if (emailUser != null) {
+            emailUser.password = passwordEncoder.encode(request.newPassword)
+            verifiedEmails.remove(request.email)
+            return
+        }
 
-        emailUser.password = passwordEncoder.encode(request.newPassword)
-        verifiedEmails.remove(request.email)
+        val emailOwner = emailOwnerRepository.findByEmail(request.email)
+        if (emailOwner != null) {
+            emailOwner.password = passwordEncoder.encode(request.newPassword)
+            verifiedEmails.remove(request.email)
+            return
+        }
+
+        throw IllegalArgumentException("등록되지 않은 이메일입니다.")
+    }
+    @Transactional
+    fun sendVerificationCodeForIdFind(request: FindIdRequest) {
+        val emailUser = emailUserRepository.findByEmail(request.email)
+        val emailOwner = emailOwnerRepository.findByEmail(request.email)
+
+        val email = when {
+            emailUser != null -> emailUser.email
+            emailOwner != null -> emailOwner.email
+            else -> throw IllegalArgumentException("등록되지 않은 이메일입니다.")
+        }
+
+        val code = generateVerificationCode()
+        verificationCodes[email] = code
+
+        emailService.sendVerificationEmail(email, code)
     }
 
+    fun verifyCodeForIdFind(request: VerifyRequest): String {
+        val savedCode = verificationCodes[request.email]
+            ?: throw IllegalArgumentException("인증번호가 존재하지 않습니다.")
 
+        if (savedCode != request.code) {
+            throw IllegalArgumentException("인증번호가 일치하지 않습니다.")
+        }
+
+        verificationCodes.remove(request.email)
+
+        val emailUser = emailUserRepository.findByEmail(request.email)
+        if (emailUser != null) return emailUser.loginId
+
+        val emailOwner = emailOwnerRepository.findByEmail(request.email)
+        if (emailOwner != null) return emailOwner.loginId
+
+        throw IllegalArgumentException("등록되지 않은 이메일입니다.")
+    }
 
     fun findMemberById(memberId: Long): Member {
         emailUserRepository.findById(memberId).orElse(null)?.let { return it }
@@ -168,5 +219,4 @@ class AuthService(
 
         throw IllegalArgumentException("존재하지 않는 사용자입니다.")
     }
-
 }
