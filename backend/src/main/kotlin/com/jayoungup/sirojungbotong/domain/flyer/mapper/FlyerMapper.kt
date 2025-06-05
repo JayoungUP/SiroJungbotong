@@ -29,6 +29,7 @@ object FlyerMapper {
         usesSiro = flyer.usesSiro,
         imageUrl = flyer.imageUrl,
         createdAt = flyer.createdAt,
-        updatedAt = flyer.updatedAt
+        updatedAt = flyer.updatedAt,
+        items = flyer.items.map { ItemMapper.toDto(it) }
     )
 }

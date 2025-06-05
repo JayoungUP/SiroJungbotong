@@ -34,5 +34,8 @@ class Flyer(
     val createdAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(nullable = false)
-    var updatedAt: LocalDateTime = LocalDateTime.now()
+    var updatedAt: LocalDateTime = LocalDateTime.now(),
+
+    @OneToMany(mappedBy = "flyer", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val items: MutableList<Item> = mutableListOf()
 )

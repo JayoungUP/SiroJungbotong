@@ -6,19 +6,23 @@ import com.jayoungup.sirojungbotong.domain.flyer.entity.Flyer
 import com.jayoungup.sirojungbotong.domain.flyer.exception.FlyerNotFoundException
 import com.jayoungup.sirojungbotong.domain.flyer.exception.NoFlyerPermissionException
 import com.jayoungup.sirojungbotong.domain.flyer.mapper.FlyerMapper
+import com.jayoungup.sirojungbotong.domain.flyer.mapper.ItemMapper
 import com.jayoungup.sirojungbotong.domain.flyer.repository.FlyerRepository
+import com.jayoungup.sirojungbotong.domain.flyer.repository.ItemRepository
 import com.jayoungup.sirojungbotong.domain.store.exception.StoreNotFoundException
 import com.jayoungup.sirojungbotong.domain.store.repository.StoreRepository
 import com.jayoungup.sirojungbotong.domain.member.entity.Member
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
+import java.io.File
 import java.time.LocalDateTime
 
 @Service
 @Transactional
 class FlyerService(
     private val flyerRepository: FlyerRepository,
-    private val storeRepository: StoreRepository
+    private val storeRepository: StoreRepository,
 ) {
 
     fun createFlyer(member: Member, dto: FlyerCreateRequestDto, imageUrl: String?): Flyer {
@@ -36,7 +40,8 @@ class FlyerService(
         flyerRepository.findById(id).orElseThrow { FlyerNotFoundException(id) }
 
     @Transactional(readOnly = true)
-    fun getAllFlyers(): List<Flyer> = flyerRepository.findAll()
+    fun getAllFlyers(): List<Flyer> =
+        flyerRepository.findAll()
 
     fun updateFlyerText(member: Member, id: Long, dto: FlyerUpdateRequestDto): Flyer {
         val flyer = flyerRepository.findById(id).orElseThrow { FlyerNotFoundException(id) }

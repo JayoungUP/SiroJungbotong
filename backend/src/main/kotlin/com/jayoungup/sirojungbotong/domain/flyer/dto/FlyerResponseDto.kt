@@ -21,15 +21,18 @@ data class FlyerResponseDto(
     @field:Schema(description = "전단지 만료일", example = "2025-06-30T23:59:59")
     val expireAt: LocalDateTime,
 
-    @Schema(description = "시로 이용 여부", example = "true")
+    @field:Schema(description = "시로 이용 여부", example = "true")
     val usesSiro: Boolean,
 
-    @Schema(description = "이미지 파일 경로 또는 URL", example = "backend/uploads/flyers/20250602_101530_image.png")
+    @field:Schema(description = "이미지 파일 경로 또는 URL", example = "backend/uploads/flyers/20250602_101530_image.png")
     val imageUrl: String?,
 
-    @Schema(description = "전단지 생성 시각", example = "2025-06-02T10:15:30")
+    @field:Schema(description = "전단지 생성 시각", example = "2025-06-02T10:15:30")
     val createdAt: LocalDateTime,
 
-    @Schema(description = "전단지 최종 수정 시각", example = "2025-06-02T10:20:00")
-    val updatedAt: LocalDateTime
+    @field:Schema(description = "전단지 최종 수정 시각", example = "2025-06-02T10:20:00")
+    val updatedAt: LocalDateTime,
+
+    @field:Schema(description = "전단지에 포함된 품목 리스트")
+    val items: List<ItemResponseDto> = emptyList()
 )
