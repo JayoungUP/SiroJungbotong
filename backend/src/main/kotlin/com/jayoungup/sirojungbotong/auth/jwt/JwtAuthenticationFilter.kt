@@ -24,7 +24,8 @@ class JwtAuthenticationFilter(
         val requestURI = request.requestURI
 
         // 화이트리스트 경로: JWT 검사 건너뛰기
-        if (requestURI.startsWith("/api/auth/password/find") ||
+        if (requestURI.startsWith("/api/auth/password/findById") ||
+            requestURI.startsWith("/api/auth/password/findByEmail") ||
             requestURI.startsWith("/api/auth/password/reset") ||
             requestURI.startsWith("/api/auth/login") ||
             requestURI.startsWith("/api/auth/login/kakao") ||
