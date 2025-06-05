@@ -1,9 +1,12 @@
 package com.jayoungup.sirojungbotong.auth.controller
 
 
-import com.jayoungup.sirojungbotong.auth.dto.PasswordVerifyRequest
+import com.jayoungup.sirojungbotong.auth.dto.FindIdRequest
+import com.jayoungup.sirojungbotong.auth.dto.FindIdResponse
+import com.jayoungup.sirojungbotong.auth.dto.VerifyRequest
 import com.jayoungup.sirojungbotong.auth.dto.ResetPasswordConfirmRequest
-import com.jayoungup.sirojungbotong.auth.dto.ResetPasswordRequest
+import com.jayoungup.sirojungbotong.auth.dto.ResetPasswordRequestByEmail
+import com.jayoungup.sirojungbotong.auth.dto.ResetPasswordRequestById
 import com.jayoungup.sirojungbotong.auth.service.AuthService
 import com.jayoungup.sirojungbotong.member.dto.request.LoginRequest
 import com.jayoungup.sirojungbotong.member.dto.response.LoginResponse
@@ -49,14 +52,19 @@ class AuthController(
         )
         return ResponseEntity.ok(response)
     }
-    @PostMapping("/password/find")
-    fun sendVerificationCode(@RequestBody request: ResetPasswordRequest): ResponseEntity<Void> {
+    @PostMapping("/password/findByEmail")
+    fun sendVerificationCode(@RequestBody request: ResetPasswordRequestByEmail): ResponseEntity<Void> {
+        authService.sendVerificationCode(request)
+        return ResponseEntity.ok().build()
+    }
+    @PostMapping("/password/findById")
+    fun sendVerificationCodeById(@RequestBody request: ResetPasswordRequestById): ResponseEntity<Void> {
         authService.sendVerificationCode(request)
         return ResponseEntity.ok().build()
     }
 
     @PostMapping("/password/verify")
-    fun verifyCode(@RequestBody request: PasswordVerifyRequest): ResponseEntity<Void> {
+    fun verifyCode(@RequestBody request: VerifyRequest): ResponseEntity<Void> {
         authService.verifyCode(request)
         return ResponseEntity.ok().build()
     }
@@ -66,5 +74,18 @@ class AuthController(
         authService.resetPassword(request)
         return ResponseEntity.ok().build()
     }
+    @PostMapping("/id/find")
+    fun sendVerificationCodeForIdFind(@RequestBody request: FindIdRequest): ResponseEntity<Void> {
+        authService.sendVerificationCodeForIdFind(request)
+        return ResponseEntity.ok().build()
+    }
+
+    @PostMapping("/id/verify")
+    fun verifyCodeForIdFind(@RequestBody request: VerifyRequest): ResponseEntity<FindIdResponse> {
+        val response = authService.verifyCodeForIdFind(request)
+        return ResponseEntity.ok(FindIdResponse(loginId = response))
+    }
+
+
 
 }
