@@ -21,6 +21,9 @@ open class Member(
     @Column(nullable = false)
     val nickname: String,
 
+    @Column(nullable = false)
+    val phoneNumber: String,
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val role: Role
@@ -31,6 +34,7 @@ open class Member(
 class EmailUser(
     name: String,
     nickname: String,
+    phoneNumber: String,
     role: Role = Role.USER,
 
     @Column(nullable = false, unique = true)
@@ -45,6 +49,7 @@ class EmailUser(
 ) : Member(
     name = name,
     nickname = nickname,
+    phoneNumber = phoneNumber,
     role = role
 )
 @Entity
@@ -52,6 +57,7 @@ class EmailUser(
 class KakaoUser(
     name: String,
     nickname: String,
+    phoneNumber: String,
     role: Role = Role.USER,
 
     @Column(nullable = false, unique = true)
@@ -60,6 +66,7 @@ class KakaoUser(
 ) : Member(
     name = name,
     nickname = nickname,
+    phoneNumber = phoneNumber,
     role = role
 )
 @Entity
@@ -67,6 +74,7 @@ class KakaoUser(
 class EmailOwner(
     name: String,
     nickname: String,
+    phoneNumber: String,
     role: Role = Role.OWNER,
 
     @Column(nullable = false, unique = true)
@@ -84,6 +92,7 @@ class EmailOwner(
 ) : Member(
     name = name,
     nickname = nickname,
+    phoneNumber = phoneNumber,
     role = role
 )
 @Entity
@@ -91,6 +100,7 @@ class EmailOwner(
 class KakaoOwner(
     name: String,
     nickname: String,
+    phoneNumber: String,
     role: Role = Role.OWNER,
 
     @Column(nullable = false, unique = true)
@@ -102,6 +112,7 @@ class KakaoOwner(
 ) : Member(
     name = name,
     nickname = nickname,
+    phoneNumber = phoneNumber,
     role = role
 )
 

@@ -7,6 +7,7 @@ data class UserEmailSignupRequest(
     val password: String,
     val name: String,
     val nickname: String,
+    val phoneNumber: String
 )
 
 // 카카오 회원가입 용
@@ -14,4 +15,5 @@ data class UserKakaoSignupRequest(
     val kakaoAccessToken: String,
     val name: String,
     val nickname: String,
+    val phoneNumber: String
 )

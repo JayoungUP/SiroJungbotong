@@ -13,3 +13,9 @@ spring:
             charset: UTF-8
             enabled: true
             force: true
+
+app:
+    base-url: http://localhost:8080
+    upload-path:
+        flyer: backend/uploads/flyers
+        store: backend/uploads/stores
