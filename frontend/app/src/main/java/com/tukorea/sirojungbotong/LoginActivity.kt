@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +26,11 @@ class LoginActivity : AppCompatActivity() {
     )
 
     // 🔸 응답 데이터 클래스
+    data class LoginWrapperResponse(
+        val status: Int,
+        val data: LoginResponse
+    )
+
     data class LoginResponse(
         val nickname: String,
         val accessToken: String,
@@ -35,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
     // 🔸 Retrofit 인터페이스
     interface ApiService {
         @POST("/api/auth/login")
-        fun login(@Body request: LoginRequest): Call<LoginResponse>
+        fun login(@Body request: LoginRequest): Call<LoginWrapperResponse>
     }
 
     // 🔸 Retrofit 객체 생성
@@ -100,14 +106,24 @@ class LoginActivity : AppCompatActivity() {
 
             val loginRequest = LoginRequest(id, pw)
 
-            retrofit.login(loginRequest).enqueue(object : Callback<LoginResponse> {
-                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+            retrofit.login(loginRequest).enqueue(object : Callback<LoginWrapperResponse> {
+                override fun onResponse(call: Call<LoginWrapperResponse>, response: Response<LoginWrapperResponse>) {
                     if (response.isSuccessful) {
-                        val result = response.body()
-                        Toast.makeText(this@LoginActivity, "${result?.nickname}님 환영합니다!", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                        finish()
+                        val result = response.body()?.data
+                        if (result != null) {
+                            Log.d("LoginSuccess", "nickname: ${result.nickname}")
+                            Log.d("LoginSuccess", "accessToken: ${result.accessToken}")
+                            Log.d("LoginSuccess", "refreshToken: ${result.refreshToken}")
+                            Log.d("LoginSuccess", "role: ${result.role}")
+
+                            Toast.makeText(this@LoginActivity, "${result.nickname}님 환영합니다!", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                            finish()
+                        } else {
+                            Log.e("LoginSuccess", "data is null")
+                        }
                     } else {
+                        Log.e("LoginError", "response failed: ${response.code()} - ${response.errorBody()?.string()}")
                         binding.tvIdError.visibility = View.VISIBLE
                         binding.tvIdError.text = "아이디 또는 비밀번호가 일치하지 않습니다."
                         binding.tvIdLabel.setTextColor(Color.RED)
@@ -117,8 +133,9 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                override fun onFailure(call: Call<LoginWrapperResponse>, t: Throwable) {
                     Toast.makeText(this@LoginActivity, "서버 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("LoginFailure", "네트워크 실패", t)
                 }
             })
         }

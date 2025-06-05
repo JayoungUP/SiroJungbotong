@@ -24,13 +24,16 @@ class FindActivity : AppCompatActivity() {
     data class ResetPwEmailRequest(val email: String)
     data class VerifyResetPwRequest(val email: String, val code: String)
 
+    // 🔸 중첩 응답용 래퍼 클래스
+    data class VerifyCodeWrapperResponse(val status: Int, val data: VerifyCodeResponse)
+
     // Retrofit 인터페이스
     interface ApiService {
         @POST("/api/auth/id/find")
         fun requestVerificationCode(@Body request: FindIdRequest): Call<Void>
 
         @POST("/api/auth/id/verify")
-        fun verifyCode(@Body request: VerifyCodeRequest): Call<VerifyCodeResponse>
+        fun verifyCode(@Body request: VerifyCodeRequest): Call<VerifyCodeWrapperResponse>
 
         @POST("/api/auth/password/findByEmail")
         fun sendResetCode(@Body request: ResetPwEmailRequest): Call<Void>
@@ -39,7 +42,6 @@ class FindActivity : AppCompatActivity() {
         fun verifyResetCode(@Body request: VerifyResetPwRequest): Call<Void>
     }
 
-    // Retrofit 객체
     private val retrofit: ApiService by lazy {
         Retrofit.Builder()
             .baseUrl("http://sirojungbotong.r-e.kr")
@@ -107,23 +109,24 @@ class FindActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            retrofit.verifyCode(VerifyCodeRequest(email, inputCode)).enqueue(object : Callback<VerifyCodeResponse> {
-                override fun onResponse(call: Call<VerifyCodeResponse>, response: Response<VerifyCodeResponse>) {
-                    if (response.isSuccessful) {
-                        val userId = response.body()?.loginId ?: "알 수 없음"
-                        val intent = Intent(this@FindActivity, FoundIdActivity::class.java)
-                        intent.putExtra("userId", userId)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        Toast.makeText(this@FindActivity, "인증번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
+            retrofit.verifyCode(VerifyCodeRequest(email, inputCode))
+                .enqueue(object : Callback<VerifyCodeWrapperResponse> {
+                    override fun onResponse(call: Call<VerifyCodeWrapperResponse>, response: Response<VerifyCodeWrapperResponse>) {
+                        if (response.isSuccessful) {
+                            val userId = response.body()?.data?.loginId ?: "알 수 없음"
+                            val intent = Intent(this@FindActivity, FoundIdActivity::class.java)
+                            intent.putExtra("userId", userId)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this@FindActivity, "인증번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
 
-                override fun onFailure(call: Call<VerifyCodeResponse>, t: Throwable) {
-                    Toast.makeText(this@FindActivity, "서버 오류: ${t.message}", Toast.LENGTH_SHORT).show()
-                }
-            })
+                    override fun onFailure(call: Call<VerifyCodeWrapperResponse>, t: Throwable) {
+                        Toast.makeText(this@FindActivity, "서버 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                    }
+                })
         }
     }
 
@@ -142,7 +145,6 @@ class FindActivity : AppCompatActivity() {
         val sendBtn = pwForm.findViewById<TextView>(R.id.btn_send_email)
         val checkCodeBtn = pwForm.findViewById<TextView>(R.id.btn_check_code)
 
-        // 1. 이메일로 인증코드 요청
         sendBtn.setOnClickListener {
             val email = emailEdit.text.toString()
             if (email.isBlank()) {
@@ -165,7 +167,6 @@ class FindActivity : AppCompatActivity() {
             })
         }
 
-        // 2. 인증번호 확인
         checkCodeBtn.setOnClickListener {
             val email = emailEdit.text.toString()
             val code = codeEdit.text.toString()
