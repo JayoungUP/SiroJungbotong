@@ -1,4 +1,4 @@
-package com.jayoungup.sirojungbotong.member.dto.request
+package com.jayoungup.sirojungbotong.domain.member.dto.request
 
 data class OwnerEmailSignupRequest(
     val loginId: String,
@@ -6,7 +6,6 @@ data class OwnerEmailSignupRequest(
     val password: String,
     val name: String,
     val nickname: String,
-    val phoneNumber: String,
     val b_no: String,
     val start_dt: String,
     val p_nm: String,
@@ -18,7 +17,6 @@ data class OwnerKakaoSignupRequest(
     val kakaoAccessToken: String,
     val name: String,
     val nickname: String,
-    val phoneNumber: String,
     val b_no: String,
     val start_dt: String,
     val p_nm: String,

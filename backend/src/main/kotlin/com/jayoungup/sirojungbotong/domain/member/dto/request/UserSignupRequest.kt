@@ -1,4 +1,4 @@
-package com.jayoungup.sirojungbotong.member.dto.request
+package com.jayoungup.sirojungbotong.domain.member.dto.request
 
 // 이메일 회원가입 용
 data class UserEmailSignupRequest(
@@ -7,7 +7,6 @@ data class UserEmailSignupRequest(
     val password: String,
     val name: String,
     val nickname: String,
-    val phoneNumber: String
 )
 
 // 카카오 회원가입 용
@@ -15,5 +14,4 @@ data class UserKakaoSignupRequest(
     val kakaoAccessToken: String,
     val name: String,
     val nickname: String,
-    val phoneNumber: String
 )

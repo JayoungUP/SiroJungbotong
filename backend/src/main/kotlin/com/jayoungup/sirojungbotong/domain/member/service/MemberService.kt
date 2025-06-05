@@ -1,13 +1,17 @@
 package com.jayoungup.sirojungbotong.domain.member.service
 
-import com.jayoungup.sirojungbotong.domain.member.dto.request.LoginRequest
-import com.jayoungup.sirojungbotong.domain.member.dto.request.SignupRequest
-import com.jayoungup.sirojungbotong.domain.member.dto.response.LoginResponse
-import com.jayoungup.sirojungbotong.domain.member.dto.response.MemberInfoResponse
+
+import com.jayoungup.sirojungbotong.domain.member.dto.request.*
+import com.jayoungup.sirojungbotong.domain.member.dto.response.*
 import com.jayoungup.sirojungbotong.domain.member.entity.Member
 import com.jayoungup.sirojungbotong.domain.member.mapper.MemberMapper
-import com.jayoungup.sirojungbotong.domain.member.repository.MemberRepository
-import com.jayoungup.sirojungbotong.global.config.security.JwtTokenProvider
+import com.jayoungup.sirojungbotong.domain.member.repository.*
+import com.jayoungup.sirojungbotong.auth.service.BusinessVerificationService
+import com.jayoungup.sirojungbotong.auth.service.KakaoService
+import com.jayoungup.sirojungbotong.domain.member.entity.EmailOwner
+import com.jayoungup.sirojungbotong.domain.member.entity.EmailUser
+import com.jayoungup.sirojungbotong.domain.member.entity.KakaoOwner
+import com.jayoungup.sirojungbotong.domain.member.entity.KakaoUser
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,55 +19,120 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(readOnly = true)
 class MemberService(
-    private val memberRepository: MemberRepository,
+    private val emailUserRepository: EmailUserRepository,
+    private val kakaoUserRepository: KakaoUserRepository,
+    private val emailOwnerRepository: EmailOwnerRepository,
+    private val kakaoOwnerRepository: KakaoOwnerRepository,
+    private val businessVerificationService: BusinessVerificationService,
     private val passwordEncoder: PasswordEncoder,
-    private val jwtTokenProvider: JwtTokenProvider,
+    private val kakaoService: KakaoService,
     private val memberMapper: MemberMapper
 ) {
-
+    fun isValidPassword(password: String): Boolean {
+        val regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d!@#\$%^&*()_+=-]{8,}$".toRegex()
+        return regex.matches(password)
+    }
 
     @Transactional
-    fun signup(request: SignupRequest) {
-        if (memberRepository.existsByLoginId(request.loginId)) {
-            throw IllegalArgumentException("이미 사용 중인 아이디입니다.")
+    fun signupUserEmail(request: UserEmailSignupRequest) {
+        if (emailUserRepository.existsByLoginId(request.loginId) || emailUserRepository.existsByEmail(request.email)) {
+            throw IllegalArgumentException("이미 사용 중인 이메일/아이디입니다.")
         }
-        if (memberRepository.existsByEmail(request.email)) {
-            throw IllegalArgumentException("이미 사용 중인 이메일입니다.")
-        }
-        if (memberRepository.existsByNickname(request.nickname)) {
-            throw IllegalArgumentException("이미 사용 중인 닉네임입니다.")
+        if (!isValidPassword(request.password)) {
+            throw IllegalArgumentException("비밀번호는 8자 이상, 영문자와 숫자, 특수문자를 포함해야 합니다.")
         }
 
-        if (!request.b_no.isNullOrBlank()) {
-            if (memberRepository.existsByBNo(request.b_no)) {
-                throw IllegalArgumentException("이미 등록된 사업자등록번호입니다.")
-            }
-        }
-
-        val encodedPassword = passwordEncoder.encode(request.password)
-        val member = memberMapper.toSignupEntity(request.copy(password = encodedPassword))
-
-        memberRepository.save(member)
+        val user = EmailUser(
+            loginId = request.loginId,
+            email = request.email,
+            password = passwordEncoder.encode(request.password),
+            name = request.name,
+            nickname = request.nickname,
+        )
+        emailUserRepository.save(user)
     }
-    @Transactional(readOnly = true)
-    fun login(request: LoginRequest): LoginResponse {
-        val member : Member = memberRepository.findByLoginId(request.loginId)
-            ?: throw IllegalArgumentException("존재하지 않는 사용자입니다..")
-        if (!passwordEncoder.matches(request.password, member.password)) {
-            throw IllegalArgumentException("비밀번호가 일치하지 않습니다.")
+
+    @Transactional
+    fun signupUserKakao(request: UserKakaoSignupRequest) {
+        val kakaoUserInfo = kakaoService.getUserInfo(request.kakaoAccessToken)
+
+        if (kakaoUserRepository.existsByKakaoId(kakaoUserInfo.kakaoId)) {
+            throw IllegalArgumentException("이미 가입된 카카오 사용자입니다.")
         }
 
-        val accessToken = jwtTokenProvider.createAccessToken(member.id, member.role)
-        val refreshToken = jwtTokenProvider.createRefreshToken(member.id, member.role)
+        val user = KakaoUser(
+            kakaoId = kakaoUserInfo.kakaoId,
+            name = request.name,
+            nickname = request.nickname,
+        )
+        kakaoUserRepository.save(user)
+    }
 
-        return memberMapper.toLoginResponse(member, accessToken, refreshToken)
+    @Transactional
+    fun signupOwnerEmail(request: OwnerEmailSignupRequest) {
+        if (emailOwnerRepository.existsByLoginId(request.loginId) || emailOwnerRepository.existsByEmail(request.email)) {
+            throw IllegalArgumentException("이미 사용 중인 이메일/아이디입니다.")
+        }
+        if (!isValidPassword(request.password)) {
+            throw IllegalArgumentException("비밀번호는 8자 이상, 영문자와 숫자, 특수문자를 포함해야 합니다.")
+        }
+
+        businessVerificationService.verify(
+            bNo = request.b_no,
+            startDt = request.start_dt,
+            pNm = request.p_nm,
+            pNm2 = request.p_nm2
+        )
+
+        val owner = EmailOwner(
+            loginId = request.loginId,
+            email = request.email,
+            password = passwordEncoder.encode(request.password),
+            name = request.name,
+            nickname = request.nickname,
+            bNo = request.b_no
+        )
+        emailOwnerRepository.save(owner)
+    }
+
+    @Transactional
+    fun signupOwnerKakao(request: OwnerKakaoSignupRequest) {
+        val kakaoUserInfo = kakaoService.getUserInfo(request.kakaoAccessToken)
+
+        if (kakaoOwnerRepository.existsByKakaoId(kakaoUserInfo.kakaoId)) {
+            throw IllegalArgumentException("이미 가입된 카카오 사용자입니다.")
+        }
+
+        businessVerificationService.verify(
+            bNo = request.b_no,
+            startDt = request.start_dt,
+            pNm = request.p_nm,
+            pNm2 = request.p_nm2
+        )
+
+        val owner = KakaoOwner(
+            kakaoId = kakaoUserInfo.kakaoId,
+            name = request.name,
+            nickname = request.nickname,
+            bNo = request.b_no
+        )
+        kakaoOwnerRepository.save(owner)
     }
 
     fun getMemberInfo(memberId: Long): MemberInfoResponse {
-        val member = memberRepository.findById(memberId)
-            .orElseThrow { IllegalArgumentException("존재하지 않는 사용자입니다.") }
-
+        val member = findMemberById(memberId)
         return memberMapper.toMemberInfoResponse(member)
     }
 
+    fun findMemberById(memberId: Long): Member {
+        emailUserRepository.findById(memberId).orElse(null)?.let { return it }
+        kakaoUserRepository.findById(memberId).orElse(null)?.let { return it }
+        emailOwnerRepository.findById(memberId).orElse(null)?.let { return it }
+        kakaoOwnerRepository.findById(memberId).orElse(null)?.let { return it }
+
+        throw IllegalArgumentException("존재하지 않는 사용자입니다.")
+    }
+
+
 }
+

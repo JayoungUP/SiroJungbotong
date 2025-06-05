@@ -1,6 +1,6 @@
-package com.jayoungup.sirojungbotong.member.repository
+package com.jayoungup.sirojungbotong.domain.member.repository
 
-import com.jayoungup.sirojungbotong.member.entity.EmailOwner
+import com.jayoungup.sirojungbotong.domain.member.entity.EmailOwner
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

@@ -1,8 +1,8 @@
-package com.jayoungup.sirojungbotong.member.controller
+package com.jayoungup.sirojungbotong.domain.member.controller
 
-import com.jayoungup.sirojungbotong.member.dto.request.*
-import com.jayoungup.sirojungbotong.member.dto.response.MemberInfoResponse
-import com.jayoungup.sirojungbotong.member.service.MemberService
+import com.jayoungup.sirojungbotong.domain.member.dto.request.*
+import com.jayoungup.sirojungbotong.domain.member.dto.response.MemberInfoResponse
+import com.jayoungup.sirojungbotong.domain.member.service.MemberService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -25,7 +25,7 @@ class MemberController(
     fun signupUserKakao(@RequestBody request: UserKakaoSignupRequest): ResponseEntity<Void> {
         memberService.signupUserKakao(request)
         return ResponseEntity.status(201).build()
-    }
+    }   
 
     /* 점주 이메일 회원가입 */
     @PostMapping("/signup/owner/email")
