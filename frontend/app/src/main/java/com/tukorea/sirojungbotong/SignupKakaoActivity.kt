@@ -26,8 +26,8 @@ class SignupKakaoActivity : AppCompatActivity() {
         // 이메일 버튼 클릭 시 이동
         binding.btnEmail.setOnClickListener {
             Toast.makeText(this, "이메일 로그인 시작", Toast.LENGTH_SHORT).show()
-            // val intent = Intent(this, EmailLoginActivity::class.java)
-            // startActivity(intent)
+            val intent = Intent(this, SignupEmailActivity::class.java)
+            startActivity(intent)
         }
 
         // 뒤로가기 버튼 클릭 시 이전 화면으로 종료
