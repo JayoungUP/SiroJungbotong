@@ -2,49 +2,38 @@ package com.tukorea.sirojungbotong
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.yourapp.SignupExtraActivity
+import com.tukorea.sirojungbotong.databinding.SingupEmailBinding  // XML 파일명에 맞춘 바인딩 이름
+import com.example.yourapp.SignupExtraActivity  // 패키지명 확인 필요
 
 class SignupEmailActivity : AppCompatActivity() {
 
-    private lateinit var nicknameEditText: EditText
-    private lateinit var idEditText: EditText
-    private lateinit var passwordEditText: EditText
-    private lateinit var confirmPasswordEditText: EditText
-    private lateinit var emailEditText: EditText
-    private lateinit var registerButton: ImageButton
-    private lateinit var backButton: ImageButton
+    private lateinit var binding: SingupEmailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.singup_email) // XML 파일 이름에 따라 수정
+        binding = SingupEmailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // 뷰 초기화
-        nicknameEditText = findViewById(R.id.et_nickname)
-        idEditText = findViewById(R.id.et_id)
-        passwordEditText = findViewById(R.id.et_password)
-        confirmPasswordEditText = findViewById(R.id.et_confirm_password)
-        emailEditText = findViewById(R.id.et_email)
-        registerButton = findViewById(R.id.btn_register)
-        backButton = findViewById(R.id.btn_back)
-
-        // 뒤로가기
-        backButton.setOnClickListener {
+        // 뒤로가기 버튼
+        binding.btnBack.setOnClickListener {
             finish()
         }
 
-        // 가입 완료 버튼 클릭
-        registerButton.setOnClickListener {
-            val nickname = nicknameEditText.text.toString().trim()
-            val userId = idEditText.text.toString().trim()
-            val password = passwordEditText.text.toString()
-            val confirmPassword = confirmPasswordEditText.text.toString()
-            val email = emailEditText.text.toString().trim()
+        // 다음으로 버튼
+        binding.btnRegister.setOnClickListener {
+            val name = binding.etName.text.toString().trim()
+            val nickname = binding.etNickname.text.toString().trim()
+            val loginId = binding.etId.text.toString().trim()
+            val password = binding.etPassword.text.toString()
+            val confirmPassword = binding.etConfirmPassword.text.toString()
+            val email = binding.etEmail.text.toString().trim()
 
-            if (nickname.isEmpty() || userId.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || email.isEmpty()) {
+            // 유효성 검사
+            if (name.isEmpty() || nickname.isEmpty() || loginId.isEmpty() || password.isEmpty()
+                || confirmPassword.isEmpty() || email.isEmpty()
+            ) {
                 Toast.makeText(this, "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -54,9 +43,14 @@ class SignupEmailActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // TODO: 서버에 회원가입 요청 전송
-            Toast.makeText(this, "회원가입 요청 전송됨 (예시)", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, SignupExtraActivity::class.java)
+            // 인텐트로 개별 값 전달
+            val intent = Intent(this, SignupExtraActivity::class.java).apply {
+                putExtra("name", name)
+                putExtra("nickname", nickname)
+                putExtra("loginId", loginId)
+                putExtra("password", password)
+                putExtra("email", email)
+            }
             startActivity(intent)
         }
     }

@@ -25,7 +25,6 @@ class SignupKakaoActivity : AppCompatActivity() {
 
         // 이메일 버튼 클릭 시 이동
         binding.btnEmail.setOnClickListener {
-            Toast.makeText(this, "이메일 로그인 시작", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, SignupEmailActivity::class.java)
             startActivity(intent)
         }
