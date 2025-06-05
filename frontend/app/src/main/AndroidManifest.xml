@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.tukorea.sirojungbotong">  <!-- 실제 패키지명으로 변경 -->
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -51,6 +54,26 @@
             android:name=".LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"/>
+
+        <!-- FindActivity -->
+        <activity
+            android:name=".FindActivity"
+            android:exported="true"/>
+
+        <!-- FoundIdActivity -->
+        <activity
+            android:name=".FoundIdActivity"
+            android:exported="true"/>
+
+        <!-- ResetPwActivity -->
+        <activity
+            android:name=".ResetPwActivity"
+            android:exported="true"/>
+
+        <!-- ResetPwEndActivity -->
+        <activity
+            android:name=".ResetPwEndActivity"
+            android:exported="true"/>
 
         <!-- 필요하다면 다른 Activity를 계속 추가 -->
 
