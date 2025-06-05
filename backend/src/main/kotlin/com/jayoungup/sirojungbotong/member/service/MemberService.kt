@@ -29,18 +29,11 @@ class MemberService(
     private val kakaoService: KakaoService,
     private val memberMapper: MemberMapper
 ) {
-    fun isValidPassword(password: String): Boolean {
-        val regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d!@#\$%^&*()_+=-]{8,}$".toRegex()
-        return regex.matches(password)
-    }
 
     @Transactional
     fun signupUserEmail(request: UserEmailSignupRequest) {
         if (emailUserRepository.existsByLoginId(request.loginId) || emailUserRepository.existsByEmail(request.email)) {
             throw IllegalArgumentException("이미 사용 중인 이메일/아이디입니다.")
-        }
-        if (!isValidPassword(request.password)) {
-            throw IllegalArgumentException("비밀번호는 8자 이상, 영문자와 숫자, 특수문자를 포함해야 합니다.")
         }
 
         val user = EmailUser(
@@ -49,6 +42,7 @@ class MemberService(
             password = passwordEncoder.encode(request.password),
             name = request.name,
             nickname = request.nickname,
+            phoneNumber = request.phoneNumber
         )
         emailUserRepository.save(user)
     }
@@ -65,6 +59,7 @@ class MemberService(
             kakaoId = kakaoUserInfo.kakaoId,
             name = request.name,
             nickname = request.nickname,
+            phoneNumber = request.phoneNumber
         )
         kakaoUserRepository.save(user)
     }
@@ -73,9 +68,6 @@ class MemberService(
     fun signupOwnerEmail(request: OwnerEmailSignupRequest) {
         if (emailOwnerRepository.existsByLoginId(request.loginId) || emailOwnerRepository.existsByEmail(request.email)) {
             throw IllegalArgumentException("이미 사용 중인 이메일/아이디입니다.")
-        }
-        if (!isValidPassword(request.password)) {
-            throw IllegalArgumentException("비밀번호는 8자 이상, 영문자와 숫자, 특수문자를 포함해야 합니다.")
         }
 
         businessVerificationService.verify(
@@ -91,6 +83,7 @@ class MemberService(
             password = passwordEncoder.encode(request.password),
             name = request.name,
             nickname = request.nickname,
+            phoneNumber = request.phoneNumber,
             bNo = request.b_no
         )
         emailOwnerRepository.save(owner)
@@ -115,6 +108,7 @@ class MemberService(
             kakaoId = kakaoUserInfo.kakaoId,
             name = request.name,
             nickname = request.nickname,
+            phoneNumber = request.phoneNumber,
             bNo = request.b_no
         )
         kakaoOwnerRepository.save(owner)

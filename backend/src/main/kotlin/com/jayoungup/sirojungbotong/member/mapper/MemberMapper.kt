@@ -1,5 +1,6 @@
 package com.jayoungup.sirojungbotong.member.mapper
 
+import com.jayoungup.sirojungbotong.member.dto.request.*
 import com.jayoungup.sirojungbotong.member.dto.response.LoginResponse
 import com.jayoungup.sirojungbotong.member.dto.response.MemberInfoResponse
 import com.jayoungup.sirojungbotong.member.entity.Member
@@ -26,6 +27,7 @@ class MemberMapper {
             is EmailUser -> MemberInfoResponse(
                 name = member.name,
                 nickname = member.nickname,
+                phoneNumber = member.phoneNumber,
                 role = member.role,
                 loginId = member.loginId,
                 email = member.email,
@@ -34,6 +36,7 @@ class MemberMapper {
             is KakaoUser -> MemberInfoResponse(
                 name = member.name,
                 nickname = member.nickname,
+                phoneNumber = member.phoneNumber,
                 role = member.role,
                 loginId = null,
                 email = null,
@@ -42,6 +45,7 @@ class MemberMapper {
             is EmailOwner -> MemberInfoResponse(
                 name = member.name,
                 nickname = member.nickname,
+                phoneNumber = member.phoneNumber,
                 role = member.role,
                 loginId = member.loginId,
                 email = member.email,
@@ -50,6 +54,7 @@ class MemberMapper {
             is KakaoOwner -> MemberInfoResponse(
                 name = member.name,
                 nickname = member.nickname,
+                phoneNumber = member.phoneNumber,
                 role = member.role,
                 loginId = null,
                 email = null,
