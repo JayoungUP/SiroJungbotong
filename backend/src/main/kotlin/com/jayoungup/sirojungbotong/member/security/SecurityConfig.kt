@@ -35,14 +35,17 @@ class SecurityConfig(
                     .requestMatchers(
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
-                        "/oauth/callback/kakao",
                         "/api/auth/login",
                         "/api/auth/login/kakao",
                         "/api/auth/logout",
                         "/api/auth/token/refresh",
-                        "/api/auth/password/**",
-                        "/api/member/signup/**",
-                        "/api/auth/id/**"
+                        "/api/auth/password/find",
+                        "/api/auth/password/reset",
+                        "/api/auth/password/verify",
+                        "/api/member/signup/user/email",
+                        "/api/member/signup/user/kakao",
+                        "/api/member/signup/owner/email",
+                        "/api/member/signup/owner/kakao"
                     ).permitAll()
                     .anyRequest().authenticated()
             }
