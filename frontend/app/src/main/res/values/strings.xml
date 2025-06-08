@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="business_types">
+        <item>선택--</item>
+        <item>농산물</item>
+        <item>축산물</item>
+        <item>수산물</item>
+        <item>가공식품</item>
+        <item>의류/신발</item>
+        <item>가정용품</item>
+        <item>음식점업</item>
+        <item>기타소매업</item>
+        <item>근린생활서비스</item>
+    </string-array>
+
     <!-- 액션바의 뒤로가기 버튼 설명 -->
     <string name="desc_back">뒤로가기</string>
     <!-- 오른쪽 상단 “등록” 버튼 -->
