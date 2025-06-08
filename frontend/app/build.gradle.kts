@@ -8,6 +8,14 @@ plugins {
 android {
     namespace = "com.tukorea.sirojungbotong"
     compileSdk = 35
+    defaultConfig {
+        applicationId = "com.tukorea.sirojungbotong"
+        minSdk = 21
+        targetSdk = 35      // 타겟 SDK
+        versionCode = 1
+        versionName = "1.0"
+    }
+
     viewBinding {
         enable=true
     }

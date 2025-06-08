@@ -81,10 +81,9 @@
                 android:text="업장명"
                 android:textStyle="normal"
                 android:fontFamily="@font/helvetica_bold"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:visibility="gone"
                 android:textColor="@color/gray01"/>
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilStoreName"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -107,6 +106,29 @@
                     android:visibility="gone"
                     android:fontFamily="@font/helvetica_bold" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tvBusinessTypeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="업종"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@color/gray01"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"/>
+
+            <Spinner
+                android:id="@+id/spinnerBusinessType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:visibility="gone"
+                android:backgroundTint="@color/gray01"
+                android:entries="@array/business_types"
+                android:popupBackground="@android:color/white"
+                android:spinnerMode="dropdown"/>
+
             <TextView
                 android:id="@+id/StoreAddressLabel"
                 android:layout_width="wrap_content"
