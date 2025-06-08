@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
 <!-- 기존 앱 테마 정의가 있다면 그대로 두고, 아래에 추가 -->
 <style name="Widget.App.TimePickerSpinner" parent="Theme.MaterialComponents.Light.Dialog.Alert">
     <item name="android:timePickerStyle">@style/Widget.App.SpinnerTimePicker</item>
@@ -7,4 +8,8 @@
 <style name="Widget.App.SpinnerTimePicker" parent="android:Widget.Material.TimePicker">
     <item name="android:timePickerMode">spinner</item>
 </style>
+    <style name="NoUnderlineEditText" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorControlNormal">@android:color/transparent</item>
+        <item name="colorControlActivated">@android:color/transparent</item>
+    </style>
 </resources>
