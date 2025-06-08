@@ -4,14 +4,19 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.os.postDelayed
+import androidx.lifecycle.lifecycleScope
 import com.tukorea.sirojungbotong.databinding.ListUpBinding
+import com.tukorea.sirojungbotong.network.ApiClient
+import com.tukorea.sirojungbotong.network.AddItemResponse
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.Locale
 
 class MarketListupActivity : AppCompatActivity() {
@@ -125,19 +130,78 @@ class MarketListupActivity : AppCompatActivity() {
 
     private fun setupRegisterButton() {
         binding.btnRegister.setOnClickListener {
-            // 클릭 후 중복 방지
             binding.btnRegister.isEnabled = false
+            val flyerId = intent.getLongExtra("flyerId", 0L)
+            lifecycleScope.launch {
+                val items = collectVisibleItems()
+                items.forEachIndexed { idx, item ->
+                    val imagePart = item.photoUri
+                        ?.let { uri -> makeImagePart(uri, "item${idx + 1}.jpg") }
 
-            Handler(Looper.getMainLooper()).postDelayed({
+                    val response: AddItemResponse? = try {
+                        ApiClient.service.addItem(
+                            flyerId = flyerId,
+                            image = imagePart,
+                            name = item.name,
+                            description = item.description,
+                            price = item.price,
+                            validFrom = item.validFrom,
+                            validUntil = item.validUntil
+                        ).body()
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
                 binding.ivRegisterDoneOverlay.visibility = View.VISIBLE
-
-                // 3) 3초 후에 액티비티 종료
-                Handler(Looper.getMainLooper()).postDelayed({
-                    finish()
-                }, 3000L)
-
-            }, 1500L)
+                delay(3000L)
+                finish()
+            }
         }
+    }
+    private fun makeImagePart(uri: Uri, filename: String): MultipartBody.Part? {
+        return contentResolver.openInputStream(uri)?.use { stream ->
+            val bytes = stream.readBytes()
+            val requestBody = bytes.toRequestBody("image/*".toMediaType())
+            MultipartBody.Part.createFormData("image", filename, requestBody)
+        }
+    }
+    private data class UiItem(
+        val name: String,
+        val description: String,
+        val price: Int,
+        val validFrom: String,
+        val validUntil: String,
+        val photoUri: Uri?
+    )
+    private fun collectVisibleItems(): List<UiItem> {
+        val list = mutableListOf<UiItem>()
+
+        list += UiItem(
+            name        = binding.etItemName1.text.toString(),
+            description = binding.etItemDesc1.text.toString(),
+            price       = binding.etPrice1.text.toString().toIntOrNull() ?: 0,
+            validFrom   = binding.etStartDate1.text.toString(),
+            validUntil  = binding.etEndDate1.text.toString(),
+            photoUri    = item1PhotoUri
+        )
+        if (visibleItemCount >= 2) list += UiItem(
+            name        = binding.etItemName2.text.toString(),
+            description = binding.etItemDesc2.text.toString(),
+            price       = binding.etPrice2.text.toString().toIntOrNull() ?: 0,
+            validFrom   = binding.etStartDate2.text.toString(),
+            validUntil  = binding.etEndDate2.text.toString(),
+            photoUri    = item2PhotoUri
+        )
+        if (visibleItemCount >= 3) list += UiItem(
+            name        = binding.etItemName3.text.toString(),
+            description = binding.etItemDesc3.text.toString(),
+            price       = binding.etPrice3.text.toString().toIntOrNull() ?: 0,
+            validFrom   = binding.etStartDate3.text.toString(),
+            validUntil  = binding.etEndDate3.text.toString(),
+            photoUri    = item3PhotoUri
+        )
+
+        return list
     }
 
     /** 언어 변경 버튼 클릭 리스너 설정 **/
@@ -153,6 +217,28 @@ class MarketListupActivity : AppCompatActivity() {
         binding.btnLangZh.setOnClickListener {
             setAppLocale("zh")
             updateLanguageSelectorUI("zh")
+        }
+    }
+    private fun showPhotoPreview(target: Int, uri: Uri) {
+        when (target) {
+            1 -> {
+                binding.ivItemPhotoIcon1.visibility = View.GONE
+                binding.tvItemPhotoGuidance1.visibility = View.GONE
+                binding.ivItemPhotoPreview1.setImageURI(uri)
+                binding.ivItemPhotoPreview1.visibility = View.VISIBLE
+            }
+            2 -> {
+                binding.ivItemPhotoIcon2.visibility = View.GONE
+                binding.tvItemPhotoGuidance2.visibility = View.GONE
+                binding.ivItemPhotoPreview2.setImageURI(uri)
+                binding.ivItemPhotoPreview2.visibility = View.VISIBLE
+            }
+            3 -> {
+                binding.ivItemPhotoIcon3.visibility = View.GONE
+                binding.tvItemPhotoGuidance3.visibility = View.GONE
+                binding.ivItemPhotoPreview3.setImageURI(uri)
+                binding.ivItemPhotoPreview3.visibility = View.VISIBLE
+            }
         }
     }
 
