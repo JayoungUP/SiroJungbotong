@@ -8,6 +8,10 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.user.UserApiClient
 import com.tukorea.sirojungbotong.databinding.LoginBinding
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
@@ -53,8 +57,23 @@ class LoginActivity : AppCompatActivity() {
             .create(ApiService::class.java)
     }
 
+    // 🔹 이메일 로그인 함수
+    fun loginWithKakaoAccount() {
+        UserApiClient.instance.loginWithKakaoAccount(this) { token, error ->
+            if (error != null) {
+                Log.e("KakaoLogin", "카카오계정 로그인 실패: $error")
+                Toast.makeText(this, "카카오 로그인 실패", Toast.LENGTH_SHORT).show()
+            } else if (token != null) {
+                Log.d("KakaoLogin", "카카오계정 로그인 성공: ${token.accessToken}")
+                Toast.makeText(this, "카카오 로그인 성공!", Toast.LENGTH_SHORT).show()
+                // TODO: 서버에 토큰 보내서 가입/로그인 처리
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        KakaoSdk.init(this, "2ded46be765ec69de3b8d15cbfbe3cb4")
         binding = LoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -140,9 +159,31 @@ class LoginActivity : AppCompatActivity() {
             })
         }
 
-        // 카카오 로그인 (미구현 상태 유지)
+        // 카카오 로그인 버튼 클릭
         binding.btnKakaoLogin.setOnClickListener {
-            Toast.makeText(this, "카카오 로그인 버튼 클릭.", Toast.LENGTH_SHORT).show()
+            if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+                // ✅ 카카오톡 앱으로 로그인
+                UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+                    if (error != null) {
+                        Log.e("KakaoLogin", "카카오톡 로그인 실패: $error")
+
+                        // 사용자가 로그인 취소한 경우
+                        if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                            return@loginWithKakaoTalk
+                        }
+
+                        // 다른 오류 → 카카오 계정(웹) 로그인 시도
+                        loginWithKakaoAccount()
+                    } else if (token != null) {
+                        Log.d("KakaoLogin", "카카오톡 로그인 성공: ${token.accessToken}")
+                        Toast.makeText(this, "카카오 로그인 성공!", Toast.LENGTH_SHORT).show()
+                        // TODO: 서버에 토큰 보내서 가입/로그인 처리
+                    }
+                }
+            } else {
+                // ✅ 카카오 계정(웹) 로그인
+                loginWithKakaoAccount()
+            }
         }
     }
 }

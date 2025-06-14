@@ -80,6 +80,17 @@
             android:name=".SignupEmailActivity"
             android:exported="true"/>
 
+        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="oauth"
+                    android:scheme="2ded46be765ec69de3b8d15cbfbe3cb4" />
+            </intent-filter>
+        </activity>
+
         <!-- 필요하다면 다른 Activity를 계속 추가 -->
 
     </application>
