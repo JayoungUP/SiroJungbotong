@@ -225,4 +225,3 @@ class SignupExtraActivity : AppCompatActivity() {
 
         dialog.show()
     }
-}
