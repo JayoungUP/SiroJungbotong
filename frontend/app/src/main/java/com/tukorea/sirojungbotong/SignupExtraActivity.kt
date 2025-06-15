@@ -1,5 +1,6 @@
 package com.example.yourapp
 
+import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.graphics.Bitmap
@@ -64,6 +65,19 @@ class SignupExtraActivity : AppCompatActivity() {
         bind = SignupExtraBinding.inflate(layoutInflater)
         setContentView(bind.root)
 
+        bind.inputdate.setOnClickListener {
+            showDatePicker { y, m, d ->
+                bind.inputdate.setText(String.format("%04d/%02d/%02d", y, m + 1, d))
+            }
+        }
+// endIcon(달력 아이콘) 눌러도 열리게
+        bind.opendatebar.setEndIconOnClickListener {
+            showDatePicker { y, m, d ->
+                bind.inputdate.setText(String.format("%04d/%02d/%02d", y, m + 1, d))
+            }
+        }
+
+
         // 운영 시작 시간 클릭
         bind.etOpenTime.setOnClickListener {
             showSpinnerTimePicker(isStart = true)
@@ -116,7 +130,12 @@ class SignupExtraActivity : AppCompatActivity() {
                 bind.layoutBusinessDoc.visibility = View.VISIBLE
                 bind.ivBusinessDocIcon.visibility = View.VISIBLE
                 bind.tvBusinessDocGuidance.visibility = View.VISIBLE
-
+                bind.businesbar.visibility=View.VISIBLE
+                bind.businesnumber.visibility=View.VISIBLE
+                bind.opendate.visibility=View.VISIBLE
+                bind.opendatebar.visibility=View.VISIBLE
+                bind.inputbusiness.visibility=View.VISIBLE
+                bind.inputdate.visibility=View.VISIBLE
                 bind.btnComplete.text = "가입 완료하기"
             } else {
                 bind.StoreName.visibility = View.GONE
@@ -179,6 +198,7 @@ class SignupExtraActivity : AppCompatActivity() {
         bind.btnComplete.setOnClickListener {
             if (bind.switchRegister.isChecked) {
                 val storeName = bind.etStoreName.text.toString().trim()
+                val business=bind.inputbusiness.text.toString().trim()
                 val storeAddress = bind.etStoreAddress.text.toString().trim()
                 val openTime = bind.etOpenTime.text.toString().trim()
                 val closeTime = bind.etCloseTime.text.toString().trim()
@@ -186,8 +206,9 @@ class SignupExtraActivity : AppCompatActivity() {
                 if (storeName.isEmpty() ||
                     storeAddress.isEmpty() ||
                     openTime.isEmpty() ||
+                    business.isEmpty() ||
                     closeTime.isEmpty()
-                ) {
+                    ) {
                     Toast.makeText(this, "업장 정보를 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
@@ -224,5 +245,16 @@ class SignupExtraActivity : AppCompatActivity() {
         )
 
         dialog.show()
+    }
+    private fun showDatePicker(onDateSelected: (year: Int, month: Int, day: Int) -> Unit) {
+        val now = Calendar.getInstance()
+        val dpd = DatePickerDialog(
+            this,
+            { _, y, m, d -> onDateSelected(y, m, d) },
+            now.get(Calendar.YEAR),
+            now.get(Calendar.MONTH),
+            now.get(Calendar.DAY_OF_MONTH)
+        )
+        dpd.show()
     }
 }
