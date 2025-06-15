@@ -1,4 +1,3 @@
-// SignupExtraActivity.kt
 package com.example.yourapp
 
 import android.app.TimePickerDialog
@@ -8,12 +7,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.tukorea.sirojungbotong.MarketListActivity
 import com.david.siro.MarketUploadActivity
+import com.tukorea.sirojungbotong.R
 import com.tukorea.sirojungbotong.databinding.SignupExtraBinding
 import java.io.IOException
 import java.util.*
@@ -28,7 +30,8 @@ class SignupExtraActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 try {
-                    val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+                    val bitmap: Bitmap =
+                        MediaStore.Images.Media.getBitmap(contentResolver, it)
                     bind.ivStorePhotoPreview.setImageBitmap(bitmap)
                     bind.ivStorePhotoPreview.visibility = View.VISIBLE
                     bind.ivStorePhotoIcon.visibility = View.GONE
@@ -44,7 +47,8 @@ class SignupExtraActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 try {
-                    val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+                    val bitmap: Bitmap =
+                        MediaStore.Images.Media.getBitmap(contentResolver, it)
                     bind.ivBusinessDocPreview.setImageBitmap(bitmap)
                     bind.ivBusinessDocPreview.visibility = View.VISIBLE
                     bind.ivBusinessDocIcon.visibility = View.GONE
@@ -60,24 +64,14 @@ class SignupExtraActivity : AppCompatActivity() {
         bind = SignupExtraBinding.inflate(layoutInflater)
         setContentView(bind.root)
 
-        // 운영 시작 시간 클릭 → TimePickerDialog
+        // 운영 시작 시간 클릭
         bind.etOpenTime.setOnClickListener {
-            val hour = calendar.get(Calendar.HOUR_OF_DAY)
-            val minute = calendar.get(Calendar.MINUTE)
-            TimePickerDialog(this, { _: TimePicker, selHour: Int, selMinute: Int ->
-                val formatted = String.format(Locale.getDefault(), "%02d:%02d", selHour, selMinute)
-                bind.etOpenTime.setText(formatted)
-            }, hour, minute, true).show()
+            showSpinnerTimePicker(isStart = true)
         }
 
-        // 운영 종료 시간 클릭 → TimePickerDialog
+        // 운영 종료 시간 클릭
         bind.etCloseTime.setOnClickListener {
-            val hour = calendar.get(Calendar.HOUR_OF_DAY)
-            val minute = calendar.get(Calendar.MINUTE)
-            TimePickerDialog(this, { _: TimePicker, selHour: Int, selMinute: Int ->
-                val formatted = String.format(Locale.getDefault(), "%02d:%02d", selHour, selMinute)
-                bind.etCloseTime.setText(formatted)
-            }, hour, minute, true).show()
+            showSpinnerTimePicker(isStart = false)
         }
 
         // 업장 사진 영역 클릭 → 갤러리 열기
@@ -101,13 +95,17 @@ class SignupExtraActivity : AppCompatActivity() {
                 bind.tilStoreAddress.visibility = View.VISIBLE
                 bind.etStoreAddress.visibility = View.VISIBLE
 
+                bind.tvBusinessTypeLabel.visibility = View.VISIBLE
+                bind.spinnerBusinessType.visibility = View.VISIBLE
+
+                bind.tilOpenTime.visibility = View.VISIBLE
+                bind.etOpenTime.visibility = View.VISIBLE
+                bind.tilCloseTime.visibility = View.VISIBLE
+                bind.etCloseTime.visibility = View.VISIBLE
+
                 bind.nothing1.visibility = View.VISIBLE
                 bind.layoutOperatingHours.visibility = View.VISIBLE
-                bind.etOpenTime.visibility = View.VISIBLE
-                bind.etCloseTime.visibility = View.VISIBLE
                 bind.tvTimeSeparator.visibility = View.VISIBLE
-                bind.tilOpenTime.visibility = View.VISIBLE
-                bind.tilCloseTime.visibility = View.VISIBLE
 
                 bind.tvLabelStorePhoto.visibility = View.VISIBLE
                 bind.layoutStorePhoto.visibility = View.VISIBLE
@@ -131,11 +129,12 @@ class SignupExtraActivity : AppCompatActivity() {
 
                 bind.nothing1.visibility = View.GONE
                 bind.layoutOperatingHours.visibility = View.GONE
-                bind.etOpenTime.visibility = View.GONE
-                bind.etCloseTime.visibility = View.GONE
                 bind.tvTimeSeparator.visibility = View.GONE
+
                 bind.tilOpenTime.visibility = View.GONE
+                bind.etOpenTime.visibility = View.GONE
                 bind.tilCloseTime.visibility = View.GONE
+                bind.etCloseTime.visibility = View.GONE
 
                 bind.tvLabelStorePhoto.visibility = View.GONE
                 bind.layoutStorePhoto.visibility = View.GONE
@@ -147,8 +146,33 @@ class SignupExtraActivity : AppCompatActivity() {
                 bind.ivBusinessDocIcon.visibility = View.GONE
                 bind.tvBusinessDocGuidance.visibility = View.GONE
 
+                bind.tvBusinessTypeLabel.visibility = View.GONE
+                bind.spinnerBusinessType.visibility = View.GONE
+
                 bind.btnComplete.text = "다음으로"
             }
+
+            // Spinner 어댑터 세팅
+            ArrayAdapter.createFromResource(
+                this,
+                R.array.business_types,
+                android.R.layout.simple_spinner_item
+            ).also { adapter ->
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                bind.spinnerBusinessType.adapter = adapter
+            }
+
+            bind.spinnerBusinessType.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>, view: View?, position: Int, id: Long
+                    ) {
+                        val selected = parent.getItemAtPosition(position) as String
+                        // TODO: 선택된 업종 처리
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>) {}
+                }
         }
 
         // 가입 완료 버튼 클릭
@@ -177,5 +201,28 @@ class SignupExtraActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    /**
+     * Holo 스피너 모드 TimePickerDialog
+     */
+    private fun showSpinnerTimePicker(isStart: Boolean) {
+        val now = Calendar.getInstance()
+        val listener = TimePickerDialog.OnTimeSetListener { _: TimePicker, h, m ->
+            val text = String.format("%02d:%02d", h, m)
+            if (isStart) bind.etOpenTime.setText(text)
+            else        bind.etCloseTime.setText(text)
+        }
+
+        val dialog = TimePickerDialog(
+            this,
+            android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth,
+            listener,
+            now.get(Calendar.HOUR_OF_DAY),
+            now.get(Calendar.MINUTE),
+            /* is24HourView = */ false
+        )
+
+        dialog.show()
     }
 }

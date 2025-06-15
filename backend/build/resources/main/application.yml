@@ -1,9 +1,0 @@
-spring:
-    application:
-        name: sirojungbotong
-    profiles:
-        active: local
-
-    web:
-        resources:
-            static-locations: file:uploads/

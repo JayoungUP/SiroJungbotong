@@ -14,9 +14,9 @@ class EmailService(
         val helper = MimeMessageHelper(message, true, "UTF-8")
 
         helper.setTo(email)
-        helper.setSubject("비밀번호 재설정 인증번호")
+        helper.setSubject("시로 정보통 인증번호")
         helper.setText("""
-        비밀번호 재설정을 위한 인증번호는 다음과 같습니다:
+        인증번호는 다음과 같습니다:
 
         $code
 
