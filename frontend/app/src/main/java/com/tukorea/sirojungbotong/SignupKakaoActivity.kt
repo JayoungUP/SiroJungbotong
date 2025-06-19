@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.yourapp.SignupExtraActivity
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -89,7 +90,7 @@ class SignupKakaoActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         if (response.isSuccessful) {
                             Toast.makeText(this@SignupKakaoActivity, "회원가입 성공!", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this@SignupKakaoActivity, SignupEmailActivity::class.java)
+                            val intent = Intent(this@SignupKakaoActivity, SignupExtraActivity::class.java)
                             startActivity(intent)
                             finish()
                         } else {
