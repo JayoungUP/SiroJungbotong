@@ -2,12 +2,14 @@ package com.jayoungup.sirojungbotong.global.config
 
 import com.jayoungup.sirojungbotong.global.config.app.AppProperties
 import org.springframework.context.annotation.Configuration
+import org.springframework.data.web.config.EnableSpringDataWebSupport
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import java.io.File
 import java.nio.file.Paths
 
 @Configuration
+@EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO)
 class WebConfig(private val appProperties: AppProperties) : WebMvcConfigurer {
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {

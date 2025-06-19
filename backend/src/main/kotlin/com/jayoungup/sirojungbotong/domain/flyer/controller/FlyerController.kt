@@ -7,12 +7,15 @@ import com.jayoungup.sirojungbotong.domain.flyer.service.ItemService
 import com.jayoungup.sirojungbotong.domain.member.entity.Member
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.enums.ParameterIn
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springdoc.core.annotations.ParameterObject
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -65,7 +68,7 @@ class FlyerController(
 
     @Operation(
         summary = "전단지 전체 조회",
-        description = "모든 전단지를 조회합니다.",
+        description = "모든 전단지를 조회합니다. 시장명으로 필터링하거나, 정렬 기준을 설정할 수 있습니다.",
         responses = [
             ApiResponse(
                 responseCode = "200",
@@ -125,8 +128,27 @@ class FlyerController(
         ]
     )
     @GetMapping
-    fun getAll(): ResponseEntity<List<FlyerResponseDto>> =
-        ResponseEntity.ok(flyerService.getAllFlyers().map { FlyerMapper.toDto(it) })
+    fun getAll(
+        @Parameter(
+            `in` = ParameterIn.QUERY,
+            description = "시장 이름 (예: 정왕시장)",
+            schema = Schema(type = "string")
+        )
+        @RequestParam(required = false) market: String?,
+
+        @Parameter(
+            `in` = ParameterIn.QUERY,
+            description = "정렬 기준 (default: 최신순) - latest | scrap",
+            schema = Schema(type = "string", allowableValues = ["latest", "scrap"], defaultValue = "latest")
+        )
+        @RequestParam(required = false, defaultValue = "latest") sort: String,
+
+        @ParameterObject pageable: Pageable
+    ): ResponseEntity<Page<FlyerResponseDto>> {
+        val flyers = flyerService.getFlyersFiltered(market, sort, pageable)
+        val result = flyers.map { FlyerMapper.toDto(it) }
+        return ResponseEntity.ok(result)
+    }
 
     @Operation(summary = "전단지 텍스트 수정", description = "전단지의 텍스트 내용을 수정합니다.")
     @PreAuthorize("hasAnyRole('OWNER','ADMIN')")

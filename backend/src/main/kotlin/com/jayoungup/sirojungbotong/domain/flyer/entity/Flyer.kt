@@ -2,6 +2,7 @@ package com.jayoungup.sirojungbotong.domain.flyer.entity
 
 import com.jayoungup.sirojungbotong.domain.store.entity.Store
 import jakarta.persistence.*
+import org.hibernate.annotations.Formula
 import java.time.LocalDateTime
 
 @Entity
@@ -40,8 +41,8 @@ class Flyer(
     val items: MutableList<Item> = mutableListOf(),
 
     @OneToMany(mappedBy = "flyer", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val scrapFlyers: MutableList<ScrapFlyer> = mutableListOf()
-) {
-        val scrapCount: Int
-        get() = scrapFlyers.size
-}
+    val scrapFlyers: MutableList<ScrapFlyer> = mutableListOf(),
+
+    @Formula("(SELECT COUNT(sf.id) FROM scrap_flyers sf WHERE sf.flyer_id = id)")
+    val scrapCount: Int = 0
+)

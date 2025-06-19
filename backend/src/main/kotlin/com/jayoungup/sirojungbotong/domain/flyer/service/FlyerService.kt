@@ -12,6 +12,9 @@ import com.jayoungup.sirojungbotong.domain.flyer.repository.ItemRepository
 import com.jayoungup.sirojungbotong.domain.store.exception.StoreNotFoundException
 import com.jayoungup.sirojungbotong.domain.store.repository.StoreRepository
 import com.jayoungup.sirojungbotong.domain.member.entity.Member
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -40,8 +43,22 @@ class FlyerService(
         flyerRepository.findById(id).orElseThrow { FlyerNotFoundException(id) }
 
     @Transactional(readOnly = true)
-    fun getAllFlyers(): List<Flyer> =
-        flyerRepository.findAll()
+    fun getFlyersFiltered(
+        market: String?,
+        sort: String,
+        pageable: Pageable
+    ): Page<Flyer> {
+        return if (sort == "scrap") {
+            val flyers = flyerRepository.findAllByMarketWithoutPage(market)
+                .sortedByDescending { it.scrapCount }
+            val fromIndex = pageable.offset.toInt()
+            val toIndex = (fromIndex + pageable.pageSize).coerceAtMost(flyers.size)
+            val pageContent = if (fromIndex >= flyers.size) emptyList() else flyers.subList(fromIndex, toIndex)
+            PageImpl(pageContent, pageable, flyers.size.toLong())
+        } else {
+            flyerRepository.findAllByMarket(market, pageable)
+        }
+    }
 
     fun updateFlyerText(member: Member, id: Long, dto: FlyerUpdateRequestDto): Flyer {
         val flyer = flyerRepository.findById(id).orElseThrow { FlyerNotFoundException(id) }
