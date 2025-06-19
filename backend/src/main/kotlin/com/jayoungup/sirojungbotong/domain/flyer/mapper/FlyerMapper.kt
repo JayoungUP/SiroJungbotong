@@ -30,6 +30,7 @@ object FlyerMapper {
         imageUrl = flyer.imageUrl,
         createdAt = flyer.createdAt,
         updatedAt = flyer.updatedAt,
-        items = flyer.items.map { ItemMapper.toDto(it) }
+        items = flyer.items.map { ItemMapper.toDto(it) },
+        scrapCount = flyer.scrapCount
     )
 }

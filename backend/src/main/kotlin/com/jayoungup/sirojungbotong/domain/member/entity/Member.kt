@@ -1,5 +1,7 @@
 package com.jayoungup.sirojungbotong.domain.member.entity
 
+import com.jayoungup.sirojungbotong.domain.flyer.entity.ScrapFlyer
+import com.jayoungup.sirojungbotong.domain.store.entity.LikedStore
 import jakarta.persistence.*
 
 enum class Role {
@@ -23,8 +25,8 @@ open class Member(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val role: Role
-)
+    val role: Role,
+    )
 
 @Entity
 @Table(name = "email_users")

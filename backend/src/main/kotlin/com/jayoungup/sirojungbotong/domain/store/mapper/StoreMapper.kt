@@ -19,7 +19,7 @@ object StoreMapper {
             closeTime = dto.closeTime,
             imageUrl = imageUrl,
             businessDocumentUrl = businessDocumentUrl,
-            owner = owner
+            owner = owner,
         )
 
     fun toDetailDto(store: Store): StoreDetailResponseDto = StoreDetailResponseDto(
@@ -32,7 +32,8 @@ object StoreMapper {
         closeTime = store.closeTime,
         imageUrl = store.imageUrl,
         businessDocumentUrl = store.businessDocumentUrl,
-        flyers = store.flyers.map { FlyerMapper.toDto(it) }
+        flyers = store.flyers.map { FlyerMapper.toDto(it) },
+        likeCount = store.likeCount
     )
 
     fun toSimpleDto(store: Store): StoreSimpleResponseDto = StoreSimpleResponseDto(
@@ -44,6 +45,7 @@ object StoreMapper {
         openTime = store.openTime,
         closeTime = store.closeTime,
         imageUrl = store.imageUrl,
-        businessDocumentUrl = store.businessDocumentUrl
+        businessDocumentUrl = store.businessDocumentUrl,
+        likeCount = store.likeCount
     )
 }

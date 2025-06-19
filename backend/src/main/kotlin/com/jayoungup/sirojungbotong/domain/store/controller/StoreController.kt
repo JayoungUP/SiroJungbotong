@@ -63,7 +63,8 @@ class StoreController(
                                     "openTime": "09:00:00",
                                     "closeTime": "21:00:00",
                                     "imageUrl": null,
-                                    "businessDocumentUrl": null
+                                    "businessDocumentUrl": null,
+                                    "likeCount": 3
                                 },
                                 {
                                     "id": 2,
@@ -73,7 +74,8 @@ class StoreController(
                                     "openTime": "09:00:00",
                                     "closeTime": "21:00:00",
                                     "imageUrl": null,
-                                    "businessDocumentUrl": null
+                                    "businessDocumentUrl": null,
+                                    "likeCount": 2
                                 },
                                 {
                                     "id": 3,
@@ -83,7 +85,8 @@ class StoreController(
                                     "openTime": "09:00:00",
                                     "closeTime": "21:00:00",
                                     "imageUrl": null,
-                                    "businessDocumentUrl": null
+                                    "businessDocumentUrl": null,
+                                    "likeCount": 0
                                 }
                             ]
                     }

@@ -29,5 +29,8 @@ data class StoreSimpleResponseDto(
     val imageUrl: String?,
 
     @field:Schema(description = "사업자 등록 서류 경로", example = "backend/uploads/stores/1720038880000_bizdoc.jpg")
-    val businessDocumentUrl: String?
+    val businessDocumentUrl: String?,
+
+    @field:Schema(description = "좋아요 수", example = "17")
+    val likeCount: Int
 )

@@ -100,7 +100,8 @@ class FlyerController(
                                                 "validUntil": "2025-06-30",
                                                 "imageUrl": "backend/uploads/items/20250619_154854_성현이네 김밥.jpg"
                                             }
-                                        ]
+                                        ],
+                                        "scrapCount": 1
                                     },
                                     {
                                         "id": 2,
@@ -112,7 +113,8 @@ class FlyerController(
                                         "imageUrl": "backend/uploads/flyers/20250619_232445_성현이네 분식.jpg",
                                         "createdAt": "2025-06-19T23:24:45.372323",
                                         "updatedAt": "2025-06-19T23:24:45.372332",
-                                        "items": []
+                                        "items": [],
+                                        "scrapCount": 3
                                     }
                                 ]
                             }

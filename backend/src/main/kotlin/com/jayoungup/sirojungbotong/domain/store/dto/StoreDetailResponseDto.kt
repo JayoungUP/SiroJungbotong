@@ -34,5 +34,8 @@ data class StoreDetailResponseDto(
     val businessDocumentUrl: String?,
 
     @field:Schema(description = "업장 전단지 목록")
-    val flyers: List<FlyerResponseDto>
+    val flyers: List<FlyerResponseDto>,
+
+    @field:Schema(description = "좋아요 수", example = "17")
+    val likeCount: Int
 )

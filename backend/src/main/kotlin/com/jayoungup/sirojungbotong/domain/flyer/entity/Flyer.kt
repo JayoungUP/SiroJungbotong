@@ -37,5 +37,11 @@ class Flyer(
     var updatedAt: LocalDateTime = LocalDateTime.now(),
 
     @OneToMany(mappedBy = "flyer", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val items: MutableList<Item> = mutableListOf()
-)
+    val items: MutableList<Item> = mutableListOf(),
+
+    @OneToMany(mappedBy = "flyer", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val scrapFlyers: MutableList<ScrapFlyer> = mutableListOf()
+) {
+        val scrapCount: Int
+        get() = scrapFlyers.size
+}

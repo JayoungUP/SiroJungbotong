@@ -37,5 +37,12 @@ class Store(
     var owner: Member,
 
     @OneToMany(mappedBy = "store", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val flyers: MutableList<Flyer> = mutableListOf()
-)
+    val flyers: MutableList<Flyer> = mutableListOf(),
+
+    @OneToMany(mappedBy = "store", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val likedStores: MutableList<LikedStore> = mutableListOf()
+
+) {
+    val likeCount: Int
+        get() = likedStores.size
+}
