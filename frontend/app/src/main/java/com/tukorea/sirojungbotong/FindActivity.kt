@@ -90,6 +90,8 @@ class FindActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         Toast.makeText(this@FindActivity, "인증번호를 이메일로 전송했습니다", Toast.LENGTH_SHORT).show()
+                        val layoutVerify = idForm.findViewById<View>(R.id.layout_verify_section)
+                        layoutVerify.visibility = View.VISIBLE
                     } else {
                         Toast.makeText(this@FindActivity, "이메일 전송 실패", Toast.LENGTH_SHORT).show()
                     }
@@ -156,6 +158,8 @@ class FindActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         Toast.makeText(this@FindActivity, "인증번호 전송 완료", Toast.LENGTH_SHORT).show()
+                        val layoutVerify = pwForm.findViewById<View>(R.id.layout_verify_section)
+                        layoutVerify.visibility = View.VISIBLE
                     } else {
                         Toast.makeText(this@FindActivity, "등록되지 않은 이메일이거나 오류입니다", Toast.LENGTH_SHORT).show()
                     }

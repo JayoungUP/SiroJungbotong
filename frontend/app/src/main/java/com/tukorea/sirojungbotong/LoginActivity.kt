@@ -46,6 +46,9 @@ class LoginActivity : AppCompatActivity() {
     interface ApiService {
         @POST("/api/auth/login")
         fun login(@Body request: LoginRequest): Call<LoginWrapperResponse>
+
+        @POST("/api/auth/login/kakao")
+        fun kakaoLogin(@Body accessToken: String): Call<LoginWrapperResponse>
     }
 
     // 🔸 Retrofit 객체 생성
@@ -57,6 +60,36 @@ class LoginActivity : AppCompatActivity() {
             .create(ApiService::class.java)
     }
 
+    // 🔹 카카오 로그인 성공 시 서버에 토큰 전송
+    private fun sendKakaoAccessTokenToServer(accessToken: String) {
+        retrofit.kakaoLogin("\"$accessToken\"").enqueue(object : Callback<LoginWrapperResponse> {
+            override fun onResponse(call: Call<LoginWrapperResponse>, response: Response<LoginWrapperResponse>) {
+                if (response.isSuccessful) {
+                    val result = response.body()?.data
+                    if (result != null) {
+                        Log.d("KakaoServerLogin", "nickname: ${result.nickname}")
+                        Log.d("KakaoServerLogin", "accessToken: ${result.accessToken}")
+                        Log.d("KakaoServerLogin", "refreshToken: ${result.refreshToken}")
+                        Log.d("KakaoServerLogin", "role: ${result.role}")
+                        Toast.makeText(this@LoginActivity, "${result.nickname}님 환영합니다!", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finish()
+                    } else {
+                        Log.e("KakaoServerLogin", "응답 본문이 비어 있음")
+                    }
+                } else {
+                    Log.e("KakaoServerLogin", "응답 실패: ${response.code()} - ${response.errorBody()?.string()}")
+                    Toast.makeText(this@LoginActivity, "카카오 로그인 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<LoginWrapperResponse>, t: Throwable) {
+                Toast.makeText(this@LoginActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
+                Log.e("KakaoServerLogin", "서버 통신 실패", t)
+            }
+        })
+    }
+
     // 🔹 이메일 로그인 함수
     fun loginWithKakaoAccount() {
         UserApiClient.instance.loginWithKakaoAccount(this) { token, error ->
@@ -65,8 +98,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "카카오 로그인 실패", Toast.LENGTH_SHORT).show()
             } else if (token != null) {
                 Log.d("KakaoLogin", "카카오계정 로그인 성공: ${token.accessToken}")
-                Toast.makeText(this, "카카오 로그인 성공!", Toast.LENGTH_SHORT).show()
-                // TODO: 서버에 토큰 보내서 가입/로그인 처리
+                sendKakaoAccessTokenToServer(token.accessToken)
             }
         }
     }
@@ -92,26 +124,24 @@ class LoginActivity : AppCompatActivity() {
             binding.editPassword.setSelection(binding.editPassword.text.length)
         }
 
-        // 아이디 찾기
+        // 아이디/비밀번호 찾기
         binding.tvFindId.setOnClickListener {
             val intent = Intent(this, FindActivity::class.java)
             intent.putExtra("mode", "id")
             startActivity(intent)
         }
 
-        // 비밀번호 찾기
         binding.tvFindPw.setOnClickListener {
             val intent = Intent(this, FindActivity::class.java)
             intent.putExtra("mode", "pw")
             startActivity(intent)
         }
 
-        // 🔸 로그인 버튼
+        // 🔸 이메일 로그인 버튼
         binding.btnLogin.setOnClickListener {
             val id = binding.editId.text.toString()
             val pw = binding.editPassword.text.toString()
 
-            // 초기화
             binding.tvIdError.visibility = View.GONE
             binding.tvIdLabel.setTextColor(Color.BLACK)
             binding.tvPwLabel.setTextColor(Color.BLACK)
@@ -134,7 +164,6 @@ class LoginActivity : AppCompatActivity() {
                             Log.d("LoginSuccess", "accessToken: ${result.accessToken}")
                             Log.d("LoginSuccess", "refreshToken: ${result.refreshToken}")
                             Log.d("LoginSuccess", "role: ${result.role}")
-
                             Toast.makeText(this@LoginActivity, "${result.nickname}님 환영합니다!", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                             finish()
@@ -159,29 +188,20 @@ class LoginActivity : AppCompatActivity() {
             })
         }
 
-        // 카카오 로그인 버튼 클릭
+        // 🔸 카카오 로그인 버튼 클릭
         binding.btnKakaoLogin.setOnClickListener {
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
-                // ✅ 카카오톡 앱으로 로그인
                 UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
                     if (error != null) {
                         Log.e("KakaoLogin", "카카오톡 로그인 실패: $error")
-
-                        // 사용자가 로그인 취소한 경우
-                        if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                            return@loginWithKakaoTalk
-                        }
-
-                        // 다른 오류 → 카카오 계정(웹) 로그인 시도
+                        if (error is ClientError && error.reason == ClientErrorCause.Cancelled) return@loginWithKakaoTalk
                         loginWithKakaoAccount()
                     } else if (token != null) {
                         Log.d("KakaoLogin", "카카오톡 로그인 성공: ${token.accessToken}")
-                        Toast.makeText(this, "카카오 로그인 성공!", Toast.LENGTH_SHORT).show()
-                        // TODO: 서버에 토큰 보내서 가입/로그인 처리
+                        sendKakaoAccessTokenToServer(token.accessToken)
                     }
                 }
             } else {
-                // ✅ 카카오 계정(웹) 로그인
                 loginWithKakaoAccount()
             }
         }
