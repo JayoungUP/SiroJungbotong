@@ -15,6 +15,9 @@ data class StoreDetailResponseDto(
     @field:Schema(description = "업장명", example = "김밥천국 신림점")
     val name: String,
 
+    @field:Schema(description = "시장명", example = "정왕시장")
+    val market: String,
+
     @field:Schema(description = "업장 주소", example = "서울 관악구 신림로 1")
     val address: String,
 

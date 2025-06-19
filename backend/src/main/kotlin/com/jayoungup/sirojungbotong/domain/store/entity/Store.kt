@@ -14,6 +14,9 @@ class Store(
     @Column(nullable = false)
     var name: String,
 
+    @Column(nullable = false) // 시장
+    var market: String,
+
     @Column(nullable = false)
     var address: String,
 

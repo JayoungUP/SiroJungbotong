@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -26,7 +27,7 @@ class StoreController(
     @PreAuthorize("hasAnyRole('OWNER', 'ADMIN')")
     fun create(
         @AuthenticationPrincipal member: Member,
-        @ModelAttribute dto: StoreCreateRequestDto,
+        @ModelAttribute @Valid dto: StoreCreateRequestDto,
         @RequestPart(required = false) image: MultipartFile?,
         @RequestPart(required = false) businessDocument: MultipartFile?
     ): ResponseEntity<StoreDetailResponseDto> {

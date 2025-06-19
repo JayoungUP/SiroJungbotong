@@ -13,6 +13,7 @@ object StoreMapper {
     fun toEntity(dto: StoreCreateRequestDto, imageUrl: String?, businessDocumentUrl: String?, owner: Member): Store =
         Store(
             name = dto.name,
+            market = dto.market,
             address = dto.address,
             openTime = dto.openTime,
             closeTime = dto.closeTime,
@@ -25,6 +26,7 @@ object StoreMapper {
         id = store.id,
         ownerId = store.owner.id,
         name = store.name,
+        market = store.market,
         address = store.address,
         openTime = store.openTime,
         closeTime = store.closeTime,
@@ -37,6 +39,7 @@ object StoreMapper {
         id = store.id,
         ownerId = store.owner.id,
         name = store.name,
+        market = store.market,
         address = store.address,
         openTime = store.openTime,
         closeTime = store.closeTime,
