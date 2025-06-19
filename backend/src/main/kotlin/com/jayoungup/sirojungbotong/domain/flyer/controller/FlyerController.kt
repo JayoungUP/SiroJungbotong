@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springdoc.core.annotations.ParameterObject
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
@@ -31,7 +32,7 @@ class FlyerController(
     @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
     @PostMapping(consumes = ["multipart/form-data"])
     fun create(
-        @RequestAttribute member: Member,
+        @AuthenticationPrincipal member: Member,
         @ParameterObject data: FlyerCreateRequestDto,
         @RequestPart(required = false, name = "image")
         @Parameter(
@@ -69,7 +70,7 @@ class FlyerController(
     @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
     @PutMapping("/{id}")
     fun updateText(
-        @RequestAttribute member: Member,
+        @AuthenticationPrincipal member: Member,
         @PathVariable id: Long,
         @RequestBody updated: FlyerUpdateRequestDto
     ): ResponseEntity<FlyerResponseDto> =
@@ -78,7 +79,7 @@ class FlyerController(
     @Operation(summary = "전단지 삭제", description = "ID로 전단지를 삭제합니다.")
     @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
     @DeleteMapping("/{id}")
-    fun delete(@RequestAttribute member: Member, @PathVariable id: Long): ResponseEntity<Void> {
+    fun delete(@AuthenticationPrincipal member: Member, @PathVariable id: Long): ResponseEntity<Void> {
         flyerService.deleteFlyer(member, id)
         return ResponseEntity.noContent().build()
     }
@@ -87,7 +88,7 @@ class FlyerController(
     @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
     @PatchMapping("/{id}/image")
     fun updateImage(
-        @RequestAttribute member: Member,
+        @AuthenticationPrincipal member: Member,
         @PathVariable id: Long,
         @RequestParam image: MultipartFile
     ): ResponseEntity<FlyerResponseDto> {
@@ -109,7 +110,7 @@ class FlyerController(
     @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
     @Operation(summary = "전단지에 품목 추가")
     fun addItem(
-        @RequestAttribute member: Member,
+        @AuthenticationPrincipal member: Member,
         @PathVariable flyerId: Long,
         @ParameterObject data: ItemCreateRequestDto,
         @RequestPart("image", required = false)
@@ -141,7 +142,7 @@ class FlyerController(
     @DeleteMapping("/items/{itemId}")
     @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
     @Operation(summary = "전단지 품목 삭제")
-    fun deleteItem(@RequestAttribute member: Member, @PathVariable itemId: Long): ResponseEntity<Void> {
+    fun deleteItem(@AuthenticationPrincipal member: Member, @PathVariable itemId: Long): ResponseEntity<Void> {
         itemService.deleteItem(member, itemId)
         return ResponseEntity.noContent().build()
     }

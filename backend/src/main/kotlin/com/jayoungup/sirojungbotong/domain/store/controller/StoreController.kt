@@ -6,6 +6,7 @@ import com.jayoungup.sirojungbotong.domain.store.service.StoreService
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
@@ -19,7 +20,7 @@ class StoreController(
     @PostMapping(consumes = ["multipart/form-data"])
     @PreAuthorize("hasAnyRole('OWNER', 'ADMIN')")
     fun create(
-        @RequestAttribute member: Member,
+        @AuthenticationPrincipal member: Member,
         @ModelAttribute dto: StoreCreateRequestDto,
         @RequestPart(required = false) image: MultipartFile?,
         @RequestPart(required = false) businessDocument: MultipartFile?
@@ -38,7 +39,7 @@ class StoreController(
     @PutMapping("/{id}", consumes = ["multipart/form-data"])
     @PreAuthorize("hasAnyRole('OWNER', 'ADMIN')")
     fun update(
-        @RequestAttribute member: Member,
+        @AuthenticationPrincipal member: Member,
         @PathVariable id: Long,
         @ModelAttribute dto: StoreUpdateRequestDto,
         @RequestPart(required = false) image: MultipartFile?,
@@ -48,7 +49,7 @@ class StoreController(
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('OWNER', 'ADMIN')")
-    fun delete(@RequestAttribute member: Member, @PathVariable id: Long): ResponseEntity<Void> {
+    fun delete(@AuthenticationPrincipal member: Member, @PathVariable id: Long): ResponseEntity<Void> {
         storeService.deleteStore(member, id)
         return ResponseEntity.noContent().build()
     }
