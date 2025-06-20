@@ -66,6 +66,67 @@ class FlyerController(
     fun getOne(@PathVariable id: Long): ResponseEntity<FlyerResponseDto> =
         ResponseEntity.ok(FlyerMapper.toDto(flyerService.getFlyer(id)))
 
+    @GetMapping("/{id}/translations")
+    @Operation(
+        summary = "전단지 단건 다국어 번역",
+        description = "전단지 상세 내용을 한국어/영어/중국어로 번역해 반환합니다.",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "성공",
+                content = [Content(
+                    mediaType = "application/json",
+                    examples = [ExampleObject(
+                        name = "Success",
+                        summary = "다국어 번역 응답 예시",
+                        value = """
+                        {
+                            "status": 200,
+                            "data": {
+                                "ko": {
+                                    "category": "분식",
+                                    "description": "방문 포장 할인 행사 중!",
+                                    "items": [
+                                        {
+                                            "name": "라면",
+                                            "description": "특별 할인"
+                                        }
+                                    ]
+                                },
+                                "en": {
+                                    "category": "Expression",
+                                    "description": "Door-to-door packaging on sale!",
+                                    "items": [
+                                        {
+                                            "name": "Ramen",
+                                            "description": "Special discounts"
+                                        }
+                                    ]
+                                },
+                                "zh": {
+                                    "category": "表达",
+                                    "description": "上门包装销售！",
+                                    "items": [
+                                        {
+                                            "name": "拉面",
+                                            "description": "特别折扣"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    """
+                    )]
+                )]
+            )
+        ]
+    )
+    fun getTranslatedFlyer(@PathVariable id: Long): ResponseEntity<Map<String, Any>> {
+        val flyer = flyerService.getFlyer(id)
+        val result = flyerService.getTranslatedFlyerMap(flyer)
+        return ResponseEntity.ok(result)
+    }
+
     @Operation(
         summary = "전단지 전체 조회",
         description = "모든 전단지를 조회합니다. 시장명으로 필터링하거나, 정렬 기준을 설정할 수 있습니다.",
