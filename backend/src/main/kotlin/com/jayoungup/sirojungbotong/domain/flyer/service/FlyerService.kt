@@ -6,19 +6,16 @@ import com.jayoungup.sirojungbotong.domain.flyer.entity.Flyer
 import com.jayoungup.sirojungbotong.domain.flyer.exception.FlyerNotFoundException
 import com.jayoungup.sirojungbotong.domain.flyer.exception.NoFlyerPermissionException
 import com.jayoungup.sirojungbotong.domain.flyer.mapper.FlyerMapper
-import com.jayoungup.sirojungbotong.domain.flyer.mapper.ItemMapper
 import com.jayoungup.sirojungbotong.domain.flyer.repository.FlyerRepository
-import com.jayoungup.sirojungbotong.domain.flyer.repository.ItemRepository
 import com.jayoungup.sirojungbotong.domain.store.exception.StoreNotFoundException
 import com.jayoungup.sirojungbotong.domain.store.repository.StoreRepository
 import com.jayoungup.sirojungbotong.domain.member.entity.Member
+import com.jayoungup.sirojungbotong.global.util.DeeplTranslator
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.multipart.MultipartFile
-import java.io.File
 import java.time.LocalDateTime
 
 @Service
@@ -26,6 +23,7 @@ import java.time.LocalDateTime
 class FlyerService(
     private val flyerRepository: FlyerRepository,
     private val storeRepository: StoreRepository,
+    private val deeplTranslator: DeeplTranslator
 ) {
 
     fun createFlyer(member: Member, dto: FlyerCreateRequestDto, imageUrl: String?): Flyer {
@@ -41,6 +39,27 @@ class FlyerService(
     @Transactional(readOnly = true)
     fun getFlyer(id: Long): Flyer =
         flyerRepository.findById(id).orElseThrow { FlyerNotFoundException(id) }
+
+    fun getTranslatedFlyerMap(flyer: Flyer): Map<String, Any> {
+        val langs = listOf("KO", "EN", "ZH")
+        val result = mutableMapOf<String, Any>()
+
+        langs.forEach { lang ->
+            result[lang.lowercase()] = mapOf(
+                "category" to deeplTranslator.translate(flyer.category, lang),
+                "description" to deeplTranslator.translate(flyer.description, lang),
+                "items" to flyer.items.map {
+                    mapOf(
+                        "name" to deeplTranslator.translate(it.name, lang),
+                        "description" to deeplTranslator.translate(it.description, lang)
+                    )
+                }
+            )
+        }
+
+        return result
+    }
+
 
     @Transactional(readOnly = true)
     fun getFlyersFiltered(
