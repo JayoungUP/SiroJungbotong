@@ -119,8 +119,7 @@ class MemberService(
         kakaoOwnerRepository.save(owner)
     }
 
-    fun getMemberInfo(memberId: Long): MemberInfoResponse {
-        val member = findMemberById(memberId)
+    fun getMemberInfo(member : Member): MemberInfoResponse {
         return memberMapper.toMemberInfoResponse(member)
     }
 

@@ -15,6 +15,9 @@ data class StoreDetailResponseDto(
     @field:Schema(description = "업장명", example = "김밥천국 신림점")
     val name: String,
 
+    @field:Schema(description = "시장명", example = "정왕시장")
+    val market: String,
+
     @field:Schema(description = "업장 주소", example = "서울 관악구 신림로 1")
     val address: String,
 
@@ -31,5 +34,8 @@ data class StoreDetailResponseDto(
     val businessDocumentUrl: String?,
 
     @field:Schema(description = "업장 전단지 목록")
-    val flyers: List<FlyerResponseDto>
+    val flyers: List<FlyerResponseDto>,
+
+    @field:Schema(description = "좋아요 수", example = "17")
+    val likeCount: Int
 )

@@ -43,6 +43,7 @@ class SecurityConfig(
                         "/api/member/signup/**",
                         "/api/auth/id/**"
                     ).permitAll()
+//                    .requestMatchers("/api/stores/**", "/api/flyer/**").hasRole("OWNER") 테스트를 위해 잠깐 해제
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)

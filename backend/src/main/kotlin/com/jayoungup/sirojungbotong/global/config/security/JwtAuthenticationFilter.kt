@@ -1,5 +1,7 @@
 package com.jayoungup.sirojungbotong.global.config.security
 
+import com.jayoungup.sirojungbotong.domain.member.exception.MemberNotFoundException
+import com.jayoungup.sirojungbotong.domain.member.repository.MemberRepository
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -12,7 +14,8 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class JwtAuthenticationFilter(
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val memberRepository: MemberRepository
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -41,8 +44,11 @@ class JwtAuthenticationFilter(
             val memberId = jwtTokenProvider.extractMemberId(token)
             val role = jwtTokenProvider.extractRole(token)
 
+            val member = memberRepository.findById(memberId)
+                .orElseThrow { MemberNotFoundException(memberId) }
+
             val authorities = listOf(SimpleGrantedAuthority("ROLE_${role.name}"))
-            val authentication = UsernamePasswordAuthenticationToken(memberId, null, authorities)
+            val authentication = UsernamePasswordAuthenticationToken(member, null, authorities)
             authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
 
             SecurityContextHolder.getContext().authentication = authentication

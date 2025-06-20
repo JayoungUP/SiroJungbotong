@@ -13,34 +13,39 @@ object StoreMapper {
     fun toEntity(dto: StoreCreateRequestDto, imageUrl: String?, businessDocumentUrl: String?, owner: Member): Store =
         Store(
             name = dto.name,
+            market = dto.market,
             address = dto.address,
             openTime = dto.openTime,
             closeTime = dto.closeTime,
             imageUrl = imageUrl,
             businessDocumentUrl = businessDocumentUrl,
-            owner = owner
+            owner = owner,
         )
 
     fun toDetailDto(store: Store): StoreDetailResponseDto = StoreDetailResponseDto(
         id = store.id,
         ownerId = store.owner.id,
         name = store.name,
+        market = store.market,
         address = store.address,
         openTime = store.openTime,
         closeTime = store.closeTime,
         imageUrl = store.imageUrl,
         businessDocumentUrl = store.businessDocumentUrl,
-        flyers = store.flyers.map { FlyerMapper.toDto(it) }
+        flyers = store.flyers.map { FlyerMapper.toDto(it) },
+        likeCount = store.likeCount
     )
 
     fun toSimpleDto(store: Store): StoreSimpleResponseDto = StoreSimpleResponseDto(
         id = store.id,
         ownerId = store.owner.id,
         name = store.name,
+        market = store.market,
         address = store.address,
         openTime = store.openTime,
         closeTime = store.closeTime,
         imageUrl = store.imageUrl,
-        businessDocumentUrl = store.businessDocumentUrl
+        businessDocumentUrl = store.businessDocumentUrl,
+        likeCount = store.likeCount
     )
 }

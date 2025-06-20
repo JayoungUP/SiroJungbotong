@@ -2,8 +2,10 @@ package com.jayoungup.sirojungbotong.domain.member.controller
 
 import com.jayoungup.sirojungbotong.domain.member.dto.request.*
 import com.jayoungup.sirojungbotong.domain.member.dto.response.MemberInfoResponse
+import com.jayoungup.sirojungbotong.domain.member.entity.Member
 import com.jayoungup.sirojungbotong.domain.member.service.MemberService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -43,8 +45,8 @@ class MemberController(
 
     /* 회원 정보 조회 (JWT 인증 필요) */
     @GetMapping("/info")
-    fun getMemberInfo(@RequestAttribute memberId: Long): ResponseEntity<MemberInfoResponse> {
-        val response = memberService.getMemberInfo(memberId)
+    fun getMemberInfo(@AuthenticationPrincipal member: Member): ResponseEntity<MemberInfoResponse> {
+        val response = memberService.getMemberInfo(member)
         return ResponseEntity.ok(response)
     }
 }

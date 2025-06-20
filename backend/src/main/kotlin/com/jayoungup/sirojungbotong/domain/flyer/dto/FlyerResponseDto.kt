@@ -34,5 +34,8 @@ data class FlyerResponseDto(
     val updatedAt: LocalDateTime,
 
     @field:Schema(description = "전단지에 포함된 품목 리스트")
-    val items: List<ItemResponseDto> = emptyList()
+    val items: List<ItemResponseDto> = emptyList(),
+
+    @field:Schema(description = "스크랩 수", example = "5")
+    val scrapCount: Int
 )
