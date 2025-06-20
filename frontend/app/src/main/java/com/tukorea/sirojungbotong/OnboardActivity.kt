@@ -17,11 +17,11 @@ class OnboardActivity : AppCompatActivity(){
         setContentView(bind.root)
         bind.OnboardSearch.setOnClickListener {
             try{
-                val intent=Intent(this,MarketListActivity::class.java)
+                val intent=Intent(this,HomeActivity::class.java)
                 startActivity(intent)
             }
             catch(e:Exception){
-                Toast.makeText(this, "MarketListActivity를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "HomeActivity를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
         bind.Upload.setOnClickListener {

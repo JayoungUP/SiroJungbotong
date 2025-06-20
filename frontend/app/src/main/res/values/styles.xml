@@ -12,4 +12,30 @@
         <item name="colorControlNormal">@android:color/transparent</item>
         <item name="colorControlActivated">@android:color/transparent</item>
     </style>
+
+    <style name="NoIndicator">
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="FAB.Circular" parent="">
+        <item name="shapeAppearanceOverlay">@style/FAB.FullyRounded</item>
+    </style>
+
+    <style name="FAB.FullyRounded" parent="">
+        <item name="cornerSize">50%</item> <!-- 핵심: 완전한 원형 -->
+    </style>
+
+    <!-- BottomNavigationView 전체 스타일 -->
+    <style name="BottomNavStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemTextAppearanceActive">@style/BottomNavLabelStyle</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavLabelStyle</item>
+    </style>
+
+    <!-- 텍스트 간격을 줄인 Label 스타일 -->
+    <style name="BottomNavLabelStyle" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:lineSpacingExtra">-4dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:textSize">10sp</item>
+    </style>
 </resources>
