@@ -7,6 +7,8 @@ import com.jayoungup.sirojungbotong.domain.store.exception.StoreNotFoundExceptio
 import com.jayoungup.sirojungbotong.domain.store.mapper.StoreMapper
 import com.jayoungup.sirojungbotong.domain.store.repository.StoreRepository
 import com.jayoungup.sirojungbotong.global.config.app.AppProperties
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -49,8 +51,13 @@ class StoreService(
     }
 
     @Transactional(readOnly = true)
-    fun getAllStores(): List<StoreSimpleResponseDto> =
-        storeRepository.findAll().map { StoreMapper.toSimpleDto(it) }
+    fun getStoresFiltered(market: String?, sort: String, pageable: Pageable): Page<StoreSimpleResponseDto> {
+        val stores = when (sort) {
+            "likeCount" -> storeRepository.findAllByMarketOrderByLikeCountDesc(market, pageable)
+            else -> storeRepository.findAllByMarketOrderByCreatedAtDesc(market, pageable)
+        }
+        return stores.map { StoreMapper.toSimpleDto(it) }
+    }
 
     fun deleteStore(owner: Member, id: Long) {
         val store = storeRepository.findById(id).orElseThrow { StoreNotFoundException() }

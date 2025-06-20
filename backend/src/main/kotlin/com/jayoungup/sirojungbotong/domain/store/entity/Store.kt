@@ -3,6 +3,8 @@ package com.jayoungup.sirojungbotong.domain.store.entity
 import com.jayoungup.sirojungbotong.domain.flyer.entity.Flyer
 import com.jayoungup.sirojungbotong.domain.member.entity.Member
 import jakarta.persistence.*
+import org.hibernate.annotations.Formula
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 @Entity
@@ -36,13 +38,18 @@ class Store(
     @JoinColumn(name = "owner_id", nullable = false)
     var owner: Member,
 
+    @Column(nullable = false)
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+
+    @Column(nullable = false)
+    var updatedAt: LocalDateTime = LocalDateTime.now(),
+
     @OneToMany(mappedBy = "store", cascade = [CascadeType.ALL], orphanRemoval = true)
     val flyers: MutableList<Flyer> = mutableListOf(),
 
     @OneToMany(mappedBy = "store", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val likedStores: MutableList<LikedStore> = mutableListOf()
+    val likedStores: MutableList<LikedStore> = mutableListOf(),
 
-) {
-    val likeCount: Int
-        get() = likedStores.size
-}
+    @Formula("(SELECT COUNT(ls.id) FROM liked_stores ls WHERE ls.store_id = id)")
+    val likeCount: Int = 0
+)
