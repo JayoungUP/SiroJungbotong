@@ -13,6 +13,7 @@ import com.tukorea.sirojungbotong.model.Flyer
 import com.tukorea.sirojungbotong.model.FlyerItem
 import com.tukorea.sirojungbotong.model.MarketData
 import com.tukorea.sirojungbotong.model.FilterState
+import com.tukorea.sirojungbotong.model.SortType
 
 class HomeActivity : AppCompatActivity() {
 
@@ -22,9 +23,12 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var btnSearch: ImageButton
     private lateinit var btnFilterOn: ImageButton
     private lateinit var btnFilterOff: ImageButton
+    private lateinit var btnSortLatest: ImageButton
+    private lateinit var btnSortPopular: ImageButton
 
     private var filterState = FilterState()
     private lateinit var fullMarketList: List<MarketData>
+    private var currentSortType = SortType.LATEST
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +41,18 @@ class HomeActivity : AppCompatActivity() {
         rvMarkets = findViewById(R.id.rv_markets)
         btnFilterOn = findViewById(R.id.btn_filter_on)
         btnFilterOff = findViewById(R.id.btn_filter_off)
+        btnSortLatest = findViewById(R.id.btn_latest)
+        btnSortPopular = findViewById(R.id.btn_popular)
 
         rvMarkets.layoutManager = LinearLayoutManager(this)
 
         // 필터 클릭 시 BottomSheet 열기
         btnFilterOn.setOnClickListener { openFilterSheet() }
         btnFilterOff.setOnClickListener { openFilterSheet() }
+
+        // 정렬 클릭 시 BottomSheet 열기
+        btnSortLatest.setOnClickListener { openSortSheet() }
+        btnSortPopular.setOnClickListener { openSortSheet() }
 
         // 더미 데이터 준비
         val dummyFlyer = Flyer(
@@ -69,6 +79,7 @@ class HomeActivity : AppCompatActivity() {
             MarketData("오이도전통수산시장", List(10) { dummyFlyer })
         )
 
+        updateSortButtons() // ✅ 초기 정렬 버튼 표시
         applyFilter(fullMarketList)
 
         // FloatingActionButton 클릭 이벤트
@@ -112,6 +123,11 @@ class HomeActivity : AppCompatActivity() {
             }
 
             matchesMarket && matchesCategory
+        }.let { list ->
+            when (currentSortType) {
+                SortType.LATEST -> list // 추후 최신순 정렬
+                SortType.POPULAR -> list // 추후 인기순 정렬
+            }
         }
 
         rvMarkets.adapter = MarketAdapter(filtered)
@@ -126,6 +142,15 @@ class HomeActivity : AppCompatActivity() {
         sheet.show(supportFragmentManager, "FilterSheet")
     }
 
+    private fun openSortSheet() {
+        val sheet = SortBottomSheetFragment(currentSortType) { newSort ->
+            currentSortType = newSort
+            updateSortButtons()
+            applyFilter(fullMarketList)
+        }
+        sheet.show(supportFragmentManager, "SortSheet")
+    }
+
     private fun updateFilterButtonState() {
         val isActive = filterState.useSiru ||
                 filterState.selectedMarkets.isNotEmpty() ||
@@ -133,5 +158,10 @@ class HomeActivity : AppCompatActivity() {
 
         btnFilterOn.visibility = if (isActive) View.VISIBLE else View.GONE
         btnFilterOff.visibility = if (isActive) View.GONE else View.VISIBLE
+    }
+
+    private fun updateSortButtons() {
+        btnSortLatest.visibility = if (currentSortType == SortType.LATEST) View.VISIBLE else View.GONE
+        btnSortPopular.visibility = if (currentSortType == SortType.POPULAR) View.VISIBLE else View.GONE
     }
 }

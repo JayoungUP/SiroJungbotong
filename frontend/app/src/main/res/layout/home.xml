@@ -60,8 +60,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:contentDescription="최신순"
-                    android:src="@drawable/ic_recent"
+                    android:src="@drawable/btn_sort_latest"
                     android:background="@drawable/filter_button_unselected"/>
+
+                <ImageButton
+                    android:id="@+id/btn_popular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="인기순"
+                    android:src="@drawable/btn_sort_popular"
+                    android:background="@drawable/filter_button_unselected"
+                    android:visibility="gone"/>
 
                 <FrameLayout
                     android:layout_width="wrap_content"
