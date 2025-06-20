@@ -59,18 +59,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:background="@null"
                     android:contentDescription="최신순"
-                    android:src="@drawable/ic_recent" />
+                    android:src="@drawable/ic_recent"
+                    android:background="@drawable/filter_button_unselected"/>
 
-                <ImageButton
-                    android:id="@+id/btn_jw"
+                <FrameLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:background="@null"
-                    android:contentDescription="필터조건"
-                    android:src="@drawable/ic_btn5" />
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/btn_filter_off"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:src="@drawable/ic_btn5"
+                        android:contentDescription="필터 조건"
+                        android:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/btn_filter_on"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:src="@drawable/ic_btn6"
+                        android:contentDescription="필터 조건 (적용됨)"
+                        android:visibility="gone" />
+                </FrameLayout>
             </LinearLayout>
         </HorizontalScrollView>
 
