@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_favorites"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 콘텐츠 영역: 헤더 + 그리드 리스트 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:padding="16dp">
+
+    <!-- 1) 헤더 -->
+    <TextView
+        android:id="@+id/tv_fav_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="내가 즐겨찾기한 전단지"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/helvetica_bold"
+        android:paddingBottom="8dp"/>
+
+    <!-- 2) 2열 그리드 RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_favorites"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never"
+        android:nestedScrollingEnabled="false"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        />
+    </LinearLayout>
+
+    </FrameLayout>
+
