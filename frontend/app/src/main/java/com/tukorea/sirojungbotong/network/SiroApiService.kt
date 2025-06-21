@@ -16,4 +16,12 @@ interface SiroApiService {
         @Query("validFrom") validFrom: String,   // yyyy-MM-dd
         @Query("validUntil") validUntil: String  // yyyy-MM-dd
     ): Response<AddItemResponse>
+
+    // 추가된 즐겨찾기 목록 가져오기
+    @GET("stores/liked")
+    suspend fun getLikedStores(): Response<LikedStoresResponse>
+
+    // 즐겨찾기 추가된 개별 가게 상세정보 가져오기
+    @GET("stores/{storeId}")
+    suspend fun getStoreDetail(@Path("storeId") storeId: Long): Response<StoreDetailResponse>
 }

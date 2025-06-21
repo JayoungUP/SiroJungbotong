@@ -9,7 +9,9 @@ data class Flyer(
     val id: Int,
     val storeId: Int,
     val description: String,
-    val imageUrl: String,
+    val expireAt: String,
+    val usesSiro: Boolean,
+    val imageUrl: String?,
     val items: List<FlyerItem>
 )
 
@@ -18,6 +20,6 @@ data class FlyerItem(
     val flyerId: Int,
     val name: String,
     val price: Int,
-    val imageUrl: String,
+    val imageUrl: String?,
     val category: String
 )

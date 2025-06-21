@@ -1,4 +1,4 @@
-package com.tukorea.sirojungbotong
+package com.tukorea.sirojungbotong.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,10 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tukorea.sirojungbotong.R
 import com.tukorea.sirojungbotong.model.MarketData
 
-class MarketAdapter(private val marketList: List<MarketData>) :
-    RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
+class MarketAdapter(
+    private val marketList: List<MarketData>,
+    private val storeNameMap: Map<Int, String>
+) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
 
     inner class MarketViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvMarketName: TextView = view.findViewById(R.id.tv_market_name)
@@ -27,7 +30,7 @@ class MarketAdapter(private val marketList: List<MarketData>) :
         holder.tvMarketName.text = market.marketName
 
         holder.rvItems.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
-        holder.rvItems.adapter = FlyerAdapter(market.items)
+        holder.rvItems.adapter = FlyerAdapter(market.items, storeNameMap)
     }
 
     override fun getItemCount(): Int = marketList.size

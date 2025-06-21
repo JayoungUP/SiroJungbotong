@@ -19,7 +19,7 @@
         android:id="@+id/tv_fav_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="내가 즐겨찾기한 전단지"
+        android:text="내가 즐겨찾기한 가게의 전단지"
         android:textSize="24sp"
         android:textStyle="bold"
         android:fontFamily="@font/helvetica_bold"

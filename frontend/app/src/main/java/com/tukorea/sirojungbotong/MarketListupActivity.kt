@@ -132,6 +132,8 @@ class MarketListupActivity : AppCompatActivity() {
         binding.btnRegister.setOnClickListener {
             binding.btnRegister.isEnabled = false
             val flyerId = intent.getLongExtra("flyerId", 0L)
+            val apiService = ApiClient.create(applicationContext)
+
             lifecycleScope.launch {
                 val items = collectVisibleItems()
                 items.forEachIndexed { idx, item ->
@@ -139,7 +141,7 @@ class MarketListupActivity : AppCompatActivity() {
                         ?.let { uri -> makeImagePart(uri, "item${idx + 1}.jpg") }
 
                     val response: AddItemResponse? = try {
-                        ApiClient.service.addItem(
+                        apiService.addItem(
                             flyerId = flyerId,
                             image = imagePart,
                             name = item.name,
@@ -152,6 +154,7 @@ class MarketListupActivity : AppCompatActivity() {
                         null
                     }
                 }
+
                 binding.ivRegisterDoneOverlay.visibility = View.VISIBLE
                 delay(3000L)
                 finish()

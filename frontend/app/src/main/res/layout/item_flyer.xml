@@ -21,19 +21,19 @@
             android:scaleType="centerCrop" />
 
         <TextView
-            android:id="@+id/tv_item_name"
+            android:id="@+id/tv_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="상품명"
+            android:text="설명"
             android:textStyle="bold"
             android:textSize="14sp"
             android:layout_marginTop="6dp" />
 
         <TextView
-            android:id="@+id/tv_price"
+            android:id="@+id/tv_expire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="₩6000"
+            android:text="~YYYY-MM-DD"
             android:textColor="#FF5722"
             android:textSize="13sp" />
 
@@ -41,8 +41,18 @@
             android:id="@+id/tv_store"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="해드상회"
+            android:text="가게명"
             android:textSize="12sp"
             android:textColor="#888888" />
+
+        <TextView
+            android:id="@+id/tv_uses_siro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시로 사용 가능"
+            android:textSize="11sp"
+            android:textColor="#2196F3"
+            android:visibility="gone"
+            android:layout_marginTop="2dp"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

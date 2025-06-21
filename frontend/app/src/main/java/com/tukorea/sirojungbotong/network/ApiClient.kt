@@ -1,5 +1,9 @@
 package com.tukorea.sirojungbotong.network
 
+import android.content.Context
+import android.preference.PreferenceManager
+import android.util.Log
+import com.tukorea.sirojungbotong.util.PreferenceUtil
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,12 +17,25 @@ object ApiClient {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private val client = OkHttpClient.Builder()
-        .addInterceptor(logging)
-        .build()
+    fun create(context: Context): SiroApiService {
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
 
-    val service: SiroApiService by lazy {
-        Retrofit.Builder()
+        val client = OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val token = PreferenceUtil.getAccessToken(context)
+                Log.d("TOKEN_CHECK", "accessToken: $token")
+                val requestBuilder = chain.request().newBuilder()
+                if (!token.isNullOrEmpty()) {
+                    requestBuilder.addHeader("Authorization", "Bearer $token")
+                }
+                chain.proceed(requestBuilder.build())
+            }
+            .addInterceptor(logging)
+            .build()
+
+        return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())

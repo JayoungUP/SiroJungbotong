@@ -13,6 +13,7 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.tukorea.sirojungbotong.databinding.LoginBinding
+import com.tukorea.sirojungbotong.util.PreferenceUtil
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -23,13 +24,13 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: LoginBinding
     private var isPasswordVisible = false
 
-    // 🔸 요청 데이터 클래스
+    // 요청 데이터 클래스
     data class LoginRequest(
         val loginId: String,
         val password: String
     )
 
-    // 🔸 응답 데이터 클래스
+    // 응답 데이터 클래스
     data class LoginWrapperResponse(
         val status: Int,
         val data: LoginResponse
@@ -42,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
         val role: String
     )
 
-    // 🔸 Retrofit 인터페이스
+    // Retrofit 인터페이스
     interface ApiService {
         @POST("/api/auth/login")
         fun login(@Body request: LoginRequest): Call<LoginWrapperResponse>
@@ -51,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
         fun kakaoLogin(@Body accessToken: String): Call<LoginWrapperResponse>
     }
 
-    // 🔸 Retrofit 객체 생성
+    // Retrofit 객체 생성
     private val retrofit: ApiService by lazy {
         Retrofit.Builder()
             .baseUrl("http://sirojungbotong.r-e.kr")
@@ -60,13 +61,19 @@ class LoginActivity : AppCompatActivity() {
             .create(ApiService::class.java)
     }
 
-    // 🔹 카카오 로그인 성공 시 서버에 토큰 전송
+    // 카카오 로그인 성공 시 서버에 토큰 전송
     private fun sendKakaoAccessTokenToServer(accessToken: String) {
         retrofit.kakaoLogin("\"$accessToken\"").enqueue(object : Callback<LoginWrapperResponse> {
             override fun onResponse(call: Call<LoginWrapperResponse>, response: Response<LoginWrapperResponse>) {
                 if (response.isSuccessful) {
                     val result = response.body()?.data
                     if (result != null) {
+                        // SharedPreferences 저장
+                        PreferenceUtil.setAccessToken(this@LoginActivity, result.accessToken)
+                        PreferenceUtil.setRefreshToken(this@LoginActivity, result.refreshToken)
+                        PreferenceUtil.setNickname(this@LoginActivity, result.nickname)
+                        PreferenceUtil.setRole(this@LoginActivity, result.role)
+
                         Log.d("KakaoServerLogin", "nickname: ${result.nickname}")
                         Log.d("KakaoServerLogin", "accessToken: ${result.accessToken}")
                         Log.d("KakaoServerLogin", "refreshToken: ${result.refreshToken}")
@@ -90,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    // 🔹 이메일 로그인 함수
+    // 카카오 로그인 함수
     fun loginWithKakaoAccount() {
         UserApiClient.instance.loginWithKakaoAccount(this) { token, error ->
             if (error != null) {
@@ -118,8 +125,7 @@ class LoginActivity : AppCompatActivity() {
             if (isPasswordVisible) {
                 binding.editPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             } else {
-                binding.editPassword.inputType =
-                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.editPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             }
             binding.editPassword.setSelection(binding.editPassword.text.length)
         }
@@ -137,7 +143,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 🔸 이메일 로그인 버튼
+        // 이메일 로그인 버튼
         binding.btnLogin.setOnClickListener {
             val id = binding.editId.text.toString()
             val pw = binding.editPassword.text.toString()
@@ -160,6 +166,12 @@ class LoginActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val result = response.body()?.data
                         if (result != null) {
+                            // SharedPreferences 저장
+                            PreferenceUtil.setAccessToken(this@LoginActivity, result.accessToken)
+                            PreferenceUtil.setRefreshToken(this@LoginActivity, result.refreshToken)
+                            PreferenceUtil.setNickname(this@LoginActivity, result.nickname)
+                            PreferenceUtil.setRole(this@LoginActivity, result.role)
+
                             Log.d("LoginSuccess", "nickname: ${result.nickname}")
                             Log.d("LoginSuccess", "accessToken: ${result.accessToken}")
                             Log.d("LoginSuccess", "refreshToken: ${result.refreshToken}")
@@ -188,7 +200,7 @@ class LoginActivity : AppCompatActivity() {
             })
         }
 
-        // 🔸 카카오 로그인 버튼 클릭
+        // 카카오 로그인 버튼 클릭
         binding.btnKakaoLogin.setOnClickListener {
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                 UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
