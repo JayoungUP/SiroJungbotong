@@ -8,6 +8,11 @@ spring:
         resources:
             static-locations: file:uploads/
 
+    servlet:
+        multipart:
+            max-file-size: -1
+            max-request-size: -1
+
     http:
         encoding:
             charset: UTF-8
@@ -68,3 +73,4 @@ app:
         flyer: backend/uploads/flyers
         store: backend/uploads/stores
         item: backend/uploads/items
+
