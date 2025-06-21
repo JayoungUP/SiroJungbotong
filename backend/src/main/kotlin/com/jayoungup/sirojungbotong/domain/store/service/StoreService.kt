@@ -21,15 +21,14 @@ class StoreService(
     private val appProperties: AppProperties
 ) {
 
-    fun createStore(owner: Member, dto: StoreCreateRequestDto, image: MultipartFile?, businessDocument: MultipartFile?): StoreDetailResponseDto {
+    fun createStore(owner: Member, dto: StoreCreateRequestDto, image: MultipartFile?): StoreDetailResponseDto {
         val imagePath = image?.let { saveFile(it, appProperties.uploadPath.store) }
-        val docPath = businessDocument?.let { saveFile(it, appProperties.uploadPath.store) }
 
-        val store = StoreMapper.toEntity(dto, imagePath, docPath, owner)
+        val store = StoreMapper.toEntity(dto, imagePath, owner)
         return StoreMapper.toDetailDto(storeRepository.save(store))
     }
 
-    fun updateStore(owner: Member, id: Long, dto: StoreUpdateRequestDto, image: MultipartFile?, businessDocument: MultipartFile?): StoreDetailResponseDto {
+    fun updateStore(owner: Member, id: Long, dto: StoreUpdateRequestDto, image: MultipartFile?): StoreDetailResponseDto {
         val store = storeRepository.findById(id).orElseThrow { StoreNotFoundException() }
 
         if (store.owner.id != owner.id) throw NoStorePermissionException()
@@ -39,7 +38,6 @@ class StoreService(
         store.openTime = dto.openTime
         store.closeTime = dto.closeTime
         image?.let { store.imageUrl = saveFile(it, appProperties.uploadPath.store) }
-        businessDocument?.let { store.businessDocumentUrl = saveFile(it, appProperties.uploadPath.store) }
 
         return StoreMapper.toDetailDto(storeRepository.save(store))
     }

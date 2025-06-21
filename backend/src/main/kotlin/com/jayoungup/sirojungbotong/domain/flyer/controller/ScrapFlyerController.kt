@@ -105,7 +105,6 @@ class ScrapFlyerController(
             )
         ]
     )
-
     @GetMapping
     fun getScrappedFlyers(
         @AuthenticationPrincipal member: Member

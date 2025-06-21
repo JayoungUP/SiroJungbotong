@@ -10,7 +10,7 @@ import com.jayoungup.sirojungbotong.domain.store.entity.Store
 
 object StoreMapper {
 
-    fun toEntity(dto: StoreCreateRequestDto, imageUrl: String?, businessDocumentUrl: String?, owner: Member): Store =
+    fun toEntity(dto: StoreCreateRequestDto, imageUrl: String?, owner: Member): Store =
         Store(
             name = dto.name,
             market = dto.market,
@@ -18,7 +18,7 @@ object StoreMapper {
             openTime = dto.openTime,
             closeTime = dto.closeTime,
             imageUrl = imageUrl,
-            businessDocumentUrl = businessDocumentUrl,
+            category = dto.category,
             owner = owner,
         )
 
@@ -30,8 +30,8 @@ object StoreMapper {
         address = store.address,
         openTime = store.openTime,
         closeTime = store.closeTime,
+        category = store.category,
         imageUrl = store.imageUrl,
-        businessDocumentUrl = store.businessDocumentUrl,
         flyers = store.flyers.map { FlyerMapper.toDto(it) },
         likeCount = store.likeCount
     )
@@ -45,7 +45,7 @@ object StoreMapper {
         openTime = store.openTime,
         closeTime = store.closeTime,
         imageUrl = store.imageUrl,
-        businessDocumentUrl = store.businessDocumentUrl,
+        category = store.category,
         likeCount = store.likeCount
     )
 }

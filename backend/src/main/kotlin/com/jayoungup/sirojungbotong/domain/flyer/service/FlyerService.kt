@@ -64,18 +64,22 @@ class FlyerService(
     @Transactional(readOnly = true)
     fun getFlyersFiltered(
         market: String?,
+        category: String?,
+        usesSiro: Boolean?,
         sort: String,
         pageable: Pageable
     ): Page<Flyer> {
-        return if (sort == "scrap") {
-            val flyers = flyerRepository.findAllByMarketWithoutPage(market)
-                .sortedByDescending { it.scrapCount }
-            val fromIndex = pageable.offset.toInt()
-            val toIndex = (fromIndex + pageable.pageSize).coerceAtMost(flyers.size)
-            val pageContent = if (fromIndex >= flyers.size) emptyList() else flyers.subList(fromIndex, toIndex)
-            PageImpl(pageContent, pageable, flyers.size.toLong())
-        } else {
-            flyerRepository.findAllByMarket(market, pageable)
+        return when (sort) {
+            "scrap" -> {
+                val filtered = flyerRepository.findAllFilteredForManualSorting(market, category, usesSiro)
+                val sorted = filtered.sortedByDescending { it.scrapCount }
+                val start = pageable.offset.toInt()
+                val end = (start + pageable.pageSize).coerceAtMost(sorted.size)
+                val pageContent = if (start >= sorted.size) emptyList() else sorted.subList(start, end)
+                PageImpl(pageContent, pageable, sorted.size.toLong())
+            }
+
+            else -> flyerRepository.findAllFilteredForSorting(market, category, usesSiro, pageable)
         }
     }
 

@@ -13,7 +13,7 @@ data class StoreCreateRequestDto(
     @field:NotBlank(message = "시장명을 입력해주세요.")
     val market: String,
 
-    @field:Schema(description = "업장 주소", example = "서울 관악구 신림로 1")
+    @field:Schema(description = "업장 주소", example = "경기도 시흥시 정왕동")
     @field:NotBlank(message = "주소를 입력해주세요.")
     val address: String,
 
@@ -21,5 +21,10 @@ data class StoreCreateRequestDto(
     val openTime: LocalTime,
 
     @field:Schema(description = "운영 종료 시간", example = "21:00")
-    val closeTime: LocalTime
+    val closeTime: LocalTime,
+
+    @field:Schema(description = "업장 카테고리", example = "분식")
+    @field:NotBlank(message = "업장 카테고리를 입력해주세요.")
+    val category: String,
+
 )

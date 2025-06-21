@@ -31,8 +31,12 @@ class Store(
     @Column(nullable = true)
     var imageUrl: String? = null,
 
-    @Column(nullable = true)
-    var businessDocumentUrl: String? = null,
+    @Column(nullable = false)
+    var category: String, // 업종 카테고리
+
+
+//    @Column(nullable = true)
+//    var businessDocumentUrl: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)

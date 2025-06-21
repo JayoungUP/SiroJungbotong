@@ -32,9 +32,8 @@ class StoreController(
         @AuthenticationPrincipal member: Member,
         @ModelAttribute @Valid dto: StoreCreateRequestDto,
         @RequestPart(required = false) image: MultipartFile?,
-        @RequestPart(required = false) businessDocument: MultipartFile?
     ): ResponseEntity<StoreDetailResponseDto> {
-        return ResponseEntity.ok(storeService.createStore(member, dto, image, businessDocument))
+        return ResponseEntity.ok(storeService.createStore(member, dto, image))
     }
 
     @Operation(summary = "업장 단건 조회", description = "업장 ID를 통해 상세 정보를 조회합니다.")
@@ -67,8 +66,8 @@ class StoreController(
                                         "address": "경기도 시흥시 발동동",
                                         "openTime": "09:00:00",
                                         "closeTime": "21:00:00",
-                                        "imageUrl": null,
-                                        "businessDocumentUrl": null,
+                                        "category": "음식점",
+                                        "imageUrl": "/backend/uploads/stores/1750488969332_새마을식당.jpg",
                                         "likeCount": 0
                                     },
                                     {
@@ -79,8 +78,8 @@ class StoreController(
                                         "address": "경기도 시흥시 발동동",
                                         "openTime": "09:00:00",
                                         "closeTime": "21:00:00",
+                                        "category": "음식점",
                                         "imageUrl": null,
-                                        "businessDocumentUrl": null,
                                         "likeCount": 0
                                     }
                                 ],
@@ -118,7 +117,7 @@ class StoreController(
         @RequestPart(required = false) image: MultipartFile?,
         @RequestPart(required = false) businessDocument: MultipartFile?
     ): ResponseEntity<StoreDetailResponseDto> =
-        ResponseEntity.ok(storeService.updateStore(member, id, dto, image, businessDocument))
+        ResponseEntity.ok(storeService.updateStore(member, id, dto, image))
 
     @Operation(summary = "업장 삭제", description = "사업자가 특정 업장을 삭제합니다.")
     @DeleteMapping("/{id}")

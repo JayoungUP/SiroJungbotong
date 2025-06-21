@@ -129,7 +129,7 @@ class FlyerController(
 
     @Operation(
         summary = "전단지 전체 조회",
-        description = "모든 전단지를 조회합니다. 시장명으로 필터링하거나, 정렬 기준을 설정할 수 있습니다.",
+        description = "모든 전단지를 조회합니다. 시장명, 카테고리, 시루 사용 여부로 필터링하거나, 정렬 기준을 설정할 수 있습니다.",
         responses = [
             ApiResponse(
                 responseCode = "200",
@@ -199,6 +199,20 @@ class FlyerController(
 
         @Parameter(
             `in` = ParameterIn.QUERY,
+            description = "카테고리 (예: 분식, 정육 등)",
+            schema = Schema(type = "string")
+        )
+        @RequestParam(required = false) category: String?,
+
+        @Parameter(
+            `in` = ParameterIn.QUERY,
+            description = "시루 사용 여부 (true | false)",
+            schema = Schema(type = "boolean")
+        )
+        @RequestParam(required = false) usesSiro: Boolean?,
+
+        @Parameter(
+            `in` = ParameterIn.QUERY,
             description = "정렬 기준 (default: 최신순) - latest | scrap",
             schema = Schema(type = "string", allowableValues = ["latest", "scrap"], defaultValue = "latest")
         )
@@ -206,7 +220,7 @@ class FlyerController(
 
         @ParameterObject pageable: Pageable
     ): ResponseEntity<Page<FlyerResponseDto>> {
-        val flyers = flyerService.getFlyersFiltered(market, sort, pageable)
+        val flyers = flyerService.getFlyersFiltered(market, category, usesSiro, sort, pageable)
         val result = flyers.map { FlyerMapper.toDto(it) }
         return ResponseEntity.ok(result)
     }
