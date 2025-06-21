@@ -17,7 +17,8 @@
     <string name="desc_back">뒤로가기</string>
     <!-- 오른쪽 상단 “등록” 버튼 -->
     <string name="action_register">등록</string>
-
+    <string name="user_name" translatable="false">%1$s님!<font color="#FF6B35"></font></string>
+    <string name="owner_name" translatable="false">%1$s 점주님!<font color="#FF6B35"></font></string>
     <!-- 화면 타이틀 -->
     <string name="title_register_item">새 전단지 등록하기</string>
 
