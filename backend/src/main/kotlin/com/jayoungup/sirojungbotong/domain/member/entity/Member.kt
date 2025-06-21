@@ -31,6 +31,7 @@ open class Member(
 @Entity
 @Table(name = "email_users")
 class EmailUser(
+    id: Long = 0,
     name: String,
     nickname: String,
     role: Role = Role.USER,
@@ -45,6 +46,7 @@ class EmailUser(
     var password: String
 
 ) : Member(
+    id = id,
     name = name,
     nickname = nickname,
     role = role
@@ -52,6 +54,7 @@ class EmailUser(
 @Entity
 @Table(name = "kakao_users")
 class KakaoUser(
+    id: Long = 0,
     name: String,
     nickname: String,
     role: Role = Role.USER,
@@ -60,6 +63,7 @@ class KakaoUser(
     val kakaoId: String // 보통 email 사용 or 카카오 고유 id
 
 ) : Member(
+    id = id,
     name = name,
     nickname = nickname,
     role = role
@@ -67,6 +71,7 @@ class KakaoUser(
 @Entity
 @Table(name = "email_owners")
 class EmailOwner(
+    id: Long = 0,
     name: String,
     nickname: String,
     role: Role = Role.OWNER,
@@ -84,6 +89,7 @@ class EmailOwner(
     val bNo: String
 
 ) : Member(
+    id = id,
     name = name,
     nickname = nickname,
     role = role
@@ -91,6 +97,7 @@ class EmailOwner(
 @Entity
 @Table(name = "kakao_owners")
 class KakaoOwner(
+    id: Long = 0,
     name: String,
     nickname: String,
     role: Role = Role.OWNER,
@@ -102,6 +109,7 @@ class KakaoOwner(
     val bNo: String
 
 ) : Member(
+    id = id,
     name = name,
     nickname = nickname,
     role = role

@@ -17,18 +17,22 @@ class BusinessVerificationService(
         .baseUrl(apiUrl)
         .build()
 
-    fun verify(bNo: String, startDt: String, pNm: String, pNm2: String): Boolean {
+    fun verify(bNo: String, startDt: String, pNm: String, pNm2: String?): Boolean {
+
+        val business = mutableMapOf<String, Any>(
+            "b_no" to bNo,
+            "start_dt" to startDt,
+            "p_nm" to pNm
+        )
+
+        pNm2?.let {
+            business["p_nm2"] = it
+        }
 
         val requestBody = mapOf(
-            "businesses" to listOf(
-                mapOf(
-                    "b_no" to bNo,
-                    "start_dt" to startDt,
-                    "p_nm" to pNm,
-                    "p_nm2" to pNm2
-                )
-            )
+            "businesses" to listOf(business)
         )
+
 
         val response = webClient.post()
             .uri("?serviceKey=$apiKey")

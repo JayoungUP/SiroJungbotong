@@ -49,4 +49,15 @@ class MemberController(
         val response = memberService.getMemberInfo(member)
         return ResponseEntity.ok(response)
     }
+
+    @PostMapping("/convert-to-owner")
+    fun convertToOwner(
+        @AuthenticationPrincipal memberId: Long,
+        @RequestBody request: ConvertToOwnerRequest
+    ): ResponseEntity<Void> {
+        memberService.convertToOwner(memberId, request)
+        return ResponseEntity.ok().build()
+    }
+
+
 }
