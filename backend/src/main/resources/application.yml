@@ -67,3 +67,4 @@ app:
     upload-path:
         flyer: backend/uploads/flyers
         store: backend/uploads/stores
+        item: backend/uploads/items
