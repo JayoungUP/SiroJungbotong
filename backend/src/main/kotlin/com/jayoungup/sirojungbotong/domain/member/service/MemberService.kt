@@ -132,6 +132,52 @@ class MemberService(
         throw IllegalArgumentException("존재하지 않는 사용자입니다.")
     }
 
+    @Transactional
+    fun convertToOwner(memberId: Long, request: ConvertToOwnerRequest) {
+        val member = findMemberById(memberId)
+
+        if (member.role.name != "USER") {
+            throw IllegalStateException("이미 사장님입니다.")
+        }
+
+        businessVerificationService.verify(
+            bNo = request.bNo,
+            startDt = request.startDt,
+            pNm = request.pNm,
+            pNm2 = request.pNm2
+        )
+
+        when (member) {
+            is EmailUser -> {
+                val owner = EmailOwner(
+                    id  = member.id,
+                    loginId = member.loginId,
+                    email = member.email,
+                    password = member.password,
+                    name = member.name,
+                    nickname = member.nickname,
+                    bNo = request.bNo
+                )
+                emailOwnerRepository.save(owner)
+                emailUserRepository.delete(member)
+            }
+
+            is KakaoUser -> {
+                val owner = KakaoOwner(
+                    id = member.id,
+                    kakaoId = member.kakaoId,
+                    name = member.name,
+                    nickname = member.nickname,
+                    bNo = request.bNo
+                )
+                kakaoOwnerRepository.save(owner)
+                kakaoUserRepository.delete(member)
+            }
+
+            else -> throw IllegalArgumentException("전환할 수 없는 사용자입니다.")
+        }
+    }
+
 
 }
 

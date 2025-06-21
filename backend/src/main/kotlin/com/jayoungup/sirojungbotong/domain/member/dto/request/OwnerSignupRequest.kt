@@ -9,7 +9,7 @@ data class OwnerEmailSignupRequest(
     val b_no: String,
     val start_dt: String,
     val p_nm: String,
-    val p_nm2: String
+    val p_nm2: String? = null
 )
 
 
@@ -20,6 +20,6 @@ data class OwnerKakaoSignupRequest(
     val b_no: String,
     val start_dt: String,
     val p_nm: String,
-    val p_nm2: String
+    val p_nm2: String? = null
 )
 
