@@ -150,7 +150,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, MarketListupActivity::class.java))
         }
         btnManageFlyers.setOnClickListener {
-            print("아직 구현중")
+            print("아직 구현중입니다.")
         }
         btnLogout.setOnClickListener {
             // 로그아웃 처리
