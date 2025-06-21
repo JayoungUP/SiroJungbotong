@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 
 @Tag(name = "가게 즐겨찾기", description = "가게 즐겨찾기 관련 API")
 @RestController
-@RequestMapping("/stores/liked")
+@RequestMapping("api/stores/liked")
 class LikedStoreController(
     private val likedStoreService: LikedStoreService
 ) {

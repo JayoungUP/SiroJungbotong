@@ -12,5 +12,6 @@ class AppProperties {
     class UploadPath {
         lateinit var flyer: String
         lateinit var store: String
+        lateinit var item: String
     }
 }
