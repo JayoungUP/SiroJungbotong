@@ -36,6 +36,13 @@ class StoreController(
         return ResponseEntity.ok(storeService.createStore(member, dto, image))
     }
 
+    @Operation(summary = "내 업장 목록 조회", description = "로그인한 사용자가 소유한 모든 업장을 조회합니다.")
+    @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
+    @GetMapping("/my")
+    fun getMyStores(@AuthenticationPrincipal member: Member): ResponseEntity<List<StoreDetailResponseDto>> {
+        return ResponseEntity.ok(storeService.getMyStores(member))
+    }
+
     @Operation(summary = "업장 단건 조회", description = "업장 ID를 통해 상세 정보를 조회합니다.")
     @GetMapping("/{id}")
     fun getOne(@PathVariable id: Long): ResponseEntity<StoreDetailResponseDto> =

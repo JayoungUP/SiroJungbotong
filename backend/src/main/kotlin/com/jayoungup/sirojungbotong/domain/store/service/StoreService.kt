@@ -43,6 +43,12 @@ class StoreService(
     }
 
     @Transactional(readOnly = true)
+    fun getMyStores(member: Member): List<StoreDetailResponseDto> {
+        val stores = storeRepository.findAllByOwnerId(member.id)
+        return stores.map { StoreMapper.toDetailDto(it) }
+    }
+
+    @Transactional(readOnly = true)
     fun getStore(id: Long): StoreDetailResponseDto {
         val store = storeRepository.findById(id).orElseThrow { StoreNotFoundException() }
         return StoreMapper.toDetailDto(store)
