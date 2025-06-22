@@ -1,25 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string-array name="business_types">
+        <item>Select--</item>
+        <item>Agricultural products</item>
+        <item>Livestock products</item>
+        <item>Seafood products</item>
+        <item>Processed foods</item>
+        <item>Clothing/Shoes</item>
+        <item>Household goods</item>
+        <item>Restaurant</item>
+        <item>Other retail</item>
+        <item>Neighborhood services</item>
+    </string-array>
+
+    <!-- 사용자 이름 표시 -->
+    <string name="user_name">Hello, %1$s!</string>
+
+    <!-- 액션바의 뒤로가기 버튼 설명 -->
     <string name="desc_back">Go Back</string>
-    <string name="action_register">Submit</string>
+    <!-- 오른쪽 상단 “등록” 버튼 -->
+    <string name="action_register">Register</string>
+    <!-- 화면 타이틀 -->
     <string name="title_register_item">Register New Flyer</string>
+
+    <!-- 언어 선택 버튼 레이블 (한·En·中) -->
     <string name="lang_ko">한</string>
     <string name="lang_en">En</string>
     <string name="lang_zh">中</string>
+
+    <!-- 전단지 정보 섹션 -->
+    <string name="label_flyer_info">Flyer Info</string>
+
+    <!-- 매장 선택 -->
+    <string name="label_select_store">Select Store</string>
+
+    <!-- 플라이어 카테고리 -->
+    <string name="label_flyer_category">Flyer Category</string>
+    <string name="hint_flyer_category">Enter the flyer category</string>
+
+    <!-- 플라이어 설명 -->
+    <string name="label_flyer_description">Flyer Description</string>
+    <string name="hint_flyer_description">Enter a description for the flyer</string>
+
+    <!-- 플라이어 유효기간 -->
+    <string name="label_expire_at">Expiration Date</string>
+    <string name="hint_expire_at">YYYY/MM/DD</string>
+
+    <!-- 시로 사용 여부 -->
+    <string name="use_now_marker">Siro Usable</string>
+
+    <!-- 플라이어 이미지 업로드 -->
+    <string name="label_flyer_image">Flyer Image</string>
+    <string name="hint_upload_flyer_image">Click to upload a flyer image</string>
+
+    <!-- 첫 번째 품목 안내 -->
+    <string name="first_item_required">* The first item is required.</string>
+
+    <!-- “품목 N” 레이블 (N은 코드에서 getString으로 채워줍니다) -->
     <string name="label_item">Item %1$d</string>
+
+    <!-- 품목 안의 각 필드 레이블/힌트 -->
     <string name="label_item_name">Item Name <font color="#FF6B35">*</font></string>
-    <string name="hint_item_name">Please enter the business name</string>
+    <string name="hint_item_name">Enter item name</string>
     <string name="label_item_desc">Item Description <font color="#FF6B35">*</font></string>
-    <string name="hint_item_desc">Please write a description of the item</string>
+    <string name="hint_item_desc">Enter item description</string>
     <string name="label_price">Price <font color="#FF6B35">*</font></string>
     <string name="hint_price">0</string>
     <string name="unit_won">KRW</string>
-    <string name="use_now_marker">Siru available</string>
     <string name="label_valid_period">Validity Period <font color="#FF6B35">*</font></string>
-    <string name="hint_start_date">Month/Day</string>
+    <string name="hint_start_date">Start Date</string>
     <string name="separator_tilde"> ~ </string>
-    <string name="hint_end_date">Month/Day</string>
+    <string name="hint_end_date">End Date</string>
     <string name="label_item_photo">Item Photo</string>
-    <string name="hint_upload_item_photo">Click to upload the item photo you want to register</string>
+    <string name="hint_upload_item_photo">Click to upload the item photo</string>
+
+    <!-- “+ 품목 추가하기” 버튼 텍스트 -->
     <string name="action_add_item">+ Add Item</string>
 </resources>

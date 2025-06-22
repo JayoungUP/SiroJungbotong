@@ -152,7 +152,7 @@
                 app:hintEnabled="true"
                 android:visibility="gone"
                 android:hint="업장 주소">
-
+f
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etStoreAddress"
                     android:layout_width="match_parent"

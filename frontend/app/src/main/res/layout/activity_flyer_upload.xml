@@ -7,13 +7,11 @@
     android:layout_height="match_parent">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/coordinator_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Toolbar -->
+        <!-- Toolbar with register button -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -36,6 +34,7 @@
                 android:fontFamily="@font/helvetica_bold" />
         </androidx.appcompat.widget.Toolbar>
 
+        <!-- Title + Language Toggle -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutLanguageSelector"
             android:layout_width="match_parent"
@@ -46,7 +45,6 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
-            <!-- 1) “새 전단지 등록하기” 타이틀 -->
             <TextView
                 android:id="@+id/tvTitleRegister"
                 android:layout_width="0dp"
@@ -58,9 +56,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/langToggleGroup"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-            <!-- 2) MaterialButtonToggleGroup -->
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/langToggleGroup"
                 android:layout_width="wrap_content"
@@ -85,7 +82,7 @@
                     android:textColor="@color/lang_active_color"
                     android:backgroundTint="@color/white"
                     android:textAllCaps="false"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnLangEn"
@@ -99,7 +96,7 @@
                     android:backgroundTint="@color/gray01"
                     android:textAllCaps="false"
                     android:textSize="12sp"
-                    android:layout_marginStart="4dp"/>
+                    android:layout_marginStart="4dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnLangZh"
@@ -109,16 +106,15 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="@string/lang_zh"
-                    android:backgroundTint="@color/gray01"
                     android:textColor="@color/lang_inactive_color"
+                    android:backgroundTint="@color/gray01"
                     android:textAllCaps="false"
                     android:textSize="12sp"
-                    android:layout_marginStart="4dp"/>
+                    android:layout_marginStart="4dp" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+        <!-- Main scrollable form -->
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
@@ -130,7 +126,6 @@
             android:overScrollMode="always"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
             <LinearLayout
                 android:id="@+id/container"
                 android:layout_width="match_parent"
@@ -140,7 +135,194 @@
                 android:paddingEnd="16dp"
                 android:paddingBottom="32dp">
 
+                <!-- ─── Flyer Info Section ─── -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_flyer_info"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="8dp" />
 
+                <!-- 매장 선택 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_select_store"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01"
+                    android:layout_marginTop="12dp" />
+
+                <Spinner
+                    android:id="@+id/spinnerStores"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"/>
+
+                <!-- Category -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_flyer_category"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01"
+                    android:layout_marginTop="12dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilFlyerCategory"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:hint="@string/hint_flyer_category">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFlyerCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Description -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_flyer_description"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01"
+                    android:layout_marginTop="12dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilFlyerDescription"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:hint="@string/hint_flyer_description">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFlyerDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Expire At -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_expire_at"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01"
+                    android:layout_marginTop="12dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilExpireAt"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/deadline"
+                    android:hint="@string/hint_expire_at">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etExpireAt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:inputType="none"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/helvetica_bold"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- usesSiro Checkbox -->
+                <CheckBox
+                    android:id="@+id/cbUsesSiro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimary"
+                    android:text="@string/use_now_marker"
+                    android:textSize="14sp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01" />
+
+                <!-- Flyer Image Upload -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_flyer_image"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/gray01"
+                    android:layout_marginTop="12dp" />
+
+                <FrameLayout
+                    android:id="@+id/layoutFlyerImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_upload_border"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/ivFlyerImageIcon"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/addimage" />
+
+                        <TextView
+                            android:id="@+id/tvFlyerImageGuidance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/hint_upload_flyer_image"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/helvetica_bold"
+                            android:textColor="@color/gray02" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/ivFlyerImagePreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+                <!-- ─── Item Section ─── -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/first_item_required"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:layout_marginTop="16dp" />
+
+                <!-- Item 1 -->
                 <TextView
                     android:id="@+id/tvItemLabel1"
                     android:layout_width="wrap_content"
@@ -148,8 +330,10 @@
                     android:text="@string/label_item"
                     android:textSize="18sp"
                     android:fontFamily="@font/helvetica_bold"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:layout_marginTop="12dp" />
 
+                <!-- Name -->
                 <TextView
                     android:id="@+id/tvItemNameLabel1"
                     android:layout_width="wrap_content"
@@ -159,6 +343,7 @@
                     android:layout_marginTop="12dp"
                     android:fontFamily="@font/helvetica_bold"
                     android:textColor="@color/gray01" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilItemName1"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -170,6 +355,7 @@
                     app:boxCornerRadiusBottomEnd="8dp"
                     app:boxCornerRadiusBottomStart="8dp"
                     android:hint="@string/hint_item_name">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etItemName1"
                         android:layout_width="match_parent"
@@ -180,6 +366,7 @@
                         android:textColor="@color/black" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Description -->
                 <TextView
                     android:id="@+id/tvItemDescLabel1"
                     android:layout_width="wrap_content"
@@ -189,6 +376,7 @@
                     android:layout_marginTop="12dp"
                     android:fontFamily="@font/helvetica_bold"
                     android:textColor="@color/gray01" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilItemDesc1"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -200,6 +388,7 @@
                     app:boxCornerRadiusBottomEnd="8dp"
                     app:boxCornerRadiusBottomStart="8dp"
                     android:hint="@string/hint_item_desc">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etItemDesc1"
                         android:layout_width="match_parent"
@@ -210,6 +399,7 @@
                         android:textColor="@color/black" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Price -->
                 <TextView
                     android:id="@+id/tvPriceLabel1"
                     android:layout_width="wrap_content"
@@ -219,6 +409,7 @@
                     android:layout_marginTop="12dp"
                     android:fontFamily="@font/helvetica_bold"
                     android:textColor="@color/gray01" />
+
                 <LinearLayout
                     android:id="@+id/layoutPrice1"
                     android:layout_width="match_parent"
@@ -234,6 +425,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="@string/hint_price">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPrice1"
                             android:layout_width="match_parent"
@@ -253,19 +445,9 @@
                         android:layout_marginStart="8dp"
                         android:fontFamily="@font/helvetica_bold"
                         android:textColor="@color/gray01" />
-
-                    <CheckBox
-                        android:id="@+id/cbUseNow1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/colorPrimary"
-                        android:text="@string/use_now_marker"
-                        android:textSize="14sp"
-                        android:layout_marginStart="16dp"
-                        android:fontFamily="@font/helvetica_bold"
-                        android:textColor="@color/gray01" />
                 </LinearLayout>
 
+                <!-- Valid Period -->
                 <TextView
                     android:id="@+id/tvValidPeriodLabel1"
                     android:layout_width="wrap_content"
@@ -275,6 +457,7 @@
                     android:layout_marginTop="12dp"
                     android:fontFamily="@font/helvetica_bold"
                     android:textColor="@color/gray01" />
+
                 <LinearLayout
                     android:id="@+id/layoutValidPeriod1"
                     android:layout_width="match_parent"
@@ -292,6 +475,7 @@
                         android:hint="@string/hint_start_date"
                         app:endIconMode="custom"
                         app:endIconDrawable="@drawable/deadline">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etStartDate1"
                             android:layout_width="match_parent"
@@ -324,6 +508,7 @@
                         android:hint="@string/hint_end_date"
                         app:endIconMode="custom"
                         app:endIconDrawable="@drawable/deadline">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etEndDate1"
                             android:layout_width="match_parent"
@@ -337,6 +522,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
+                <!-- Item1 Photo -->
                 <TextView
                     android:id="@+id/tvItemPhotoLabel1"
                     android:layout_width="wrap_content"
@@ -346,6 +532,7 @@
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/helvetica_bold"
                     android:textColor="@color/gray01" />
+
                 <FrameLayout
                     android:id="@+id/layoutItemPhoto1"
                     android:layout_width="match_parent"
@@ -355,17 +542,20 @@
                     android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
                     android:focusable="true">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="16dp">
+
                         <ImageView
                             android:id="@+id/ivItemPhotoIcon1"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:src="@drawable/addimage" />
+
                         <TextView
                             android:id="@+id/tvItemPhotoGuidance1"
                             android:layout_width="wrap_content"
@@ -376,21 +566,16 @@
                             android:fontFamily="@font/helvetica_bold"
                             android:textColor="@color/gray02" />
                     </LinearLayout>
+
                     <ImageView
                         android:id="@+id/ivItemPhotoPreview1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
                 </FrameLayout>
 
-                <!-- ───────────────────────────────
-                     Item 2 (초기 visibility="gone")
-                   ───────────────────────────────
-                   위 Item 1 블록과 완전히 동일하되,
-                   - 모든 ID 끝에 “1” 대신 “2”를 붙여서 복사
-                   - 최상단 TextView(tvItemLabel2)는 getString(R.string.label_item, 2)로 세팅
-                -->
+                <!-- Item 2 -->
                 <LinearLayout
                     android:id="@+id/layoutItem2Container"
                     android:layout_width="match_parent"
@@ -398,6 +583,7 @@
                     android:orientation="vertical"
                     android:visibility="gone"
                     android:layout_marginTop="24dp">
+
                     <TextView
                         android:id="@+id/tvItemLabel2"
                         android:layout_width="wrap_content"
@@ -407,6 +593,7 @@
                         android:fontFamily="@font/helvetica_bold"
                         android:textColor="@color/black" />
 
+                    <!-- Name -->
                     <TextView
                         android:id="@+id/tvItemNameLabel2"
                         android:layout_width="wrap_content"
@@ -416,6 +603,7 @@
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/helvetica_bold"
                         android:textColor="@color/gray01" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilItemName2"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -427,6 +615,7 @@
                         app:boxCornerRadiusBottomEnd="8dp"
                         app:boxCornerRadiusBottomStart="8dp"
                         android:hint="@string/hint_item_name">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etItemName2"
                             android:layout_width="match_parent"
@@ -437,6 +626,7 @@
                             android:textColor="@color/black" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Description -->
                     <TextView
                         android:id="@+id/tvItemDescLabel2"
                         android:layout_width="wrap_content"
@@ -446,6 +636,7 @@
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/helvetica_bold"
                         android:textColor="@color/gray01" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilItemDesc2"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -457,6 +648,7 @@
                         app:boxCornerRadiusBottomEnd="8dp"
                         app:boxCornerRadiusBottomStart="8dp"
                         android:hint="@string/hint_item_desc">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etItemDesc2"
                             android:layout_width="match_parent"
@@ -467,6 +659,7 @@
                             android:textColor="@color/black" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Price -->
                     <TextView
                         android:id="@+id/tvPriceLabel2"
                         android:layout_width="wrap_content"
@@ -476,6 +669,7 @@
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/helvetica_bold"
                         android:textColor="@color/gray01" />
+
                     <LinearLayout
                         android:id="@+id/layoutPrice2"
                         android:layout_width="match_parent"
@@ -491,6 +685,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="@string/hint_price">
+
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etPrice2"
                                 android:layout_width="match_parent"
@@ -510,19 +705,9 @@
                             android:layout_marginStart="8dp"
                             android:fontFamily="@font/helvetica_bold"
                             android:textColor="@color/gray01" />
-
-                        <CheckBox
-                            android:id="@+id/cbUseNow2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:buttonTint="@color/colorPrimary"
-                            android:text="@string/use_now_marker"
-                            android:textSize="14sp"
-                            android:layout_marginStart="16dp"
-                            android:fontFamily="@font/helvetica_bold"
-                            android:textColor="@color/gray01" />
                     </LinearLayout>
 
+                    <!-- Valid Period -->
                     <TextView
                         android:id="@+id/tvValidPeriodLabel2"
                         android:layout_width="wrap_content"
@@ -532,6 +717,7 @@
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/helvetica_bold"
                         android:textColor="@color/gray01" />
+
                     <LinearLayout
                         android:id="@+id/layoutValidPeriod2"
                         android:layout_width="match_parent"
@@ -549,6 +735,7 @@
                             android:hint="@string/hint_start_date"
                             app:endIconMode="custom"
                             app:endIconDrawable="@drawable/deadline">
+
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etStartDate2"
                                 android:layout_width="match_parent"
@@ -581,6 +768,7 @@
                             android:hint="@string/hint_end_date"
                             app:endIconMode="custom"
                             app:endIconDrawable="@drawable/deadline">
+
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etEndDate2"
                                 android:layout_width="match_parent"
@@ -594,6 +782,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
+                    <!-- Item2 Photo -->
                     <TextView
                         android:id="@+id/tvItemPhotoLabel2"
                         android:layout_width="wrap_content"
@@ -603,6 +792,7 @@
                         android:layout_marginTop="16dp"
                         android:fontFamily="@font/helvetica_bold"
                         android:textColor="@color/gray01" />
+
                     <FrameLayout
                         android:id="@+id/layoutItemPhoto2"
                         android:layout_width="match_parent"
@@ -612,17 +802,20 @@
                         android:foreground="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
                         android:focusable="true">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
                             android:gravity="center"
                             android:padding="16dp">
+
                             <ImageView
                                 android:id="@+id/ivItemPhotoIcon2"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:src="@drawable/addimage" />
+
                             <TextView
                                 android:id="@+id/tvItemPhotoGuidance2"
                                 android:layout_width="wrap_content"
@@ -633,23 +826,17 @@
                                 android:fontFamily="@font/helvetica_bold"
                                 android:textColor="@color/gray02" />
                         </LinearLayout>
+
                         <ImageView
                             android:id="@+id/ivItemPhotoPreview2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
                     </FrameLayout>
-
                 </LinearLayout>
 
-                <!-- ───────────────────────────────
-                     Item 3 (초기 visibility="gone")
-                   ───────────────────────────────
-                   위 Item 1 블록과 완전히 동일하되,
-                   - 모든 ID 끝에 “1” 대신 “3”을 붙여서 복사
-                   - 최상단 TextView(tvItemLabel3)는 getString(R.string.label_item, 3)로 세팅
-                -->
+                <!-- Item 3 -->
                 <LinearLayout
                     android:id="@+id/layoutItem3Container"
                     android:layout_width="match_parent"
@@ -657,6 +844,7 @@
                     android:orientation="vertical"
                     android:visibility="gone"
                     android:layout_marginTop="24dp">
+
                     <TextView
                         android:id="@+id/tvItemLabel3"
                         android:layout_width="wrap_content"
@@ -666,6 +854,7 @@
                         android:fontFamily="@font/helvetica_bold"
                         android:textColor="@color/black" />
 
+                    <!-- Name -->
                     <TextView
                         android:id="@+id/tvItemNameLabel3"
                         android:layout_width="wrap_content"
@@ -675,6 +864,7 @@
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/helvetica_bold"
                         android:textColor="@color/gray01" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilItemName3"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -686,6 +876,7 @@
                         app:boxCornerRadiusBottomEnd="8dp"
                         app:boxCornerRadiusBottomStart="8dp"
                         android:hint="@string/hint_item_name">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etItemName3"
                             android:layout_width="match_parent"
@@ -696,6 +887,7 @@
                             android:textColor="@color/black" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Description -->
                     <TextView
                         android:id="@+id/tvItemDescLabel3"
                         android:layout_width="wrap_content"
@@ -705,6 +897,7 @@
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/helvetica_bold"
                         android:textColor="@color/gray01" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilItemDesc3"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -716,6 +909,7 @@
                         app:boxCornerRadiusBottomEnd="8dp"
                         app:boxCornerRadiusBottomStart="8dp"
                         android:hint="@string/hint_item_desc">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etItemDesc3"
                             android:layout_width="match_parent"
@@ -726,6 +920,7 @@
                             android:textColor="@color/black" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Price -->
                     <TextView
                         android:id="@+id/tvPriceLabel3"
                         android:layout_width="wrap_content"
@@ -735,6 +930,7 @@
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/helvetica_bold"
                         android:textColor="@color/gray01" />
+
                     <LinearLayout
                         android:id="@+id/layoutPrice3"
                         android:layout_width="match_parent"
@@ -750,6 +946,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="@string/hint_price">
+
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etPrice3"
                                 android:layout_width="match_parent"
@@ -769,19 +966,9 @@
                             android:layout_marginStart="8dp"
                             android:fontFamily="@font/helvetica_bold"
                             android:textColor="@color/gray01" />
-
-                        <CheckBox
-                            android:id="@+id/cbUseNow3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:buttonTint="@color/colorPrimary"
-                            android:text="@string/use_now_marker"
-                            android:textSize="14sp"
-                            android:layout_marginStart="16dp"
-                            android:fontFamily="@font/helvetica_bold"
-                            android:textColor="@color/gray01" />
                     </LinearLayout>
 
+                    <!-- Valid Period -->
                     <TextView
                         android:id="@+id/tvValidPeriodLabel3"
                         android:layout_width="wrap_content"
@@ -791,6 +978,7 @@
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/helvetica_bold"
                         android:textColor="@color/gray01" />
+
                     <LinearLayout
                         android:id="@+id/layoutValidPeriod3"
                         android:layout_width="match_parent"
@@ -808,6 +996,7 @@
                             android:hint="@string/hint_start_date"
                             app:endIconMode="custom"
                             app:endIconDrawable="@drawable/deadline">
+
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etStartDate3"
                                 android:layout_width="match_parent"
@@ -840,6 +1029,7 @@
                             android:hint="@string/hint_end_date"
                             app:endIconMode="custom"
                             app:endIconDrawable="@drawable/deadline">
+
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etEndDate3"
                                 android:layout_width="match_parent"
@@ -853,6 +1043,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
+                    <!-- Item3 Photo -->
                     <TextView
                         android:id="@+id/tvItemPhotoLabel3"
                         android:layout_width="wrap_content"
@@ -862,6 +1053,7 @@
                         android:layout_marginTop="16dp"
                         android:fontFamily="@font/helvetica_bold"
                         android:textColor="@color/gray01" />
+
                     <FrameLayout
                         android:id="@+id/layoutItemPhoto3"
                         android:layout_width="match_parent"
@@ -871,17 +1063,20 @@
                         android:foreground="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
                         android:focusable="true">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
                             android:gravity="center"
                             android:padding="16dp">
+
                             <ImageView
                                 android:id="@+id/ivItemPhotoIcon3"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:src="@drawable/addimage" />
+
                             <TextView
                                 android:id="@+id/tvItemPhotoGuidance3"
                                 android:layout_width="wrap_content"
@@ -892,16 +1087,17 @@
                                 android:fontFamily="@font/helvetica_bold"
                                 android:textColor="@color/gray02" />
                         </LinearLayout>
+
                         <ImageView
                             android:id="@+id/ivItemPhotoPreview3"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
                     </FrameLayout>
                 </LinearLayout>
 
-                <!-- + 품목 추가하기 버튼 -->
+                <!-- + 품목 추가하기 -->
                 <TextView
                     android:id="@+id/tvAddItem"
                     android:layout_width="wrap_content"
@@ -919,6 +1115,8 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!-- Success Overlay -->
     <ImageView
         android:id="@+id/ivRegisterDoneOverlay"
         android:layout_width="wrap_content"
@@ -927,5 +1125,5 @@
         android:src="@drawable/success"
         android:scaleType="centerInside"
         android:visibility="gone"
-        android:background="#CCFFFFFF"/>
+        android:background="#CCFFFFFF" />
 </FrameLayout>

@@ -92,7 +92,7 @@ class HomeActivity : AppCompatActivity() {
 
         // FloatingActionButton 클릭 이벤트
         fabAdd.setOnClickListener {
-            startActivity(Intent(this, MarketListupActivity::class.java))
+            startActivity(Intent(this, FlyerUploadActivity::class.java))
         }
 
         // 검색 버튼 클릭 이벤트
@@ -116,7 +116,7 @@ class HomeActivity : AppCompatActivity() {
         btnResetPassword = layPro.findViewById(R.id.btn_reset_password)
 
         btnAddStore.setOnClickListener {
-            startActivity(Intent(this, MarketListupActivity::class.java))
+            startActivity(Intent(this, FlyerUploadActivity::class.java))
         }
         btnManageFlyers.setOnClickListener {
             Toast.makeText(this, "아직 구현 중입니다.", Toast.LENGTH_SHORT).show()

@@ -1,21 +1,35 @@
 package com.tukorea.sirojungbotong.network
 
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
 interface SiroApiService {
     @Multipart
-    @POST("flyers/{flyerId}/items/addItem")
+    @POST("/api/flyers")
+    suspend fun createFlyer(
+        @Part("storeId") storeId: RequestBody,
+        @Part("category") category: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("expireAt") expireAt: RequestBody,
+        @Part("usesSiro") usesSiro: RequestBody,
+        @Part image: MultipartBody.Part?
+    ): Response<CreateFlyerResponse>
+
+    @Multipart
+    @POST("/api/flyers/{flyerId}/items")
     suspend fun addItem(
         @Path("flyerId") flyerId: Long,
-        @Part image: MultipartBody.Part?,
-        @Query("name") name: String,
-        @Query("description") description: String,
-        @Query("price") price: Int,
-        @Query("validFrom") validFrom: String,   // yyyy-MM-dd
-        @Query("validUntil") validUntil: String  // yyyy-MM-dd
+        @Part("name") name: RequestBody,
+        @Part("price") price: RequestBody,
+        @Part("validFrom") validFrom: RequestBody,
+        @Part("validUntil") validUntil: RequestBody,
+        @Part image: MultipartBody.Part?
     ): Response<AddItemResponse>
+
+    @GET("stores/me")
+    suspend fun getMyStores(): Response<MyStoresResponse>
 
     // 추가된 즐겨찾기 목록 가져오기
     @GET("stores/liked")

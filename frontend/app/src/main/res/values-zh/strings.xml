@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string-array name="business_types">
+        <item>选择--</item>
+        <item>农产品</item>
+        <item>畜产品</item>
+        <item>水产品</item>
+        <item>加工食品</item>
+        <item>服装/鞋类</item>
+        <item>家用用品</item>
+        <item>餐饮业</item>
+        <item>其他零售业</item>
+        <item>社区生活服务</item>
+    </string-array>
+
+    <!-- 사용자 이름 표시 -->
+    <string name="user_name">%1$s您好！</string>
+
     <!-- 액션바의 뒤로가기 버튼 설명 -->
     <string name="desc_back">返回</string>
     <!-- 오른쪽 상단 “등록” 버튼 -->
     <string name="action_register">注册</string>
-
     <!-- 화면 타이틀 -->
     <string name="title_register_item">注册新传单</string>
 
@@ -13,28 +29,51 @@
     <string name="lang_en">En</string>
     <string name="lang_zh">中</string>
 
+    <!-- 전단지 정보 섹션 -->
+    <string name="label_flyer_info">传单信息</string>
+
+    <!-- 매장 선택 -->
+    <string name="label_select_store">选择店铺</string>
+
+    <!-- 플라이어 카테고리 -->
+    <string name="label_flyer_category">传单分类</string>
+    <string name="hint_flyer_category">请输入传单的分类</string>
+
+    <!-- 플라이어 설명 -->
+    <string name="label_flyer_description">传单说明</string>
+    <string name="hint_flyer_description">请输入传单说明</string>
+
+    <!-- 플라이어 유효기간 -->
+    <string name="label_expire_at">截止日期</string>
+    <string name="hint_expire_at">年/月/日</string>
+
+    <!-- 시로 사용 여부 -->
+    <string name="use_now_marker">可使用Siru</string>
+
+    <!-- 플라이어 이미지 업로드 -->
+    <string name="label_flyer_image">传单图片</string>
+    <string name="hint_upload_flyer_image">点击上传要注册的传单图片</string>
+
+    <!-- 첫 번째 품목 안내 -->
+    <string name="first_item_required">* 第一个商品必填。</string>
+
     <!-- “품목 N” 레이블 (N은 코드에서 getString으로 채워줍니다) -->
     <string name="label_item">商品 %1$d</string>
 
     <!-- 품목 안의 각 필드 레이블/힌트 -->
     <string name="label_item_name">商品名称 <font color="#FF6B35">*</font></string>
     <string name="hint_item_name">请输入商品名称</string>
-
     <string name="label_item_desc">商品说明 <font color="#FF6B35">*</font></string>
-    <string name="hint_item_desc">请填写商品的说明</string>
-
+    <string name="hint_item_desc">请填写商品说明</string>
     <string name="label_price">价格 <font color="#FF6B35">*</font></string>
     <string name="hint_price">0</string>
     <string name="unit_won">韩元</string>
-    <string name="use_now_marker">可使用Siru</string>
-
     <string name="label_valid_period">有效期 <font color="#FF6B35">*</font></string>
-    <string name="hint_start_date">月/日</string>
+    <string name="hint_start_date">开始日期</string>
     <string name="separator_tilde"> ~ </string>
-    <string name="hint_end_date">月/日</string>
-
+    <string name="hint_end_date">结束日期</string>
     <string name="label_item_photo">商品照片</string>
-    <string name="hint_upload_item_photo">点击上传要注册的商品照片</string>
+    <string name="hint_upload_item_photo">点击上传商品照片</string>
 
     <!-- “+ 품목 추가하기” 버튼 텍스트 -->
     <string name="action_add_item">+ 添加商品</string>
