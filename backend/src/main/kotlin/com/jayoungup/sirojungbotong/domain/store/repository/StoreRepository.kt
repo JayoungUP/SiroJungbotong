@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param
 
 interface StoreRepository : JpaRepository<Store, Long> {
 
+    fun findAllByOwnerId(ownerId: Long): List<Store>
+
     @Query("""
         SELECT s FROM Store s
         WHERE (:market IS NULL OR s.market = :market)
