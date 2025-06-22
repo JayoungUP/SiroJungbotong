@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:background="#FFFFFF">
+    android:layout_height="match_parent">
 
-    <!-- 뒤로가기 아이콘 -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:fillViewport="true"
+        android:overScrollMode="always"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+<!-- 뒤로가기 아이콘 -->
     <ImageButton
         android:id="@+id/btn_back"
         android:layout_width="wrap_content"
@@ -33,7 +48,6 @@
         android:textSize="16sp"
         android:textColor="#666666"
         android:layout_marginTop="4dp" />
-
     <!-- 이름 -->
     <TextView
         android:layout_width="wrap_content"
@@ -138,6 +152,160 @@
         android:textSize="12dp"
         android:inputType="textEmailAddress"
         android:paddingHorizontal="12dp" />
+            <LinearLayout
+                android:id="@+id/layoutSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvSwitchLabel"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:text="점주 여부"
+                    android:textColor="@color/gray01"
+                    android:textSize="16sp" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchRegister"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:thumbTint="@color/switch_thumb_color"
+                    app:trackTint="@color/switch_track_color" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/businesnumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="사업자 등록 번호 *"
+                android:textStyle="normal"
+                android:fontFamily="@font/helvetica_bold"
+                android:layout_marginTop="30dp"
+                android:visibility="gone"
+                android:textColor="@color/gray01"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/businesbar"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:hintEnabled="true"
+                android:visibility="gone"
+                android:hint="사업자 등록 번호 ">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputbusiness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/helvetica_bold" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/KoreanOwner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="대표자 성명 *"
+                android:textStyle="normal"
+                android:fontFamily="@font/helvetica_bold"
+                android:layout_marginTop="30dp"
+                android:visibility="gone"
+                android:textColor="@color/gray01"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/KoreanOwnerBar"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:hintEnabled="true"
+                android:visibility="gone"
+                android:hint="본명을 입력하시오.">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputKOwner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/helvetica_bold" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/ForeginerOwner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="대표자 성명2"
+                android:textStyle="normal"
+                android:fontFamily="@font/helvetica_bold"
+                android:layout_marginTop="30dp"
+                android:visibility="gone"
+                android:textColor="@color/gray01"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ForeginerOwnerBar"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:hintEnabled="true"
+                android:visibility="gone"
+                android:hint="If you are foreginer, sumbit your real name here, and sumbit korean name upon bar.">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputFOwner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/helvetica_bold" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/opendate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개업일자"
+                android:textStyle="normal"
+                android:fontFamily="@font/helvetica_bold"
+                android:layout_marginTop="30dp"
+                android:visibility="gone"
+                android:textColor="@color/gray01"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/opendatebar"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:hintEnabled="true"
+                android:visibility="gone"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/deadline"
+                android:hint="연/월/일">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
 
     <!-- 다음으로 넘어가기 버튼 -->
     <ImageButton
@@ -150,3 +318,5 @@
         android:layout_marginTop="32dp"
         android:layout_marginBottom="24dp" />
 </LinearLayout>
+</androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
