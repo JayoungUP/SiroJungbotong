@@ -2,6 +2,7 @@ package com.jayoungup.sirojungbotong.domain.flyer.dto
 
 import io.swagger.v3.oas.annotations.media.Schema
 import lombok.Data
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Data
@@ -18,8 +19,8 @@ data class FlyerResponseDto(
     @field:Schema(description = "전단지 설명", example = "할인 이벤트 안내")
     val description: String,
 
-    @field:Schema(description = "전단지 만료일", example = "2025-06-30T23:59:59")
-    val expireAt: LocalDateTime,
+    @field:Schema(description = "전단지 만료일", example = "2025-06-30")
+    val expireAt: LocalDate,
 
     @field:Schema(description = "시루 이용 여부", example = "true")
     val usesSiro: Boolean,

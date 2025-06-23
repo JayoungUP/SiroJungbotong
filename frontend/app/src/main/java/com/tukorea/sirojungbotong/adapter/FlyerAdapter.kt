@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.tukorea.sirojungbotong.R
-import com.tukorea.sirojungbotong.model.Flyer
+import com.tukorea.sirojungbotong.network.Flyer
 import com.tukorea.sirojungbotong.util.PreferenceUtil
 
 class FlyerAdapter(
@@ -69,7 +69,7 @@ class FlyerAdapter(
         // 🔸 텍스트 바인딩
         holder.tvDescription.text = flyer.description ?: "내용 없음"
         holder.tvExpire.text = "~" + flyer.expireAt.take(10)
-        holder.tvStore.text = storeNameMap[flyer.storeId] ?: "알 수 없는 가게"
+        holder.tvStore.text = storeNameMap[flyer.storeId.toInt()] ?: "알 수 없는 가게"
         holder.tvUsesSiro.visibility = if (flyer.usesSiro) View.VISIBLE else View.GONE
 
         // ✅ 클릭 이벤트 연결

@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.tukorea.sirojungbotong.FlyerDetailActivity
 import com.tukorea.sirojungbotong.R
-import com.tukorea.sirojungbotong.model.MarketData
+import com.tukorea.sirojungbotong.network.Flyer
+import com.tukorea.sirojungbotong.network.MarketData
 
 class MarketAdapter(
     private val marketList: List<MarketData>,
-    private val storeNameMap: Map<Int, String>
+    private val storeNameMap: Map<Int, String>,
+    private val onItemClick: (Flyer) -> Unit // 전단지 클릭 이벤트 콜백
 ) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
 
     inner class MarketViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -33,9 +34,8 @@ class MarketAdapter(
 
         holder.rvItems.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
         holder.rvItems.adapter = FlyerAdapter(market.items, storeNameMap) { flyer ->
-            val intent = Intent(holder.itemView.context, FlyerDetailActivity::class.java)
-            intent.putExtra("flyer_id", flyer.id)
-            holder.itemView.context.startActivity(intent)
+            // 콜백 전달
+            onItemClick(flyer)
         }
     }
 

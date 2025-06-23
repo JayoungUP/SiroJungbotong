@@ -213,10 +213,10 @@ class FlyerController(
 
         @Parameter(
             `in` = ParameterIn.QUERY,
-            description = "정렬 기준 (default: 최신순) - latest | scrap",
-            schema = Schema(type = "string", allowableValues = ["latest", "scrap"], defaultValue = "latest")
+            description = "정렬 기준 (default: 최신순) - scrap",
+            schema = Schema(type = "string", allowableValues = ["scrap"], defaultValue = "latest(파라미터 없음)")
         )
-        @RequestParam(required = false, defaultValue = "latest") sort: String,
+        @RequestParam(required = false, defaultValue = "latest(파라미터 없음)") sort: String,
 
         @ParameterObject pageable: Pageable
     ): ResponseEntity<Page<FlyerResponseDto>> {

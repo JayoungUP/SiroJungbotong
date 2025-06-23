@@ -16,6 +16,8 @@ import com.tukorea.sirojungbotong.adapter.FlyerAdapter
 import com.tukorea.sirojungbotong.adapter.MarketAdapter
 import com.tukorea.sirojungbotong.model.*
 import com.tukorea.sirojungbotong.network.ApiClient
+import com.tukorea.sirojungbotong.network.Flyer
+import com.tukorea.sirojungbotong.network.MarketData
 import kotlinx.coroutines.*
 
 class HomeActivity : AppCompatActivity() {
@@ -70,8 +72,6 @@ class HomeActivity : AppCompatActivity() {
         btnSortLatest = findViewById(R.id.btn_latest)
         btnSortPopular = findViewById(R.id.btn_popular)
 
-        rvMarkets.layoutManager = LinearLayoutManager(this)
-
         // 필터 클릭 시 BottomSheet 열기
         btnFilterOn.setOnClickListener { openFilterSheet() }
         btnFilterOff.setOnClickListener { openFilterSheet() }
@@ -89,14 +89,12 @@ class HomeActivity : AppCompatActivity() {
         }
 
         updateSortButtons() // 초기 정렬 버튼 표시
-        applyFilter(fullMarketList)
+        fetchFlyersByMarkets() // 초기 전단지 불러오기
 
-        // FloatingActionButton 클릭 이벤트
         fabAdd.setOnClickListener {
             startActivity(Intent(this, FlyerUploadActivity::class.java))
         }
 
-        // 검색 버튼 클릭 이벤트
         btnSearch.setOnClickListener {
             // 검색 기능 구현 예정
         }
@@ -130,46 +128,90 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, FindActivity::class.java))
         }
 
-        // 하단 네비게이션 처리
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
                     layHome.visibility = View.VISIBLE
                     layFav.visibility = View.GONE
                     layPro.visibility = View.GONE
+                    fetchFlyersByMarkets()
                     true
                 }
-
                 R.id.nav_favorites -> {
                     layHome.visibility = View.GONE
                     layFav.visibility = View.VISIBLE
                     layPro.visibility = View.GONE
                     true
                 }
-
                 R.id.nav_profile -> {
                     if (!isLoggedIn) {
-                        // 로그인 안 됐으면 로그인 화면으로
                         startActivity(Intent(this, LoginActivity::class.java))
                         bottomNav.selectedItemId = R.id.nav_home
                         false
                     } else {
-                        // 로그인 된 상태면 프로필 뷰 토글
                         layHome.visibility = View.GONE
                         layFav.visibility = View.GONE
                         layPro.visibility = View.VISIBLE
                         true
                     }
                 }
-
                 else -> false
+            }
+        }
+    }
+
+    private fun fetchFlyersByMarkets() {
+        val apiService = ApiClient.create(applicationContext)
+        val markets = listOf("정왕시장", "삼미시장", "도일시장", "오이도전통수산시장")
+        val fetchedMarkets = mutableListOf<MarketData>()
+        val nameMap = mutableMapOf<Int, String>()  // storeId -> 가게명
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val jobs = markets.map { marketName ->
+                async {
+                    try {
+                        val response = apiService.getFlyers(
+                            market = marketName,
+                            category = null,
+                            usesSiro = null,
+                            sort = null
+                        ).execute()
+
+                        if (response.isSuccessful && response.body()?.status == 200) {
+                            val flyers = response.body()!!.data.content
+
+                            // storeNameMap 채우기 위해 가게명 요청
+                            val storeJobs = flyers.map { flyer ->
+                                async {
+                                    val detailRes = apiService.getStoreDetail(flyer.storeId)
+                                    if (detailRes.isSuccessful && detailRes.body()?.status == 200) {
+                                        val name = detailRes.body()!!.data.name
+                                        nameMap[flyer.storeId.toInt()] = name
+                                    }
+                                }
+                            }
+                            storeJobs.awaitAll()
+
+                            fetchedMarkets.add(MarketData(marketName, flyers))
+                        } else {
+                            Log.e("FLYERS_API", "$marketName 실패: ${response.code()}")
+                        }
+                    } catch (e: Exception) {
+                        Log.e("FLYERS_API", "$marketName 예외", e)
+                    }
+                }
+            }
+            jobs.awaitAll()
+            withContext(Dispatchers.Main) {
+                fullMarketList = fetchedMarkets
+                storeNameMap = nameMap   // 최종 반영
+                applyFilter(fullMarketList)
             }
         }
     }
 
     private fun fetchFavoriteFlyers() {
         val apiService = ApiClient.create(applicationContext)
-
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val likedRes = apiService.getLikedStores()
@@ -177,7 +219,6 @@ class HomeActivity : AppCompatActivity() {
                     val likedStores = likedRes.body()!!.data
                     val allFlyers = mutableListOf<Flyer>()
                     val nameMap = mutableMapOf<Int, String>()
-
                     for (store in likedStores) {
                         val detailRes = apiService.getStoreDetail(store.storeId)
                         if (detailRes.isSuccessful && detailRes.body()?.status == 200) {
@@ -188,9 +229,7 @@ class HomeActivity : AppCompatActivity() {
                             Log.w("FAVORITE_API", "상세 실패: ${store.storeId}")
                         }
                     }
-
                     storeNameMap = nameMap
-
                     withContext(Dispatchers.Main) {
                         rvFavorites.adapter = FlyerAdapter(allFlyers, storeNameMap) { flyer ->
                             val intent = Intent(this@HomeActivity, FlyerDetailActivity::class.java)
@@ -211,9 +250,7 @@ class HomeActivity : AppCompatActivity() {
         val filtered = fullList.filter { market ->
             val matchesMarket = filterState.selectedMarkets.isEmpty() || filterState.selectedMarkets.contains(market.marketName)
             val matchesCategory = market.items.any { flyer ->
-                flyer.items.any { item ->
-                    filterState.selectedCategories.isEmpty() || filterState.selectedCategories.contains(item.category)
-                }
+                filterState.selectedCategories.isEmpty() || filterState.selectedCategories.contains(flyer.category)
             }
             matchesMarket && matchesCategory
         }.let { list ->
@@ -223,17 +260,11 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        if (filtered.size == 1) {
-            val flyers = filtered[0].items
-            rvMarkets.layoutManager = GridLayoutManager(this, 2)
-            rvMarkets.adapter = FlyerAdapter(flyers, storeNameMap) { flyer ->
-                val intent = Intent(this, FlyerDetailActivity::class.java)
-                intent.putExtra("flyer_id", flyer.id)
-                startActivity(intent)
-            }
-        } else {
-            rvMarkets.layoutManager = LinearLayoutManager(this)
-            rvMarkets.adapter = MarketAdapter(filtered, storeNameMap)
+        rvMarkets.layoutManager = LinearLayoutManager(this)
+        rvMarkets.adapter = MarketAdapter(filtered, storeNameMap) { flyer ->
+            val intent = Intent(this, FlyerDetailActivity::class.java)
+            intent.putExtra("flyer_id", flyer.id)
+            startActivity(intent)
         }
     }
 

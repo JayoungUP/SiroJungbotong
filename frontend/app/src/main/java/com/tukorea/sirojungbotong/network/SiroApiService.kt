@@ -2,6 +2,7 @@ package com.tukorea.sirojungbotong.network
 
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -59,6 +60,19 @@ interface SiroApiService {
         @Part("category") category: RequestBody,
         @Part image: MultipartBody.Part?
     ): Response<Any> // 또는 실제 응답 객체
+
+    @GET("flyers/{id}")
+    fun getFlyerDetail(@Path("id") id: Long): Call<FlyerDetailResponse>
+
+    // 전단 목록 조회 GET 요청
+    @GET("flyers")
+    fun getFlyers(
+        @Query("market") market: String?,
+        @Query("category") category: String?,
+        @Query("usesSiro") usesSiro: Boolean?,
+        @Query("sort") sort: String?,
+    ): Call<FlyerListResponse>
+
 
     @POST("/api/flyers/scrap/{flyerId}")
     suspend fun scrapFlyer(@Path("flyerId") flyerId: Long): Response<Unit>

@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Service
@@ -90,7 +91,7 @@ class FlyerService(
 
         flyer.category = dto.category
         flyer.description = dto.description
-        flyer.expireAt = LocalDateTime.parse(dto.expireAt)
+        flyer.expireAt = LocalDate.parse(dto.expireAt)
         flyer.usesSiro = dto.usesSiro
         flyer.updatedAt = LocalDateTime.now()
 

@@ -3,6 +3,7 @@ package com.jayoungup.sirojungbotong.domain.flyer.entity
 import com.jayoungup.sirojungbotong.domain.store.entity.Store
 import jakarta.persistence.*
 import org.hibernate.annotations.Formula
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
@@ -23,7 +24,7 @@ class Flyer(
     var description: String,
 
     @Column(nullable = false)
-    var expireAt: LocalDateTime,
+    var expireAt: LocalDate,
 
     @Column(nullable = false)
     var usesSiro: Boolean,
