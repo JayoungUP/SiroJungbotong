@@ -3,6 +3,7 @@ package com.tukorea.sirojungbotong.network
 import android.content.Context
 import android.preference.PreferenceManager
 import android.util.Log
+import com.tukorea.sirojungbotong.FlyerApi
 import com.tukorea.sirojungbotong.util.PreferenceUtil
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -12,12 +13,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiClient {
     private const val BASE_URL = "http://sirojungbotong.r-e.kr/api/"
 
-    // Logging interceptor (필요시)
-    private val logging = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-
-    fun create(context: Context): SiroApiService {
+    // Retrofit 생성 공통 함수
+    private fun getRetrofit(context: Context): Retrofit {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
@@ -40,6 +37,15 @@ object ApiClient {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(SiroApiService::class.java)
+    }
+
+    // 기존 서비스 (전단 등록 등)
+    fun create(context: Context): SiroApiService {
+        return getRetrofit(context).create(SiroApiService::class.java)
+    }
+
+    // 전단 상세 조회 API
+    fun createFlyerApi(context: Context): FlyerApi {
+        return getRetrofit(context).create(FlyerApi::class.java)
     }
 }
