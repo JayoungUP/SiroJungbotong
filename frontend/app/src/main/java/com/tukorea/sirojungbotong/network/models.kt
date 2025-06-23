@@ -1,6 +1,5 @@
 package com.tukorea.sirojungbotong.network
 
-import com.tukorea.sirojungbotong.FlyerData
 import com.tukorea.sirojungbotong.model.Flyer
 
 // 서버 응답 전체
@@ -65,6 +64,7 @@ data class StoreDetail(
     val id: Long,
     val name: String,
     val market: String,
+    val address: String,
     val flyers: List<Flyer>
 )
 
@@ -85,4 +85,34 @@ data class MyStore(
     val imageUrl: String?,
     val flyers: List<Flyer>,
     val likeCount: Int
+)
+
+data class StoreData(
+    val id: Long,
+    val market: String,
+    val address: String
+)
+
+data class FlyerDetailResponse(
+    val status: Int,
+    val data: FlyerData
+)
+
+data class FlyerData(
+    val id: Long,
+    val storeId: Long, // ✅ storeId 사용 위해 필수
+    val category: String,
+    val imageUrl: String,
+    val items: List<FlyerItem>,
+    val scrapCount: Int
+)
+
+data class FlyerItem(
+    val id: Long,
+    val name: String,
+    val description: String,
+    val price: Int,
+    val validFrom: String,
+    val validUntil: String,
+    val imageUrl: String
 )

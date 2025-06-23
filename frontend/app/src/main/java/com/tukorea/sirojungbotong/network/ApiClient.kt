@@ -3,12 +3,19 @@ package com.tukorea.sirojungbotong.network
 import android.content.Context
 import android.preference.PreferenceManager
 import android.util.Log
-import com.tukorea.sirojungbotong.FlyerApi
 import com.tukorea.sirojungbotong.util.PreferenceUtil
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Path
+
+interface FlyerApi {
+    @GET("flyers/{id}")
+    fun getFlyerDetail(@Path("id") id: Long): Call<FlyerDetailResponse>
+}
 
 object ApiClient {
     private const val BASE_URL = "http://sirojungbotong.r-e.kr/api/"
@@ -48,4 +55,9 @@ object ApiClient {
     fun createFlyerApi(context: Context): FlyerApi {
         return getRetrofit(context).create(FlyerApi::class.java)
     }
+
+    fun createStoreApi(context: Context): StoreApi {
+        return getRetrofit(context).create(StoreApi::class.java)
+    }
+
 }

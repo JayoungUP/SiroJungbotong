@@ -6,10 +6,13 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.tukorea.sirojungbotong.model.*
 import com.tukorea.sirojungbotong.network.ApiClient
+import com.tukorea.sirojungbotong.network.FlyerData
+import com.tukorea.sirojungbotong.network.FlyerDetailResponse
+import com.tukorea.sirojungbotong.network.StoreDetail
+import com.tukorea.sirojungbotong.network.StoreDetailResponse
 import retrofit2.*
-import retrofit2.http.GET
-import retrofit2.http.Path
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -25,9 +28,7 @@ class FlyerDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_flyer_detail)
 
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
-        btnBack.setOnClickListener {
-            finish()
-        }
+        btnBack.setOnClickListener { finish() }
 
         viewPager = findViewById(R.id.viewPagerImages)
         tvImageIndicator = findViewById(R.id.tvImageIndicator)
@@ -47,40 +48,55 @@ class FlyerDetailActivity : AppCompatActivity() {
         val apiService = ApiClient.createFlyerApi(applicationContext)
 
         apiService.getFlyerDetail(id).enqueue(object : Callback<FlyerDetailResponse> {
-            override fun onResponse(
-                call: Call<FlyerDetailResponse>,
-                response: Response<FlyerDetailResponse>
-            ) {
+            override fun onResponse(call: Call<FlyerDetailResponse>, response: Response<FlyerDetailResponse>) {
                 if (response.isSuccessful) {
-                    val data = response.body()?.data
-                    if (data != null) {
-                        Log.d("FlyerDetail_JSON", response.body().toString())
-                        updateUI(data)
-                    } else {
-                        Toast.makeText(this@FlyerDetailActivity, "전단지 정보가 없습니다", Toast.LENGTH_SHORT).show()
+                    val flyerData = response.body()?.data
+                    if (flyerData != null) {
+                        Log.d("FlyerDetail_JSON", flyerData.toString())
+                        fetchStoreDetailAndUpdate(flyerData)
                     }
                 } else {
-                    Toast.makeText(this@FlyerDetailActivity, "서버 응답 오류", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@FlyerDetailActivity, "전단지 정보를 불러오지 못했습니다", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<FlyerDetailResponse>, t: Throwable) {
-                Log.e("FlyerDetail", "API 호출 실패: ${t.message}")
+                Log.e("FlyerDetail", "전단지 API 호출 실패: ${t.message}")
                 Toast.makeText(this@FlyerDetailActivity, "네트워크 오류", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-    private fun updateUI(data: FlyerData) {
-        val item = data.items.firstOrNull()
+    private fun fetchStoreDetailAndUpdate(flyerData: FlyerData) {
+        val storeService = ApiClient.createStoreApi(applicationContext)
+
+        storeService.getStoreDetail(flyerData.storeId).enqueue(object : Callback<StoreDetailResponse> {
+            override fun onResponse(call: Call<StoreDetailResponse>, response: Response<StoreDetailResponse>) {
+                if (response.isSuccessful) {
+                    val store = response.body()?.data
+                    updateUI(flyerData, store)
+                } else {
+                    updateUI(flyerData, null)
+                }
+            }
+
+            override fun onFailure(call: Call<StoreDetailResponse>, t: Throwable) {
+                Log.e("FlyerDetail", "가게 API 실패: ${t.message}")
+                updateUI(flyerData, null)
+            }
+        })
+    }
+
+    private fun updateUI(flyerData: FlyerData, storeData: StoreDetail?) {
+        val item = flyerData.items.firstOrNull()
         if (item == null) {
             Toast.makeText(this, "상품 정보가 없습니다", Toast.LENGTH_SHORT).show()
             return
         }
 
         val imageUrls = mutableListOf<String>()
-        imageUrls.add(formatImageUrl(data.imageUrl))
-        data.items.forEach {
+        imageUrls.add(formatImageUrl(flyerData.imageUrl))
+        flyerData.items.forEach {
             imageUrls.add(formatImageUrl(it.imageUrl))
         }
 
@@ -94,13 +110,11 @@ class FlyerDetailActivity : AppCompatActivity() {
             }
         })
 
-        // ✅ 상호명과 주소 출력
-        findViewById<TextView>(R.id.tvMarketName).text = data.storeName
-        findViewById<TextView>(R.id.tvMarketAddress).text = data.address
-
+        findViewById<TextView>(R.id.tvMarketName).text = storeData?.name ?: "가게명 없음"
+        findViewById<TextView>(R.id.tvMarketAddress).text = storeData?.address ?: "주소 없음"
         findViewById<TextView>(R.id.tvProductName).text = item.name
         findViewById<TextView>(R.id.tvPrice).text = "${item.price}원"
-        findViewById<TextView>(R.id.tvInterest).text = "${data.scrapCount}명이 관심을 갖고 있어요"
+        findViewById<TextView>(R.id.tvInterest).text = "${flyerData.scrapCount}명이 관심을 갖고 있어요"
         findViewById<TextView>(R.id.tvExpiry).text = "유효기간 ${calcRemainDays(item.validUntil)}일 남음"
     }
 
@@ -123,35 +137,3 @@ class FlyerDetailActivity : AppCompatActivity() {
         return "http://sirojungbotong.r-e.kr$cleanedPath"
     }
 }
-
-// Retrofit 인터페이스
-interface FlyerApi {
-    @GET("flyers/{id}")
-    fun getFlyerDetail(@Path("id") id: Long): Call<FlyerDetailResponse>
-}
-
-// 응답 모델
-data class FlyerDetailResponse(
-    val status: Int,
-    val data: FlyerData
-)
-
-data class FlyerData(
-    val id: Long,
-    val storeName: String,
-    val category: String,
-    val address: String,       // ✅ 주소 추가
-    val imageUrl: String,
-    val items: List<FlyerItem>,
-    val scrapCount: Int
-)
-
-data class FlyerItem(
-    val id: Long,
-    val name: String,
-    val description: String,
-    val price: Int,
-    val validFrom: String,
-    val validUntil: String,
-    val imageUrl: String
-)
