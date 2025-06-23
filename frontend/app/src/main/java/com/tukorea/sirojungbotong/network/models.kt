@@ -144,3 +144,8 @@ data class FlyerItem(
     val validUntil: String,
     val imageUrl: String
 )
+
+data class ScrapFlyerListResponse(
+    val status: Int,
+    val data: List<Flyer>
+)

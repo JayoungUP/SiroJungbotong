@@ -45,6 +45,7 @@ class FlyerDetailActivity : AppCompatActivity() {
         }
 
         fetchFlyerDetail(flyerId)
+        fetchScrapStatus(flyerId)
     }
 
     private fun fetchFlyerDetail(id: Long) {
@@ -175,5 +176,25 @@ class FlyerDetailActivity : AppCompatActivity() {
         val cleanedPath = path.replace("backend/", "").replace("/home/juno/app/", "")
         val finalPath = if (cleanedPath.startsWith("/")) cleanedPath else "/$cleanedPath"
         return "http://sirojungbotong.r-e.kr$finalPath"
+    }
+
+    private fun fetchScrapStatus(flyerId: Long) {
+        val api = ApiClient.create(applicationContext)
+        lifecycleScope.launch {
+            try {
+                val response = api.getScrappedFlyers()
+                if (response.isSuccessful) {
+                    val flyerList = response.body()?.data ?: emptyList()
+                    isScrapped = flyerList.any { it.id == flyerId }
+
+                    val ivScrap = findViewById<ImageView>(R.id.ivScrap)
+                    ivScrap.setImageResource(
+                        if (isScrapped) R.drawable.ic_full_star else R.drawable.ic_empty_star
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e("SCRAP", "스크랩 상태 확인 실패: ${e.message}")
+            }
+        }
     }
 }

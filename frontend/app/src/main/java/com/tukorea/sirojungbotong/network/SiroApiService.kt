@@ -79,4 +79,8 @@ interface SiroApiService {
 
     @DELETE("/api/flyers/scrap/{flyerId}")
     suspend fun unscrapFlyer(@Path("flyerId") flyerId: Long): Response<Unit>
+
+    @GET("/api/flyers/scrap")
+    suspend fun getScrappedFlyers(): Response<ScrapFlyerListResponse>
+
 }
