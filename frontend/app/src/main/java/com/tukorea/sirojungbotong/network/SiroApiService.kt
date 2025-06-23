@@ -28,7 +28,7 @@ interface SiroApiService {
         @Part image: MultipartBody.Part?
     ): Response<AddItemResponse>
 
-    @GET("stores/me")
+    @GET("stores/my")
     suspend fun getMyStores(): Response<MyStoresResponse>
 
     // 추가된 즐겨찾기 목록 가져오기
