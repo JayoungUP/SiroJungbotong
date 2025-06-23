@@ -40,18 +40,15 @@ interface SiroApiService {
     // 즐겨찾기 추가된 개별 가게 상세정보 가져오기
     @GET("stores/{storeId}")
     suspend fun getStoreDetail(@Path("storeId") storeId: Long): Response<StoreDetailResponse>
-<<<<<<< HEAD
 
+    // ✅ 전단지 상세 조회 (FlyerDetailActivity 용)
     @GET("flyers/{id}")
     fun getFlyerDetail(@Path("id") id: Long): Call<FlyerDetailResponse>
-=======
+
+    // ✅ 이메일 회원가입 관련 API
     @POST("member/signup/user/email")
-    suspend fun signupUser(
-        @Body body: UserSignupRequest
-    ): Response<Any>
+    suspend fun signupUser(@Body body: UserSignupRequest): Response<Any>
+
     @POST("member/signup/owner/email")
-    suspend fun signupOwner(
-        @Body body: OwnerSignupRequest
-    ): Response<Any>
->>>>>>> cce10a85597ccde49c8ee0130835a15581132986
+    suspend fun signupOwner(@Body body: OwnerSignupRequest): Response<Any>
 }

@@ -65,17 +65,9 @@ class FlyerAdapter(
         holder.tvStore.text = storeNameMap[flyer.storeId] ?: "알 수 없는 가게"
         holder.tvUsesSiro.visibility = if (flyer.usesSiro) View.VISIBLE else View.GONE
 
-<<<<<<< HEAD
         // ✅ 클릭 이벤트 연결
         holder.itemView.setOnClickListener {
             onItemClick(flyer)
-=======
-        // 시루 사용 가능 여부 텍스트 표시
-        if (flyer.usesSiro) {
-            holder.tvUsesSiro.visibility = View.VISIBLE
-        } else {
-            holder.tvUsesSiro.visibility = View.GONE
->>>>>>> cce10a85597ccde49c8ee0130835a15581132986
         }
     }
 
