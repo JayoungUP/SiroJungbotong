@@ -59,4 +59,10 @@ interface SiroApiService {
         @Part("category") category: RequestBody,
         @Part image: MultipartBody.Part?
     ): Response<Any> // 또는 실제 응답 객체
+
+    @POST("/api/flyers/scrap/{flyerId}")
+    suspend fun scrapFlyer(@Path("flyerId") flyerId: Long): Response<Unit>
+
+    @DELETE("/api/flyers/scrap/{flyerId}")
+    suspend fun unscrapFlyer(@Path("flyerId") flyerId: Long): Response<Unit>
 }

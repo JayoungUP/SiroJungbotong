@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.tukorea.sirojungbotong.model.*
@@ -12,6 +13,7 @@ import com.tukorea.sirojungbotong.network.FlyerData
 import com.tukorea.sirojungbotong.network.FlyerDetailResponse
 import com.tukorea.sirojungbotong.network.StoreDetail
 import com.tukorea.sirojungbotong.network.StoreDetailResponse
+import kotlinx.coroutines.launch
 import retrofit2.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -19,6 +21,7 @@ import java.time.temporal.ChronoUnit
 
 class FlyerDetailActivity : AppCompatActivity() {
 
+    private var isScrapped = false
     private var flyerId: Long = -1L
     private lateinit var viewPager: ViewPager2
     private lateinit var tvImageIndicator: TextView
@@ -116,6 +119,41 @@ class FlyerDetailActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvPrice).text = "${item.price}원"
         findViewById<TextView>(R.id.tvInterest).text = "${flyerData.scrapCount}명이 관심을 갖고 있어요"
         findViewById<TextView>(R.id.tvExpiry).text = "유효기간 ${calcRemainDays(item.validUntil)}일 남음"
+
+        val ivScrap = findViewById<ImageView>(R.id.ivScrap)
+
+        // 기본 상태 설정 (원래 서버에 스크랩 정보가 있다면 isScrapped 초기값을 서버에서 받아오세요)
+        ivScrap.setImageResource(if (isScrapped) R.drawable.ic_full_star else R.drawable.ic_empty_star)
+
+        // 클릭 이벤트
+        ivScrap.setOnClickListener {
+            isScrapped = !isScrapped
+            ivScrap.setImageResource(
+                if (isScrapped) R.drawable.ic_full_star else R.drawable.ic_empty_star
+            )
+
+            // 토스트 먼저 띄우고
+            Toast.makeText(this, if (isScrapped) "스크랩 추가됨" else "스크랩 해제됨", Toast.LENGTH_SHORT).show()
+
+            // 서버 요청
+            val api = ApiClient.create(applicationContext)
+            lifecycleScope.launch {
+                try {
+                    val response = if (isScrapped) {
+                        api.scrapFlyer(flyerId)
+                    } else {
+                        api.unscrapFlyer(flyerId)
+                    }
+
+                    if (!response.isSuccessful) {
+                        Toast.makeText(this@FlyerDetailActivity, "서버 에러", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    Log.e("SCRAP", "요청 실패: ${e.message}")
+                    Toast.makeText(this@FlyerDetailActivity, "요청 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun calcRemainDays(validUntil: String): Long {

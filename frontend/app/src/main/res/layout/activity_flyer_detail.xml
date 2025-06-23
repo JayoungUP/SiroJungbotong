@@ -89,15 +89,34 @@
                 </LinearLayout>
 
                 <!-- 상품명 및 가격 -->
-                <TextView
-                    android:id="@+id/tvProductName"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="토마토 8개"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:paddingHorizontal="16dp"
-                    android:paddingTop="8dp" />
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:id="@+id/tvProductName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="토마토 8개"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/ivScrap"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/ic_empty_star"
+                        android:contentDescription="스크랩"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/tvPrice"
@@ -108,6 +127,7 @@
                     android:textSize="18sp"
                     android:paddingHorizontal="16dp"
                     android:paddingTop="4dp" />
+
 
                 <!-- 관심 및 유효기간 -->
                 <TextView

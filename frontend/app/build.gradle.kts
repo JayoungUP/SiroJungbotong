@@ -73,5 +73,6 @@ dependencies {
     implementation ("androidx.fragment:fragment-ktx:1.6.1")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     androidTestImplementation(libs.androidx.espresso.core)
 }
