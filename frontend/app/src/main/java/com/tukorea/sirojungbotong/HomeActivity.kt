@@ -92,7 +92,7 @@ class HomeActivity : AppCompatActivity() {
 
         // FloatingActionButton 클릭 이벤트
         fabAdd.setOnClickListener {
-            startActivity(Intent(this, MarketListupActivity::class.java))
+            startActivity(Intent(this, FlyerUploadActivity::class.java))
         }
 
         // 검색 버튼 클릭 이벤트
@@ -116,7 +116,7 @@ class HomeActivity : AppCompatActivity() {
         btnResetPassword = layPro.findViewById(R.id.btn_reset_password)
 
         btnAddStore.setOnClickListener {
-            startActivity(Intent(this, MarketListupActivity::class.java))
+            startActivity(Intent(this, FlyerUploadActivity::class.java))
         }
         btnManageFlyers.setOnClickListener {
             Toast.makeText(this, "아직 구현 중입니다.", Toast.LENGTH_SHORT).show()
@@ -191,7 +191,11 @@ class HomeActivity : AppCompatActivity() {
                     storeNameMap = nameMap
 
                     withContext(Dispatchers.Main) {
-                        rvFavorites.adapter = FlyerAdapter(allFlyers, storeNameMap)
+                        rvFavorites.adapter = FlyerAdapter(allFlyers, storeNameMap) { flyer ->
+                            val intent = Intent(this@HomeActivity, FlyerDetailActivity::class.java)
+                            intent.putExtra("flyer_id", flyer.id)
+                            startActivity(intent)
+                        }
                     }
                 } else {
                     Log.e("FAVORITE_API", "즐겨찾기 실패: ${likedRes.code()}")
@@ -221,7 +225,11 @@ class HomeActivity : AppCompatActivity() {
         if (filtered.size == 1) {
             val flyers = filtered[0].items
             rvMarkets.layoutManager = GridLayoutManager(this, 2)
-            rvMarkets.adapter = FlyerAdapter(flyers, storeNameMap)
+            rvMarkets.adapter = FlyerAdapter(flyers, storeNameMap) { flyer ->
+                val intent = Intent(this, FlyerDetailActivity::class.java)
+                intent.putExtra("flyer_id", flyer.id)
+                startActivity(intent)
+            }
         } else {
             rvMarkets.layoutManager = LinearLayoutManager(this)
             rvMarkets.adapter = MarketAdapter(filtered, storeNameMap)

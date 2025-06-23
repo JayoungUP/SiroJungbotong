@@ -49,7 +49,7 @@
             android:id="@+id/tv_uses_siro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="시로 사용 가능"
+            android:text="시루 사용 가능"
             android:textSize="11sp"
             android:textColor="#2196F3"
             android:visibility="gone"

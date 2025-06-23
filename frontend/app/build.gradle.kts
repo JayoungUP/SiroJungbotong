@@ -42,6 +42,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -71,5 +72,6 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("androidx.fragment:fragment-ktx:1.6.1")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     androidTestImplementation(libs.androidx.espresso.core)
 }

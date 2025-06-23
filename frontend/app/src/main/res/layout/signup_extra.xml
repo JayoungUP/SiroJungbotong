@@ -170,7 +170,7 @@
                 app:boxCornerRadiusBottomStart="8dp"
                 app:hintEnabled="true"
                 android:hint="업장 주소">
-
+f
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etStoreAddress"
                     android:layout_width="match_parent"

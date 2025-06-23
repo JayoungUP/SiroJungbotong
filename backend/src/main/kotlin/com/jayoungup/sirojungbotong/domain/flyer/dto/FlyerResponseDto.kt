@@ -21,7 +21,7 @@ data class FlyerResponseDto(
     @field:Schema(description = "전단지 만료일", example = "2025-06-30T23:59:59")
     val expireAt: LocalDateTime,
 
-    @field:Schema(description = "시로 이용 여부", example = "true")
+    @field:Schema(description = "시루 이용 여부", example = "true")
     val usesSiro: Boolean,
 
     @field:Schema(description = "이미지 파일 경로 또는 URL", example = "backend/uploads/flyers/20250602_101530_image.png")

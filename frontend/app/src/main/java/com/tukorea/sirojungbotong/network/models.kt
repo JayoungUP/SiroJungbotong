@@ -8,6 +8,10 @@ data class AddItemResponse(
     val data: ItemData
 )
 
+data class CreateFlyerResponse(
+    val id: Long
+)
+
 // data 필드 내부
 data class ItemData(
     val id: Long,
@@ -60,4 +64,23 @@ data class StoreDetail(
     val name: String,
     val market: String,
     val flyers: List<Flyer>
+)
+
+data class MyStoresResponse(
+    val status: Int,
+    val data: List<MyStore>
+)
+
+data class MyStore(
+    val id: Long,
+    val ownerId: Long,
+    val name: String,
+    val market: String,
+    val address: String,
+    val openTime: String,
+    val closeTime: String,
+    val category: String?,
+    val imageUrl: String?,
+    val flyers: List<Flyer>,
+    val likeCount: Int
 )
