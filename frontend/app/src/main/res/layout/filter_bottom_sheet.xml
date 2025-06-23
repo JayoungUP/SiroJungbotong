@@ -34,7 +34,7 @@
         android:layout_marginBottom="8dp" />
 
     <TextView
-        android:text="지역"
+        android:text="지역(시장)"
         android:textSize="14sp"
         android:textStyle="bold"
         android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
         android:layout_marginBottom="8dp" />
 
     <TextView
-        android:text="카테고리"
+        android:text="업장 카테고리"
         android:textSize="14sp"
         android:textStyle="bold"
         android:layout_width="wrap_content"

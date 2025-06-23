@@ -68,7 +68,7 @@ interface SiroApiService {
     @GET("flyers")
     fun getFlyers(
         @Query("market") market: String?,
-        @Query("category") category: String?,
+        @Query("category") category: List<String>?,
         @Query("usesSiro") usesSiro: Boolean?,
         @Query("sort") sort: String?,
     ): Call<FlyerListResponse>

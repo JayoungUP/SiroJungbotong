@@ -66,6 +66,7 @@ data class StoreDetailResponse(
 data class StoreDetail(
     val id: Long,
     val name: String,
+    val category: String,
     val market: String,
     val address: String,
     val thumbnailUrl: String,

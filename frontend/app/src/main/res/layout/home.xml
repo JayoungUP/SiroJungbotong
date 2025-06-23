@@ -104,7 +104,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingTop="4dp" />
+            android:paddingTop="4dp"
+            android:paddingBottom="180dp"
+            android:clipToPadding="false" />
     </LinearLayout>
 
     <!-- FAB -->
@@ -120,6 +122,4 @@
         app:tint="@android:color/white"
         app:backgroundTint="@color/colorPrimary"
         style="@style/FAB.Circular"/>
-
-
 </FrameLayout>

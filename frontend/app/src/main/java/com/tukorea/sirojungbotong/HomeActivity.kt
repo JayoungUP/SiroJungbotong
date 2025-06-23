@@ -53,6 +53,7 @@ class HomeActivity : AppCompatActivity() {
     private var currentSortType = SortType.LATEST
 
     private var storeNameMap: Map<Int, String> = emptyMap()
+    private var storeCategoryMap: Map<Int, String> = emptyMap() // 가게 ID → 카테고리 매핑
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,36 +163,55 @@ class HomeActivity : AppCompatActivity() {
 
     private fun fetchFlyersByMarkets() {
         val apiService = ApiClient.create(applicationContext)
-        val markets = listOf("정왕시장", "삼미시장", "도일시장", "오이도전통수산시장")
         val fetchedMarkets = mutableListOf<MarketData>()
-        val nameMap = mutableMapOf<Int, String>()  // storeId -> 가게명
+        val nameMap = mutableMapOf<Int, String>()
+        val categoryMap = mutableMapOf<Int, String>() // 추가
+
+        // 필터 조건 적용
+        val selectedMarkets = if (filterState.selectedMarkets.isEmpty()) {
+            listOf("정왕시장", "삼미시장", "도일시장", "오이도전통수산시장")
+        } else {
+            filterState.selectedMarkets
+        }
+
+        val usesSiro = if (filterState.useSiru) true else null
+        val categories = filterState.selectedCategories.takeIf { it.isNotEmpty() }
+        val sortParam = if (currentSortType == SortType.POPULAR) "scrap" else null
 
         CoroutineScope(Dispatchers.IO).launch {
-            val jobs = markets.map { marketName ->
+            val jobs = selectedMarkets.map { marketName ->
                 async {
                     try {
+                        val categoryParams = filterState.selectedCategories.takeIf { it.isNotEmpty() }?.toList()
+
+                        Log.d("FILTER_REQ", "요청 → market=$marketName, usesSiro=$usesSiro, categories=$categories")
+
                         val response = apiService.getFlyers(
                             market = marketName,
-                            category = null,
-                            usesSiro = null,
-                            sort = if (currentSortType == SortType.POPULAR) "scrap" else null
+                            category = categoryParams,
+                            usesSiro = usesSiro,
+                            sort = sortParam
                         ).execute()
 
                         if (response.isSuccessful && response.body()?.status == 200) {
                             val flyers = response.body()!!.data.content
 
-                            // storeNameMap 채우기 위해 가게명 요청
+                            flyers.forEach {
+                                Log.d("FILTER_RES", "flyerId=${it.id}, category=${it.category}, storeId=${it.storeId}")
+                            }
+
+                            // storeId로 가게 이름, 카테고리 매핑
                             val storeJobs = flyers.map { flyer ->
                                 async {
                                     val detailRes = apiService.getStoreDetail(flyer.storeId)
                                     if (detailRes.isSuccessful && detailRes.body()?.status == 200) {
-                                        val name = detailRes.body()!!.data.name
-                                        nameMap[flyer.storeId.toInt()] = name
+                                        val detail = detailRes.body()!!.data
+                                        nameMap[flyer.storeId.toInt()] = detail.name
+                                        categoryMap[flyer.storeId.toInt()] = detail.category // 가게 카테고리 저장
                                     }
                                 }
                             }
                             storeJobs.awaitAll()
-
                             fetchedMarkets.add(MarketData(marketName, flyers))
                         } else {
                             Log.e("FLYERS_API", "$marketName 실패: ${response.code()}")
@@ -204,7 +224,8 @@ class HomeActivity : AppCompatActivity() {
             jobs.awaitAll()
             withContext(Dispatchers.Main) {
                 fullMarketList = fetchedMarkets
-                storeNameMap = nameMap   // 최종 반영
+                storeNameMap = nameMap
+                storeCategoryMap = categoryMap // 저장
                 applyFilter(fullMarketList)
             }
         }
@@ -247,17 +268,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun applyFilter(fullList: List<MarketData>) {
-        val filtered = fullList.filter { market ->
-            val matchesMarket = filterState.selectedMarkets.isEmpty() || filterState.selectedMarkets.contains(market.marketName)
-            val matchesCategory = market.items.any { flyer ->
-                filterState.selectedCategories.isEmpty() || filterState.selectedCategories.contains(flyer.category)
+        val filtered = fullList.mapNotNull { market ->
+            val filteredFlyers = market.items.filter { flyer ->
+                val storeCategory = storeCategoryMap[flyer.storeId.toInt()]
+                filterState.selectedCategories.isEmpty() || filterState.selectedCategories.contains(storeCategory)
             }
-            matchesMarket && matchesCategory
-        }.let { list ->
-            when (currentSortType) {
-                SortType.LATEST -> list // 추후 최신순 정렬
-                SortType.POPULAR -> list // 추후 인기순 정렬
-            }
+
+            if ((filterState.selectedMarkets.isEmpty() || filterState.selectedMarkets.contains(market.marketName)) && filteredFlyers.isNotEmpty()) {
+                MarketData(market.marketName, filteredFlyers)
+            } else null
         }
 
         rvMarkets.layoutManager = LinearLayoutManager(this)

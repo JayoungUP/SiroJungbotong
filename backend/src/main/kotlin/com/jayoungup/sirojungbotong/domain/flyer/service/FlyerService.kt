@@ -65,7 +65,7 @@ class FlyerService(
     @Transactional(readOnly = true)
     fun getFlyersFiltered(
         market: String?,
-        category: String?,
+        category: List<String>?,
         usesSiro: Boolean?,
         sort: String,
         pageable: Pageable

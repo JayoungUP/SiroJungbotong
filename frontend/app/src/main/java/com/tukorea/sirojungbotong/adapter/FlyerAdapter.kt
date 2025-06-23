@@ -48,6 +48,7 @@ class FlyerAdapter(
             }
         }
         Log.d("FlyerAdapter", "imageUrl: $imageUrl")
+        Log.d("USES_SIRO_CHECK", "flyerId=${flyer.id}, usesSiro=${flyer.usesSiro}")
         // 🔸 Glide 이미지 로딩 (Authorization 있을 때만 붙이고, 없으면 그냥)
         if (!imageUrl.isNullOrEmpty()) {
             val context = holder.itemView.context

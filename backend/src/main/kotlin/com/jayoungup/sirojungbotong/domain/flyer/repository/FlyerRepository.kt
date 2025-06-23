@@ -12,12 +12,12 @@ interface FlyerRepository : JpaRepository<Flyer, Long> {
     @Query("""
         SELECT f FROM Flyer f
         WHERE (:market IS NULL OR f.store.market = :market)
-        AND (:category IS NULL OR f.category = :category)
+        AND (:categories IS NULL OR f.store.category IN :categories)
         AND (:usesSiro IS NULL OR f.usesSiro = :usesSiro)
     """)
     fun findAllFilteredForSorting(
         @Param("market") market: String?,
-        @Param("category") category: String?,
+        @Param("categories") categories: List<String>?,
         @Param("usesSiro") usesSiro: Boolean?,
         pageable: Pageable
     ): Page<Flyer>
@@ -25,12 +25,12 @@ interface FlyerRepository : JpaRepository<Flyer, Long> {
     @Query("""
         SELECT f FROM Flyer f
         WHERE (:market IS NULL OR f.store.market = :market)
-        AND (:category IS NULL OR f.category = :category)
+        AND (:categories IS NULL OR f.store.category IN :categories)
         AND (:usesSiro IS NULL OR f.usesSiro = :usesSiro)
     """)
     fun findAllFilteredForManualSorting(
         @Param("market") market: String?,
-        @Param("category") category: String?,
+        @Param("categories") categories: List<String>?,
         @Param("usesSiro") usesSiro: Boolean?
     ): List<Flyer>
 }

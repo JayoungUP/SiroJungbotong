@@ -199,10 +199,28 @@ class FlyerController(
 
         @Parameter(
             `in` = ParameterIn.QUERY,
-            description = "카테고리 (예: 분식, 정육 등)",
-            schema = Schema(type = "string")
+            description = """
+                가게 카테고리 필터  
+                사용 가능한 값:
+                - 농산물
+                - 축산물
+                - 수산물
+                - 가공식품
+                - 의류/신발
+                - 가정용품
+                - 음식점
+                - 기타소매업
+                - 근린생활서비스
+            """,
+            schema = Schema(
+                type = "string",
+                allowableValues = [
+                    "농산물", "축산물", "수산물", "가공식품", "의류/신발",
+                    "가정용품", "음식점", "기타소매업", "근린생활서비스"
+                ]
+            )
         )
-        @RequestParam(required = false) category: String?,
+        @RequestParam(required = false) category: List<String>?,
 
         @Parameter(
             `in` = ParameterIn.QUERY,
