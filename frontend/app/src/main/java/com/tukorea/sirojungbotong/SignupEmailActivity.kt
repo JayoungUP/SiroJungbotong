@@ -11,10 +11,14 @@ import androidx.lifecycle.lifecycleScope
 import com.tukorea.sirojungbotong.databinding.SingupEmailBinding
 import com.tukorea.sirojungbotong.network.ApiClient
 import com.tukorea.sirojungbotong.network.OwnerSignupRequest
+import com.tukorea.sirojungbotong.network.SiroApiService
 import com.tukorea.sirojungbotong.network.UserSignupRequest
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
+import kotlin.math.sign
 
 class SignupEmailActivity : AppCompatActivity() {
     private lateinit var binding: SingupEmailBinding
@@ -69,7 +73,7 @@ class SignupEmailActivity : AppCompatActivity() {
                     val pNm2    = pNm2Raw.takeIf { it.isNotEmpty() }
                     val rawDate = binding.inputdate.text.toString().trim()
                     val startDt = rawDate.replace("/", "-")  // yyyy/MM/dd → yyyy-MM-dd
-
+                    val signupApi= createSignupOnlyClient()
                     val body = OwnerSignupRequest(
                         loginId  = loginId,
                         email    = email,
@@ -81,7 +85,7 @@ class SignupEmailActivity : AppCompatActivity() {
                         p_nm     = pNm,
                         p_nm2    = pNm2
                     )
-                    val resp = api.signupOwner(body)
+                    val resp = signupApi.signupOwner(body)
                     Log.d("OWNER_SIGNUP", "HTTP ${resp.code()}, errorBody=${resp.errorBody()?.string()}")
                     handleResponse(api.signupOwner(body), "점주 회원가입")
 
@@ -107,6 +111,13 @@ class SignupEmailActivity : AppCompatActivity() {
             { _, y, m, d -> binding.inputdate.setText(String.format("%04d/%02d/%02d", y, m + 1, d)) },
             now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH)
         ).show()
+    }
+    private fun createSignupOnlyClient(): SiroApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://sirojungbotong.r-e.kr/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(SiroApiService::class.java)
     }
 
     private fun <T> handleResponse(resp: Response<T>, title: String) {
