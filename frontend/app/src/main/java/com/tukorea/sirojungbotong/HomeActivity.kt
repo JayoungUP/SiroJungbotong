@@ -174,7 +174,7 @@ class HomeActivity : AppCompatActivity() {
                             market = marketName,
                             category = null,
                             usesSiro = null,
-                            sort = null
+                            sort = if (currentSortType == SortType.POPULAR) "scrap" else null
                         ).execute()
 
                         if (response.isSuccessful && response.body()?.status == 200) {
@@ -281,7 +281,7 @@ class HomeActivity : AppCompatActivity() {
         val sheet = SortBottomSheetFragment(currentSortType) { newSort ->
             currentSortType = newSort
             updateSortButtons()
-            applyFilter(fullMarketList)
+            fetchFlyersByMarkets()
         }
         sheet.show(supportFragmentManager, "SortSheet")
     }
