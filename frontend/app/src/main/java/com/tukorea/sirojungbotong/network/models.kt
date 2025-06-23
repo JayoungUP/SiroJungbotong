@@ -23,6 +23,26 @@ data class ItemData(
     val validUntil: String,
     val imageUrl: String?
 )
+data class UserSignupRequest(
+    val loginId: String,
+    val email: String,
+    val password: String,
+    val name: String,
+    val nickname: String
+)
+
+data class OwnerSignupRequest(
+    val loginId: String,
+    val email: String,
+    val password: String,
+    val name: String,
+    val nickname: String,
+    val b_no: String,
+    val start_dt: String,  // yyyy-MM-dd 포맷
+    val p_nm: String,
+    val p_nm2: String?     // 외국인일 때만 값, 아니면 null
+)
+
 
 data class LikedStoresResponse(
     val status: Int,
