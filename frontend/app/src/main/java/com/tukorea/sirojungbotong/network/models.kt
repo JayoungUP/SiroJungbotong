@@ -1,5 +1,6 @@
 package com.tukorea.sirojungbotong.network
 
+import com.tukorea.sirojungbotong.FlyerData
 import com.tukorea.sirojungbotong.model.Flyer
 
 // 서버 응답 전체
@@ -9,7 +10,8 @@ data class AddItemResponse(
 )
 
 data class CreateFlyerResponse(
-    val id: Long
+    val status: Int,
+    val data: FlyerData
 )
 
 // data 필드 내부

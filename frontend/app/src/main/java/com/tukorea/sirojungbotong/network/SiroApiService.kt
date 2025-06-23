@@ -25,6 +25,7 @@ interface SiroApiService {
         @Part("price") price: RequestBody,
         @Part("validFrom") validFrom: RequestBody,
         @Part("validUntil") validUntil: RequestBody,
+        @Part("description") description: RequestBody,
         @Part image: MultipartBody.Part?
     ): Response<AddItemResponse>
 

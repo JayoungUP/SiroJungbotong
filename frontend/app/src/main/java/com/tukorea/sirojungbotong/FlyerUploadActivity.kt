@@ -3,12 +3,14 @@ package com.tukorea.sirojungbotong
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.gson.GsonBuilder
 import com.tukorea.sirojungbotong.databinding.ActivityFlyerUploadBinding
 import com.tukorea.sirojungbotong.network.ApiClient
 import com.tukorea.sirojungbotong.network.CreateFlyerResponse
@@ -186,7 +188,13 @@ class FlyerUploadActivity : AppCompatActivity() {
                         image = flyerImagePart
                     ).body() as CreateFlyerResponse
 
-                    val flyerIdNew = createResp.id
+                    val flyerIdNew = createResp.data.id
+                    val gson = GsonBuilder().setPrettyPrinting().create()
+                    val itemsJson = gson.toJson(items)
+                    items.forEachIndexed { idx, item ->
+                        Log.d("ItemDebug", "[$idx] name=${item.name}, category=${item.category}, price=${item.price}, validFrom=${item.validFrom}, validUntil=${item.validUntil}")
+                    }
+                    android.util.Log.d("UploadPayload", "상품 목록 JSON:\n$itemsJson")
                     items.forEachIndexed { idx, item ->
                         val itemImage = item.photoUri?.let { makeImagePart(it, "item${idx + 1}.jpg") }
                         api.addItem(
@@ -195,6 +203,7 @@ class FlyerUploadActivity : AppCompatActivity() {
                             price = item.price.toString().toRequestBody("text/plain".toMediaType()),
                             validFrom = item.validFrom.toRequestBody("text/plain".toMediaType()),
                             validUntil = item.validUntil.toRequestBody("text/plain".toMediaType()),
+                            description = item.category.toRequestBody("text/plain".toMediaType()),
                             image = itemImage
                         )
                     }
@@ -313,13 +322,13 @@ class FlyerUploadActivity : AppCompatActivity() {
 
     private fun setupDatePickers() {
         val fields = listOf(
-            binding.etExpireAt to { y: Int, m: Int, d: Int -> "%d/%02d/%02d".format(y, m + 1, d) },
-            binding.etStartDate1 to { y: Int, m: Int, d: Int -> "%d/%02d/%02d".format(y, m + 1, d) },
-            binding.etEndDate1 to { y: Int, m: Int, d: Int -> "%d/%02d/%02d".format(y, m + 1, d) },
-            binding.etStartDate2 to { y: Int, m: Int, d: Int -> "%d/%02d/%02d".format(y, m + 1, d) },
-            binding.etEndDate2 to { y: Int, m: Int, d: Int -> "%d/%02d/%02d".format(y, m + 1, d) },
-            binding.etStartDate3 to { y: Int, m: Int, d: Int -> "%d/%02d/%02d".format(y, m + 1, d) },
-            binding.etEndDate3 to { y: Int, m: Int, d: Int -> "%d/%02d/%02d".format(y, m + 1, d) }
+            binding.etExpireAt to { y: Int, m: Int, d: Int -> "%d-%02d-%02d".format(y, m + 1, d) },
+            binding.etStartDate1 to { y: Int, m: Int, d: Int -> "%d-%02d-%02d".format(y, m + 1, d) },
+            binding.etEndDate1 to { y: Int, m: Int, d: Int -> "%d-%02d-%02d".format(y, m + 1, d) },
+            binding.etStartDate2 to { y: Int, m: Int, d: Int -> "%d-%02d-%02d".format(y, m + 1, d) },
+            binding.etEndDate2 to { y: Int, m: Int, d: Int -> "%d-%02d-%02d".format(y, m + 1, d) },
+            binding.etStartDate3 to { y: Int, m: Int, d: Int -> "%d-%02d-%02d".format(y, m + 1, d) },
+            binding.etEndDate3 to { y: Int, m: Int, d: Int -> "%d-%02d-%02d".format(y, m + 1, d) }
         )
         for ((field, formatter) in fields) {
             field.setOnClickListener {
