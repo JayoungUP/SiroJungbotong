@@ -13,6 +13,14 @@
         <item>근린생활서비스</item>
     </string-array>
 
+    <string-array name="market_types">
+        <item>선택--</item>
+        <item>정왕시장</item>
+        <item>삼미시장</item>
+        <item>도일시장</item>
+        <item>오이도전통시장</item>
+    </string-array>
+
     <!-- 액션바의 뒤로가기 버튼 설명 -->
     <string name="desc_back">뒤로가기</string>
     <!-- 오른쪽 상단 “등록” 버튼 -->

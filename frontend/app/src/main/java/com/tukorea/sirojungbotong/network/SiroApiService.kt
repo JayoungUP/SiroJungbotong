@@ -1,6 +1,7 @@
 package com.tukorea.sirojungbotong.network
 
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -16,6 +17,18 @@ interface SiroApiService {
         @Query("validFrom") validFrom: String,   // yyyy-MM-dd
         @Query("validUntil") validUntil: String  // yyyy-MM-dd
     ): Response<AddItemResponse>
+
+    @Multipart
+    @POST("stores")
+    suspend fun uploadStore(
+        @Part("name") name: RequestBody,
+        @Part("market") market: RequestBody,
+        @Part("address") address: RequestBody,
+        @Part("openTime") openTime: RequestBody,
+        @Part("closeTime") closeTime: RequestBody,
+        @Part("category") category: RequestBody,
+        @Part image: MultipartBody.Part
+    ): Response<Any>
 
     // 추가된 즐겨찾기 목록 가져오기
     @GET("stores/liked")
