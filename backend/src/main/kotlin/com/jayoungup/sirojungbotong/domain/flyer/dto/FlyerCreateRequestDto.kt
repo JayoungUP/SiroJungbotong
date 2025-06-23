@@ -17,6 +17,6 @@ data class FlyerCreateRequestDto(
     @field:Schema(description = "만료일 (yyyy-MM-dd 형태)", example = "2025-06-30")
     val expireAt: String,
 
-    @field:Schema(description = "시로 이용 여부", example = "true")
+    @field:Schema(description = "시루 이용 여부", example = "true")
     val usesSiro: Boolean
 )

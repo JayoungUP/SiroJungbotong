@@ -47,7 +47,7 @@
     <string name="label_expire_at">Expiration Date</string>
     <string name="hint_expire_at">YYYY/MM/DD</string>
 
-    <!-- 시로 사용 여부 -->
+    <!-- 시루 사용 여부 -->
     <string name="use_now_marker">Siro Usable</string>
 
     <!-- 플라이어 이미지 업로드 -->

@@ -65,7 +65,7 @@ class FlyerAdapter(private val flyerList: List<Flyer>, private val storeNameMap:
         // 가게명
         holder.tvStore.text = storeNameMap[flyer.storeId] ?: "알 수 없는 가게"
 
-        // 시로 사용 가능 여부 텍스트 표시
+        // 시루 사용 가능 여부 텍스트 표시
         if (flyer.usesSiro) {
             holder.tvUsesSiro.visibility = View.VISIBLE
         } else {
