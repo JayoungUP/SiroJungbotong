@@ -191,7 +191,11 @@ class HomeActivity : AppCompatActivity() {
                     storeNameMap = nameMap
 
                     withContext(Dispatchers.Main) {
-                        rvFavorites.adapter = FlyerAdapter(allFlyers, storeNameMap)
+                        rvFavorites.adapter = FlyerAdapter(allFlyers, storeNameMap) { flyer ->
+                            val intent = Intent(this@HomeActivity, FlyerDetailActivity::class.java)
+                            intent.putExtra("flyer_id", flyer.id)
+                            startActivity(intent)
+                        }
                     }
                 } else {
                     Log.e("FAVORITE_API", "즐겨찾기 실패: ${likedRes.code()}")
@@ -221,7 +225,11 @@ class HomeActivity : AppCompatActivity() {
         if (filtered.size == 1) {
             val flyers = filtered[0].items
             rvMarkets.layoutManager = GridLayoutManager(this, 2)
-            rvMarkets.adapter = FlyerAdapter(flyers, storeNameMap)
+            rvMarkets.adapter = FlyerAdapter(flyers, storeNameMap) { flyer ->
+                val intent = Intent(this, FlyerDetailActivity::class.java)
+                intent.putExtra("flyer_id", flyer.id)
+                startActivity(intent)
+            }
         } else {
             rvMarkets.layoutManager = LinearLayoutManager(this)
             rvMarkets.adapter = MarketAdapter(filtered, storeNameMap)

@@ -1,7 +1,9 @@
 package com.tukorea.sirojungbotong.network
 
+import com.tukorea.sirojungbotong.FlyerDetailResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -38,4 +40,7 @@ interface SiroApiService {
     // 즐겨찾기 추가된 개별 가게 상세정보 가져오기
     @GET("stores/{storeId}")
     suspend fun getStoreDetail(@Path("storeId") storeId: Long): Response<StoreDetailResponse>
+
+    @GET("flyers/{id}")
+    fun getFlyerDetail(@Path("id") id: Long): Call<FlyerDetailResponse>
 }
