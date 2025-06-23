@@ -6,37 +6,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 콘텐츠 영역: 헤더 + 그리드 리스트 -->
-    <LinearLayout
+    <!-- 스크롤 전체 감싸기 -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="30dp"
-        android:padding="16dp">
+        android:fillViewport="true">
 
-    <!-- 1) 헤더 -->
-    <TextView
-        android:id="@+id/tv_fav_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="내가 즐겨찾기한 가게의 전단지"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/helvetica_bold"
-        android:paddingBottom="8dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="30dp">
 
-    <!-- 2) 2열 그리드 RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_favorites"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:overScrollMode="never"
-        android:nestedScrollingEnabled="false"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        />
-    </LinearLayout>
+            <!-- 1) 헤더 -->
+            <TextView
+                android:id="@+id/tv_fav_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="내가 즐겨찾기한 가게의 전단지"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/helvetica_bold"
+                android:paddingBottom="8dp" />
 
-    </FrameLayout>
+            <!-- 2) RecyclerView (2열) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_favorites"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:paddingBottom="80dp"
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
+</FrameLayout>
