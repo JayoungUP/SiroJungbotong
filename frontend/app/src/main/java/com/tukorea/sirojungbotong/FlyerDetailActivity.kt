@@ -8,7 +8,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.tukorea.sirojungbotong.network.ApiClient
 import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import java.time.LocalDate
@@ -30,11 +29,9 @@ class FlyerDetailActivity : AppCompatActivity() {
             finish()
         }
 
-        // 뷰 바인딩
         viewPager = findViewById(R.id.viewPagerImages)
         tvImageIndicator = findViewById(R.id.tvImageIndicator)
 
-        // ✅ 수정된 부분: Int로 받고 Long으로 변환
         val receivedId = intent.getIntExtra("flyer_id", -1)
         flyerId = receivedId.toLong()
         if (receivedId == -1) {
@@ -47,7 +44,6 @@ class FlyerDetailActivity : AppCompatActivity() {
     }
 
     private fun fetchFlyerDetail(id: Long) {
-        // 🔹 FlyerApi 사용 (getFlyerDetail 포함)
         val apiService = ApiClient.createFlyerApi(applicationContext)
 
         apiService.getFlyerDetail(id).enqueue(object : Callback<FlyerDetailResponse> {
@@ -82,14 +78,12 @@ class FlyerDetailActivity : AppCompatActivity() {
             return
         }
 
-        // 🔸 ViewPager 이미지 리스트 구성
         val imageUrls = mutableListOf<String>()
-        imageUrls.add("http://sirojungbotong.r-e.kr" + data.imageUrl) // 전단지 메인 이미지
+        imageUrls.add(formatImageUrl(data.imageUrl))
         data.items.forEach {
-            imageUrls.add("http://sirojungbotong.r-e.kr" + it.imageUrl) // 각 품목 이미지
+            imageUrls.add(formatImageUrl(it.imageUrl))
         }
 
-        // 🔸 ViewPager 어댑터 연결
         val adapter = ImageSliderAdapter(imageUrls)
         viewPager.adapter = adapter
         tvImageIndicator.text = "1/${imageUrls.size}"
@@ -100,9 +94,10 @@ class FlyerDetailActivity : AppCompatActivity() {
             }
         })
 
-        // 나머지 텍스트 뷰들
+        // ✅ 상호명과 주소 출력
         findViewById<TextView>(R.id.tvMarketName).text = data.storeName
-        findViewById<TextView>(R.id.tvMarketAddress).text = "카테고리: ${data.category}"
+        findViewById<TextView>(R.id.tvMarketAddress).text = data.address
+
         findViewById<TextView>(R.id.tvProductName).text = item.name
         findViewById<TextView>(R.id.tvPrice).text = "${item.price}원"
         findViewById<TextView>(R.id.tvInterest).text = "${data.scrapCount}명이 관심을 갖고 있어요"
@@ -119,15 +114,23 @@ class FlyerDetailActivity : AppCompatActivity() {
             0L
         }
     }
+
+    private fun formatImageUrl(path: String?): String {
+        if (path.isNullOrEmpty()) return ""
+        val cleanedPath = path.replace("backend/", "").let {
+            if (it.startsWith("/")) it else "/$it"
+        }
+        return "http://sirojungbotong.r-e.kr$cleanedPath"
+    }
 }
 
-// 🔗 Retrofit 인터페이스
+// Retrofit 인터페이스
 interface FlyerApi {
     @GET("flyers/{id}")
     fun getFlyerDetail(@Path("id") id: Long): Call<FlyerDetailResponse>
 }
 
-// 🔍 응답 데이터 모델
+// 응답 모델
 data class FlyerDetailResponse(
     val status: Int,
     val data: FlyerData
@@ -137,6 +140,7 @@ data class FlyerData(
     val id: Long,
     val storeName: String,
     val category: String,
+    val address: String,       // ✅ 주소 추가
     val imageUrl: String,
     val items: List<FlyerItem>,
     val scrapCount: Int

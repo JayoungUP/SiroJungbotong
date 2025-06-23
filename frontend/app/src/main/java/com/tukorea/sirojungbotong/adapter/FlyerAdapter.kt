@@ -1,5 +1,6 @@
 package com.tukorea.sirojungbotong.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,25 +39,31 @@ class FlyerAdapter(
 
         // 🔸 이미지 URL 가공
         val imageUrl = flyer.imageUrl?.let {
+            val cleanPath = it.replace("backend/", "")
             when {
-                it.startsWith("/home/juno/app/backend/uploads") ->
-                    it.replace("/home/juno/app/backend/uploads", "http://sirojungbotong.r-e.kr/uploads")
-                it.startsWith("backend/uploads") ->
-                    "http://sirojungbotong.r-e.kr/$it"
-                else -> null
+                cleanPath.startsWith("http") -> cleanPath
+                cleanPath.startsWith("/uploads") -> "http://sirojungbotong.r-e.kr$cleanPath"
+                cleanPath.startsWith("uploads") -> "http://sirojungbotong.r-e.kr/$cleanPath"
+                else -> "http://sirojungbotong.r-e.kr/uploads/${cleanPath.substringAfterLast('/')}"
             }
         }
+        Log.d("FlyerAdapter", "imageUrl: $imageUrl")
+        // 🔸 Glide 이미지 로딩 (Authorization 있을 때만 붙이고, 없으면 그냥)
+        if (!imageUrl.isNullOrEmpty()) {
+            val context = holder.itemView.context
+            val token = PreferenceUtil.getAccessToken(context)
 
-        // 🔸 Glide 이미지 로딩 (with Authorization header)
-        val token = PreferenceUtil.getAccessToken(holder.itemView.context)
-        if (!imageUrl.isNullOrEmpty() && !token.isNullOrEmpty()) {
-            val glideUrl = GlideUrl(
-                imageUrl,
-                LazyHeaders.Builder()
-                    .addHeader("Authorization", "Bearer $token")
-                    .build()
-            )
-            Glide.with(holder.itemView.context).load(glideUrl).into(holder.ivFlyer)
+            if (!token.isNullOrEmpty()) {
+                val glideUrl = GlideUrl(
+                    imageUrl,
+                    LazyHeaders.Builder()
+                        .addHeader("Authorization", "Bearer $token")
+                        .build()
+                )
+                Glide.with(context).load(glideUrl).into(holder.ivFlyer)
+            } else {
+                Glide.with(context).load(imageUrl).into(holder.ivFlyer)
+            }
         }
 
         // 🔸 텍스트 바인딩
