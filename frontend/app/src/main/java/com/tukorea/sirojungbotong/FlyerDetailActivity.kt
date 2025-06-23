@@ -120,22 +120,25 @@ class FlyerDetailActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvInterest).text = "${flyerData.scrapCount}명이 관심을 갖고 있어요"
         findViewById<TextView>(R.id.tvExpiry).text = "유효기간 ${calcRemainDays(item.validUntil)}일 남음"
 
-        val ivScrap = findViewById<ImageView>(R.id.ivScrap)
+        // ✅ 가게 썸네일 이미지 로드
+        val ivMarketThumb = findViewById<ImageView>(R.id.ivMarketThumb)
+        Glide.with(this)
+            .load(formatImageUrl(storeData?.imageUrl))
+            .placeholder(R.drawable.sample_thumbnail)
+            .into(ivMarketThumb)
 
-        // 기본 상태 설정 (원래 서버에 스크랩 정보가 있다면 isScrapped 초기값을 서버에서 받아오세요)
+        // ⭐️ 스크랩 기능
+        val ivScrap = findViewById<ImageView>(R.id.ivScrap)
         ivScrap.setImageResource(if (isScrapped) R.drawable.ic_full_star else R.drawable.ic_empty_star)
 
-        // 클릭 이벤트
         ivScrap.setOnClickListener {
             isScrapped = !isScrapped
             ivScrap.setImageResource(
                 if (isScrapped) R.drawable.ic_full_star else R.drawable.ic_empty_star
             )
 
-            // 토스트 먼저 띄우고
             Toast.makeText(this, if (isScrapped) "스크랩 추가됨" else "스크랩 해제됨", Toast.LENGTH_SHORT).show()
 
-            // 서버 요청
             val api = ApiClient.create(applicationContext)
             lifecycleScope.launch {
                 try {
@@ -169,9 +172,8 @@ class FlyerDetailActivity : AppCompatActivity() {
 
     private fun formatImageUrl(path: String?): String {
         if (path.isNullOrEmpty()) return ""
-        val cleanedPath = path.replace("backend/", "").let {
-            if (it.startsWith("/")) it else "/$it"
-        }
-        return "http://sirojungbotong.r-e.kr$cleanedPath"
+        val cleanedPath = path.replace("backend/", "").replace("/home/juno/app/", "")
+        val finalPath = if (cleanedPath.startsWith("/")) cleanedPath else "/$cleanedPath"
+        return "http://sirojungbotong.r-e.kr$finalPath"
     }
 }

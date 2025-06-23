@@ -65,6 +65,8 @@ data class StoreDetail(
     val name: String,
     val market: String,
     val address: String,
+    val thumbnailUrl: String,
+    val imageUrl: String?,
     val flyers: List<Flyer>
 )
 

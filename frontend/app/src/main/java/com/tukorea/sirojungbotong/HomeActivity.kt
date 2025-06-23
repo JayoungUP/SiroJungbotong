@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.yourapp.SignupExtraActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.tukorea.sirojungbotong.adapter.FlyerAdapter
@@ -116,7 +117,7 @@ class HomeActivity : AppCompatActivity() {
         btnResetPassword = layPro.findViewById(R.id.btn_reset_password)
 
         btnAddStore.setOnClickListener {
-            startActivity(Intent(this, FlyerUploadActivity::class.java))
+            startActivity(Intent(this, SignupExtraActivity::class.java))
         }
         btnManageFlyers.setOnClickListener {
             Toast.makeText(this, "아직 구현 중입니다.", Toast.LENGTH_SHORT).show()
