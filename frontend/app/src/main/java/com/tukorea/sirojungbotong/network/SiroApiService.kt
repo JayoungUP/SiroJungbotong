@@ -46,4 +46,16 @@ interface SiroApiService {
     suspend fun signupOwner(
         @Body body: OwnerSignupRequest
     ): Response<Any>
+
+    @Multipart
+    @POST("stores") // 실제 엔드포인트에 따라 수정 필요
+    suspend fun uploadStore(
+        @Part("name") name: RequestBody,
+        @Part("market") market: RequestBody,
+        @Part("address") address: RequestBody,
+        @Part("openTime") openTime: RequestBody,
+        @Part("closeTime") closeTime: RequestBody,
+        @Part("category") category: RequestBody,
+        @Part image: MultipartBody.Part?
+    ): Response<Any> // 또는 실제 응답 객체
 }

@@ -61,4 +61,16 @@
     <!-- “+ 품목 추가하기” 버튼 텍스트 -->
     <string name="action_add_item">+ 품목 추가하기</string>
     <string name="app_name" translatable="false">시로정보통</string>
+
+    <string name="label_flyer_info">전단지 정보 입력</string>
+    <string name="label_select_store">가게 선택</string>
+    <string name="label_flyer_category">카테고리</string>
+    <string name="hint_flyer_category">예: 농산물, 수산물, 가공식품 등</string>
+    <string name="label_flyer_description">전단지 설명</string>
+    <string name="hint_flyer_description">전단지의 간단한 설명을 입력해주세요</string>
+    <string name="label_expire_at">유효기간</string>
+    <string name="hint_expire_at">예: 2025-12-31</string>
+    <string name="label_flyer_image">대표 이미지</string>
+    <string name="hint_upload_flyer_image">전단지 대표 이미지를 선택하세요</string>
+    <string name="first_item_required">최소 한 개 이상의 품목을 등록해야 합니다</string>
 </resources>
