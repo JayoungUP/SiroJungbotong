@@ -25,6 +25,11 @@ class FlyerDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_flyer_detail)
 
+        val btnBack = findViewById<ImageButton>(R.id.btnBack)
+        btnBack.setOnClickListener {
+            finish()
+        }
+
         // 뷰 바인딩
         viewPager = findViewById(R.id.viewPagerImages)
         tvImageIndicator = findViewById(R.id.tvImageIndicator)
