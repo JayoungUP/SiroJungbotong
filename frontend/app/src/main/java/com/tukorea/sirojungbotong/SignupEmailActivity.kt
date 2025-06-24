@@ -1,6 +1,7 @@
 package com.tukorea.sirojungbotong
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -123,6 +124,8 @@ class SignupEmailActivity : AppCompatActivity() {
     private fun <T> handleResponse(resp: Response<T>, title: String) {
         if (resp.isSuccessful) {
             Toast.makeText(this, "$title 성공!", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, TermActivity::class.java)
+            startActivity(intent)
             finish()
         } else {
             val err = resp.errorBody()?.string().orEmpty()

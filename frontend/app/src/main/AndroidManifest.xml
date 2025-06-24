@@ -43,6 +43,10 @@
             android:name=".FlyerUploadActivity"
             android:exported="true">
         </activity>
+        <activity android:name=".TermActivity"
+            android:exported="true">
+
+        </activity>
 
         <!-- SignupKakaoActivity -->
         <activity

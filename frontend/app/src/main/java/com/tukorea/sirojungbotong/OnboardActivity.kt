@@ -19,6 +19,7 @@ class OnboardActivity : AppCompatActivity(){
             try{
                 val intent=Intent(this,HomeActivity::class.java)
                 startActivity(intent)
+                finish()
             }
             catch(e:Exception){
                 Toast.makeText(this, "HomeActivity를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
