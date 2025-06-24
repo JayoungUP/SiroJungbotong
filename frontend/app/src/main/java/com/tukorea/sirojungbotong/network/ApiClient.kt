@@ -56,8 +56,4 @@ object ApiClient {
         return getRetrofit(context).create(FlyerApi::class.java)
     }
 
-    fun createStoreApi(context: Context): StoreApi {
-        return getRetrofit(context).create(StoreApi::class.java)
-    }
-
 }

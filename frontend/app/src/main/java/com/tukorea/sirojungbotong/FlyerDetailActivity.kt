@@ -1,5 +1,6 @@
 package com.tukorea.sirojungbotong
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
@@ -57,7 +58,9 @@ class FlyerDetailActivity : AppCompatActivity() {
                     val flyerData = response.body()?.data
                     if (flyerData != null) {
                         Log.d("FlyerDetail_JSON", flyerData.toString())
-                        fetchStoreDetailAndUpdate(flyerData)
+                        lifecycleScope.launch {
+                            fetchStoreDetailAndUpdate(flyerData)
+                        }
                     }
                 } else {
                     Toast.makeText(this@FlyerDetailActivity, "전단지 정보를 불러오지 못했습니다", Toast.LENGTH_SHORT).show()
@@ -71,27 +74,24 @@ class FlyerDetailActivity : AppCompatActivity() {
         })
     }
 
-    private fun fetchStoreDetailAndUpdate(flyerData: Flyer) {
-        val storeService = ApiClient.createStoreApi(applicationContext)
-
-        storeService.getStoreDetail(flyerData.storeId).enqueue(object : Callback<StoreDetailResponse> {
-            override fun onResponse(call: Call<StoreDetailResponse>, response: Response<StoreDetailResponse>) {
-                if (response.isSuccessful) {
-                    val store = response.body()?.data
-                    updateUI(flyerData, store)
-                } else {
-                    updateUI(flyerData, null)
-                }
-            }
-
-            override fun onFailure(call: Call<StoreDetailResponse>, t: Throwable) {
-                Log.e("FlyerDetail", "가게 API 실패: ${t.message}")
+    private suspend fun fetchStoreDetailAndUpdate(flyerData: Flyer) {
+        val storeService = ApiClient.create(applicationContext)
+        try {
+            val response = storeService.getStoreDetail(flyerData.storeId)
+            if (response.isSuccessful) {
+                val store = response.body()?.data
+                updateUI(flyerData, store)
+            } else {
                 updateUI(flyerData, null)
             }
-        })
+        } catch (e: Exception) {
+            Log.e("FlyerDetail", "가게 API 실패: ${e.message}")
+            updateUI(flyerData, null)
+        }
     }
 
-    private fun updateUI(flyerData: Flyer, storeData: StoreDetail?) {
+
+        private fun updateUI(flyerData: Flyer, storeData: StoreDetail?) {
         val item = flyerData.items.firstOrNull()
         if (item == null) {
             Toast.makeText(this, "상품 정보가 없습니다", Toast.LENGTH_SHORT).show()
@@ -157,6 +157,14 @@ class FlyerDetailActivity : AppCompatActivity() {
                     Toast.makeText(this@FlyerDetailActivity, "요청 실패", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+
+        // 가게 상세 이동
+        val layout = findViewById<LinearLayout>(R.id.layoutStoreInfo)
+        layout.setOnClickListener {
+            val intent = Intent(this, StoreDetailActivity::class.java)
+            intent.putExtra("store_id", flyerData.storeId)
+            startActivity(intent)
         }
     }
 

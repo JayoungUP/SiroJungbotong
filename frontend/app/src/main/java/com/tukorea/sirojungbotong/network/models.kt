@@ -69,9 +69,12 @@ data class StoreDetail(
     val category: String,
     val market: String,
     val address: String,
+    val openTime: String,
+    val closeTime: String,
     val thumbnailUrl: String,
     val imageUrl: String?,
-    val flyers: List<Flyer>
+    val flyers: List<Flyer>,
+    val likeCount: Int
 )
 
 data class MyStoresResponse(
@@ -123,6 +126,7 @@ data class FlyerDetailResponse(
 
 data class Flyer(
     val id: Long,
+    var storeName: String? = null,
     val storeId: Long,
     val category: String,
     val description: String?,

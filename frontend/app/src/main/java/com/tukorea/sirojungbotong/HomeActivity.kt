@@ -142,6 +142,7 @@ class HomeActivity : AppCompatActivity() {
                     layHome.visibility = View.GONE
                     layFav.visibility = View.VISIBLE
                     layPro.visibility = View.GONE
+                    fetchFavoriteFlyers()
                     true
                 }
                 R.id.nav_profile -> {

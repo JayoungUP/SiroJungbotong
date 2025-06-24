@@ -37,6 +37,12 @@ interface SiroApiService {
     @GET("stores/liked")
     suspend fun getLikedStores(): Response<LikedStoresResponse>
 
+    @POST("stores/liked/{storeId}")
+    suspend fun addLikedStore(@Path("storeId") storeId: Long): Response<Void>
+
+    @DELETE("stores/liked/{storeId}")
+    suspend fun removeLikedStore(@Path("storeId") storeId: Long): Response<Void>
+
     // 즐겨찾기 추가된 개별 가게 상세정보 가져오기
     @GET("stores/{storeId}")
     suspend fun getStoreDetail(@Path("storeId") storeId: Long): Response<StoreDetailResponse>
@@ -50,7 +56,7 @@ interface SiroApiService {
     ): Response<Any>
 
     @Multipart
-    @POST("stores") // 실제 엔드포인트에 따라 수정 필요
+    @POST("stores")
     suspend fun uploadStore(
         @Part("name") name: RequestBody,
         @Part("market") market: RequestBody,
@@ -82,5 +88,6 @@ interface SiroApiService {
 
     @GET("/api/flyers/scrap")
     suspend fun getScrappedFlyers(): Response<ScrapFlyerListResponse>
+
 
 }
