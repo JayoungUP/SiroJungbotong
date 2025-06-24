@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
                         Log.d("KakaoServerLogin", "refreshToken: ${result.refreshToken}")
                         Log.d("KakaoServerLogin", "role: ${result.role}")
                         Toast.makeText(this@LoginActivity, "${result.nickname}님 환영합니다!", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                         finish()
                     } else {
                         Log.e("KakaoServerLogin", "응답 본문이 비어 있음")
@@ -177,7 +177,7 @@ class LoginActivity : AppCompatActivity() {
                             Log.d("LoginSuccess", "refreshToken: ${result.refreshToken}")
                             Log.d("LoginSuccess", "role: ${result.role}")
                             Toast.makeText(this@LoginActivity, "${result.nickname}님 환영합니다!", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                             finish()
                         } else {
                             Log.e("LoginSuccess", "data is null")
