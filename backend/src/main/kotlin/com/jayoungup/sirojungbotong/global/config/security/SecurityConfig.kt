@@ -1,7 +1,6 @@
 package com.jayoungup.sirojungbotong.global.config.security
 
-import com.jayoungup.sirojungbotong.global.config.security.JwtAuthenticationEntryPoint
-import io.netty.handler.codec.http.HttpMethod
+import org.springframework.http.HttpMethod
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -43,10 +42,8 @@ class SecurityConfig(
                         "/api/auth/password/**",
                         "/api/member/signup/**",
                         "/api/auth/id/**",
-
-                        // 전단지 GET 요청은 토큰 없이 허용
-                        HttpMethod.GET, "/api/flyers/**"
                     ).permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/flyers/**").permitAll()  // 전단지 GET 요청은 토큰 없이 허용
 //                    .requestMatchers("/api/stores/**", "/api/flyer/**").hasRole("OWNER") 테스트를 위해 잠깐 해제
                     .anyRequest().authenticated()
             }
