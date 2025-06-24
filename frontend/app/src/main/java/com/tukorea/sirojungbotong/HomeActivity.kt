@@ -40,6 +40,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var imgEditMethod: ImageView
     private lateinit var layOwnerControls: LinearLayout
     private lateinit var btnAddStore: TextView
+    private lateinit var btnscrapped: TextView
+    private lateinit var btnfavoritemarket:TextView
     private lateinit var btnManageFlyers: TextView
     private lateinit var tvNotLoggedIn: TextView
     private lateinit var btnLogout: Button
@@ -114,10 +116,20 @@ class HomeActivity : AppCompatActivity() {
         btnManageFlyers = layPro.findViewById(R.id.btn_manage_flyers)
         btnLogout = layPro.findViewById(R.id.btn_logout)
         btnResetPassword = layPro.findViewById(R.id.btn_reset_password)
+        btnscrapped=layPro.findViewById(R.id.btn_scrapped)
+        btnfavoritemarket=layPro.findViewById(R.id.btn_favoritemarket)
 
         btnAddStore.setOnClickListener {
             startActivity(Intent(this, SignupExtraActivity::class.java))
         }
+        btnscrapped.setOnClickListener {
+            startActivity(Intent(this, ScrappedActivity::class.java))
+        }
+        btnfavoritemarket.setOnClickListener {
+            startActivity(Intent(this, ScrappedActivity::class.java))
+        }
+
+
         btnManageFlyers.setOnClickListener {
             Toast.makeText(this, "아직 구현 중입니다.", Toast.LENGTH_SHORT).show()
         }
