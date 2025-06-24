@@ -180,7 +180,7 @@ class HomeActivity : AppCompatActivity() {
 
         // 필터 조건 적용
         val selectedMarkets = if (filterState.selectedMarkets.isEmpty()) {
-            listOf("정왕시장", "삼미시장", "도일시장", "오이도전통수산시장")
+            listOf("정왕시장", "삼미시장", "도일시장", "오이도전통시장")
         } else {
             filterState.selectedMarkets
         }
