@@ -53,6 +53,9 @@ class SignupExtraActivity : AppCompatActivity() {
         bind.layoutStorePhoto.setOnClickListener {
             pickStorePhoto.launch("image/*")
         }
+        bind.gotoback.setOnClickListener {
+            finish()
+        }
 
         // Spinner 어댑터 세팅 (market 과 category)
         ArrayAdapter.createFromResource(

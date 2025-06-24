@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".OnboardActivity">
+
     <TextView
         android:id="@+id/Onboard_Welcome"
         android:layout_width="wrap_content"
@@ -20,15 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
-    <ImageView
-        android:id="@+id/cloud"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/cloud"
-        android:contentDescription="구름 아이콘"
-        app:layout_constraintStart_toStartOf="@id/Onboard_Welcome"
-        app:layout_constraintBottom_toTopOf="@id/Onboard_Welcome"
-        android:layout_marginBottom="6dp" />
 
 
 
@@ -40,21 +32,28 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/helvetica_bold"
-        android:text="시흥의 전통시장 정보를 한 눈에 확인할 수 있습니다."
+        android:text="시흥의 전통시장 정보를"
         android:textColor="@color/gray01"
-        android:textSize="17sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Onboard_Welcome" />
+    <TextView
+        android:id="@+id/Onboard_Wel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/helvetica_bold"
+        android:text="한눈에 확인할 수 있습니다."
+        android:textColor="@color/gray01"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Onboard_WelcomeText" />
 
     <!-- 4) “시장 둘러보기” 역할 ImageView -->
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/onboard"
-        app:layout_constraintBottom_toTopOf="@id/Onboard_Search"
-        app:layout_constraintLeft_toLeftOf="@id/Onboard_Search"
-        android:layout_marginLeft="120dp"/>
 
     <ImageView
         android:id="@+id/Onboard_Search"
@@ -70,6 +69,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/Upload"
         />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/haero"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/Onboard_Search"
+        android:layout_marginBottom="35dp"/>
+
 
 
     <!-- 5) “전단지 등록하기” 역할 ImageView -->
@@ -87,7 +94,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/txtAlreadyAccount" />
 
-    <!-- 6) 왼쪽 캐릭터 이미지 -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/toro"
+        app:layout_constraintRight_toRightOf="@id/Upload"
+        app:layout_constraintBottom_toBottomOf="@id/Upload"
+        android:layout_marginBottom="35dp"/>
 
     <!-- 8) “이미 계정이 있으신가요?” 텍스트 -->
     <TextView
