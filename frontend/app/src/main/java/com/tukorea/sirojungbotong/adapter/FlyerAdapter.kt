@@ -15,9 +15,9 @@ import com.tukorea.sirojungbotong.network.Flyer
 import com.tukorea.sirojungbotong.util.PreferenceUtil
 
 class FlyerAdapter(
-    private val flyerList: List<Flyer>,
-    private val storeNameMap: Map<Int, String>,
-    private val onItemClick: (Flyer) -> Unit // ✅ 클릭 이벤트 콜백 추가
+    private var flyerList: List<Flyer> = emptyList(),
+    private var storeNameMap: Map<Int, String> = emptyMap(),
+    private val onItemClick: (Flyer) -> Unit = {}
 ) : RecyclerView.Adapter<FlyerAdapter.FlyerViewHolder>() {
 
     inner class FlyerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -80,4 +80,10 @@ class FlyerAdapter(
     }
 
     override fun getItemCount(): Int = flyerList.size
+
+    fun submitList(newList: List<Flyer>, newStoreNameMap: Map<Int, String>) {
+        flyerList = newList
+        storeNameMap = newStoreNameMap
+        notifyDataSetChanged()
+    }
 }
