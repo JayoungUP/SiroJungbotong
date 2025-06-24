@@ -117,7 +117,7 @@ class HomeActivity : AppCompatActivity() {
         btnLogout = layPro.findViewById(R.id.btn_logout)
         btnResetPassword = layPro.findViewById(R.id.btn_reset_password)
         btnscrapped=layPro.findViewById(R.id.btn_scrapped)
-        btnfavoritemarket=layPro.findViewById(R.id.btn_favoritemarket)
+
 
         btnAddStore.setOnClickListener {
             startActivity(Intent(this, SignupExtraActivity::class.java))
@@ -125,9 +125,7 @@ class HomeActivity : AppCompatActivity() {
         btnscrapped.setOnClickListener {
             startActivity(Intent(this, ScrappedActivity::class.java))
         }
-        btnfavoritemarket.setOnClickListener {
-            startActivity(Intent(this, ScrappedActivity::class.java))
-        }
+
 
 
         btnManageFlyers.setOnClickListener {
